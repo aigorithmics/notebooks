@@ -43,9 +43,7 @@ COPY --from=frontend-kubeflow-lib /src/dist/kubeflow/ ./node_modules/kubeflow/
 RUN npm run build -- --output-path=./dist/default --configuration=production
 
 # Web App
-FROM python:3.14.2-slim
-
-RUN apt-get update && apt-get upgrade -y && pip install --upgrade pip
+FROM python:3.14.2-alpine
 
 WORKDIR /package
 COPY --from=backend-kubeflow-wheel /src .
@@ -60,4 +58,4 @@ COPY ./jupyter/backend/entrypoint.py .
 
 COPY --from=frontend /src/dist/default/ /src/apps/default/static/
 
-ENTRYPOINT ["/bin/bash","-c","gunicorn -w 3 --bind 0.0.0.0:5000 --access-logfile - entrypoint:app"]
+ENTRYPOINT ["/bin/sh","-c","gunicorn -w 3 --bind 0.0.0.0:5000 --access-logfile - entrypoint:app"]
