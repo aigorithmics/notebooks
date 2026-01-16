@@ -1,6 +1,6 @@
 module github.com/kubeflow/notebooks/components/pvcviewer-controller
 
-go 1.24.0
+go 1.25.5
 
 require (
 	github.com/go-logr/logr v1.4.1

@@ -1,5 +1,5 @@
 # Image URL to use all building/pushing image targets
-IMG ?= ghcr.io/kubeflow/notebooks/tensorboard-controller
+IMG ?= registry.aigoml.aigodev.com/kubeflow/notebooks/tensorboard-controller
 TAG ?= $(shell git describe --tags --always --dirty)
 ARCH ?= linux/amd64
 

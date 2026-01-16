@@ -4,7 +4,7 @@
 #
 # ${PATH_TO_KUBEFLOW/KUBEFLOW repo}/components
 #
-ARG GOLANG_VERSION=1.24
+ARG GOLANG_VERSION=1.25.5
 FROM golang:${GOLANG_VERSION} as builder
 
 WORKDIR /workspace
@@ -19,9 +19,9 @@ RUN cd /workspace/notebook-controller && go mod download
 # Force download and extract all HashiCorp modules so they exist under /go/pkg/mod
 RUN set -e; cd /workspace/notebook-controller; \
   for m in $(go list -m all | awk '/^github.com\/hashicorp\// {print $1 "@" $2}'); do \
-    go mod download "$m"; \
-    pkg="${m%@*}"; \
-    go list "$pkg/..." >/dev/null 2>&1 || true; \
+  go mod download "$m"; \
+  pkg="${m%@*}"; \
+  go list "$pkg/..." >/dev/null 2>&1 || true; \
   done
 
 WORKDIR /workspace/notebook-controller
