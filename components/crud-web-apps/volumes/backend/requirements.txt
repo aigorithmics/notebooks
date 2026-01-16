@@ -1,1 +1,2 @@
-gunicorn
+gunicorn==23.0.0
+urllib3==2.6.3

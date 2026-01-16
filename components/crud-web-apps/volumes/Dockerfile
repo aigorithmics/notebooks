@@ -1,6 +1,6 @@
 # --- Build the backend kubeflow-wheel ---
 # Python 3.12 upgrade
-FROM python:3.12-slim AS backend-kubeflow-wheel
+FROM python:3.14.2-slim AS backend-kubeflow-wheel
 
 WORKDIR /src
 
@@ -9,7 +9,7 @@ RUN pip install --no-cache-dir setuptools wheel && \
     python3 setup.py bdist_wheel
 
 # --- Build the frontend kubeflow library ---
-FROM node:24.11.1-bookworm as frontend-kubeflow-lib
+FROM node:25.3.0-bookworm AS frontend-kubeflow-lib
 
 WORKDIR /src
 
@@ -24,7 +24,7 @@ COPY ./common/frontend/kubeflow-common-lib/tsconfig.json .
 RUN npm run build
 
 # --- Build the frontend ---
-FROM node:24.11.1-bookworm as frontend
+FROM node:25.3.0-bookworm AS frontend
 
 WORKDIR /src
 
@@ -43,7 +43,9 @@ COPY --from=frontend-kubeflow-lib /src/dist/kubeflow/ ./node_modules/kubeflow/
 RUN npm run build -- --output-path=./dist/default --configuration=production
 
 # Web App
-FROM python:3.12-slim
+FROM python:3.14.2-slim
+
+RUN apt-get update && apt-get upgrade -y && pip install --upgrade pip
 
 WORKDIR /package
 COPY --from=backend-kubeflow-wheel /src .

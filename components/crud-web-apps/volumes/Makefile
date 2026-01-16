@@ -1,4 +1,4 @@
-IMG ?= ghcr.io/kubeflow/notebooks/volumes-web-app
+IMG ?= registry.aigoml.aigodev.com/kubeflow/notebooks/volumes-web-app
 TAG ?= $(shell git describe --tags --always --dirty)
 ARCH ?= linux/amd64
 
