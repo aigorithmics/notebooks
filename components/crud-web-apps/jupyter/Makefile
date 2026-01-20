@@ -1,5 +1,5 @@
-IMG ?= registry.aigoml.aigodev.com/kubeflow/notebooks/jupyter-web-app
-TAG ?= $(shell git describe --tags --always --dirty)
+IMG ?= registry.aigoml.aigodev.com/aigoml/kubeflow/notebooks/jupyter-web-app
+TAG ?= v1.10.0-1.0.0
 DOCKERFILE ?= jupyter/Dockerfile
 ARCH ?= linux/amd64
 
