@@ -13,7 +13,7 @@ FROM node:25.3.0-bookworm AS frontend-kubeflow-lib
 
 WORKDIR /src
 
-ENV NG_CLI_ANALYTICS "ci"
+ENV NG_CLI_ANALYTICS="ci"
 COPY ./common/frontend/kubeflow-common-lib/package.json ./
 COPY ./common/frontend/kubeflow-common-lib/package-lock.json ./
 RUN npm ci
@@ -36,7 +36,7 @@ COPY ./jupyter/frontend/tsconfig.spec.json ./
 COPY ./jupyter/frontend/angular.json ./
 COPY ./jupyter/frontend/src ./src
 
-ENV NG_CLI_ANALYTICS "ci"
+ENV NG_CLI_ANALYTICS="ci"
 RUN npm ci
 COPY --from=frontend-kubeflow-lib /src/dist/kubeflow/ ./node_modules/kubeflow/
 
