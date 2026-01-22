@@ -1,6 +1,6 @@
 # --- Build the backend kubeflow-wheel ---
 # Python 3.12 upgrade
-FROM python:3.12-slim AS backend-kubeflow-wheel
+FROM python:3.14.2-slim AS backend-kubeflow-wheel
 
 WORKDIR /src
 
@@ -9,11 +9,11 @@ RUN pip install --no-cache-dir setuptools wheel && \
     python3 setup.py bdist_wheel
 
 # --- Build the frontend kubeflow library ---
-FROM node:24.11.1-bookworm as frontend-kubeflow-lib
+FROM node:25.3.0-bookworm AS frontend-kubeflow-lib
 
 WORKDIR /src
 
-ENV NG_CLI_ANALYTICS "ci"
+ENV NG_CLI_ANALYTICS="ci"
 COPY ./common/frontend/kubeflow-common-lib/package.json ./
 COPY ./common/frontend/kubeflow-common-lib/package-lock.json ./
 RUN npm ci
@@ -24,7 +24,7 @@ COPY ./common/frontend/kubeflow-common-lib/tsconfig.json .
 RUN npm run build
 
 # --- Build the frontend ---
-FROM node:24.11.1-bookworm as frontend
+FROM node:25.3.0-bookworm AS frontend
 
 WORKDIR /src
 
@@ -36,14 +36,14 @@ COPY ./tensorboards/frontend/tsconfig.spec.json ./
 COPY ./tensorboards/frontend/angular.json ./
 COPY ./tensorboards/frontend/src ./src
 
-ENV NG_CLI_ANALYTICS "ci"
+ENV NG_CLI_ANALYTICS="ci"
 RUN npm ci
 COPY --from=frontend-kubeflow-lib /src/dist/kubeflow/ ./node_modules/kubeflow/
 
 RUN npm run build -- --output-path=./dist --configuration=production
 
 # Web App
-FROM python:3.12-slim
+FROM python:3.14.2-alpine
 
 WORKDIR /package
 COPY --from=backend-kubeflow-wheel /src .
@@ -59,4 +59,4 @@ COPY ./tensorboards/backend/Makefile .
 
 COPY --from=frontend /src/dist/ /src/app/static/
 
-ENTRYPOINT ["/bin/bash","-c","gunicorn -w 3 --bind 0.0.0.0:5000 --access-logfile - entrypoint:app"]
+ENTRYPOINT ["/bin/sh","-c","gunicorn -w 3 --bind 0.0.0.0:5000 --access-logfile - entrypoint:app"]
