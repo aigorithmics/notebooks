@@ -36,7 +36,6 @@ FROM gcr.io/distroless/static:nonroot
 WORKDIR /
 COPY --from=builder /workspace/notebook-controller/manager .
 COPY --from=builder /workspace/notebook-controller/third_party/license.txt third_party/license.txt
-COPY --from=builder /go/pkg/mod/github.com/hashicorp third_party/hashicorp
 
 USER 65532:65532
 

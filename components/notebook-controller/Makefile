@@ -1,5 +1,5 @@
 # Image URL to use all building/pushing image targets
-IMG ?= registry.aigoml.aigodev.com/aigoml/kubeflow/notebooks/notebook-controller
+IMG ?= registry.aigoml.aigodev.com/kubeflow/kubeflow/notebook-controller
 TAG ?= v1.10.0-1.0.0
 ARCH ?= linux/amd64
 

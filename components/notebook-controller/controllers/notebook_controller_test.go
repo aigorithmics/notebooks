@@ -78,7 +78,7 @@ func TestNbNameFromInvolvedObject(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			c := fake.NewFakeClientWithScheme(scheme.Scheme, objects...)
+			c := fake.NewClientBuilder().WithScheme(scheme.Scheme).WithRuntimeObjects(objects...).Build()
 			nbName, err := nbNameFromInvolvedObject(c, &test.event.InvolvedObject)
 			if err != nil {
 				t.Fatalf("Unexpected error: %v", err)

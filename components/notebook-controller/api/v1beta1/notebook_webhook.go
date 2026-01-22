@@ -17,15 +17,10 @@ package v1beta1
 
 import (
 	ctrl "sigs.k8s.io/controller-runtime"
-	logf "sigs.k8s.io/controller-runtime/pkg/log"
 )
 
-// log is for logging in this package.
-var notebooklog = logf.Log.WithName("notebook-resource")
-
 func (r *Notebook) SetupWebhookWithManager(mgr ctrl.Manager) error {
-	return ctrl.NewWebhookManagedBy(mgr).
-		For(r).
+	return ctrl.NewWebhookManagedBy[*Notebook](mgr, r).
 		Complete()
 }
 
