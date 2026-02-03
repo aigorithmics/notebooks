@@ -18,13 +18,15 @@ package v1alpha1
 
 import (
 	"bytes"
-	"context"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"reflect"
 
+	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/webhook"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 
 	"k8s.io/apimachinery/pkg/util/yaml"
@@ -38,17 +40,18 @@ const DefaultPodSpecPathEnvName = "DEFAULT_POD_SPEC_PATH"
 var pvcviewerlog = logf.Log.WithName("pvcviewer-resource")
 
 func (r *PVCViewer) SetupWebhookWithManager(mgr ctrl.Manager) error {
-	return ctrl.NewWebhookManagedBy[*PVCViewer](mgr, r).
+	return ctrl.NewWebhookManagedBy(mgr).
+		For(r).
 		Complete()
 }
 
 //+kubebuilder:webhook:path=/mutate-kubeflow-org-v1alpha1-pvcviewer,mutating=true,failurePolicy=fail,sideEffects=None,groups=kubeflow.org,resources=pvcviewers,verbs=create;update,versions=v1alpha1,name=mpvcviewer.kb.io,admissionReviewVersions=v1
 
-var _ admission.Defaulter[*PVCViewer] = &PVCViewer{}
+var _ webhook.Defaulter = &PVCViewer{}
 
 // Loads a PodSpec from a filename
 func loadPodSpecDefaultsFromFile(filename string) (corev1.PodSpec, error) {
-	data, err := os.ReadFile(filename)
+	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		pvcviewerlog.Error(err, "Failed to read podSpec defaults from file "+filename)
 		return corev1.PodSpec{}, err
@@ -63,8 +66,8 @@ func loadPodSpecDefaultsFromFile(filename string) (corev1.PodSpec, error) {
 	return podSpec, nil
 }
 
-// Default implements admission.Defaulter so a webhook will be registered for the type
-func (r *PVCViewer) Default(ctx context.Context, _ *PVCViewer) error {
+// Default implements webhook.Defaulter so a webhook will be registered for the type
+func (r *PVCViewer) Default() {
 	pvcviewerlog.Info("default", "name", r.Name)
 
 	if reflect.DeepEqual(r.Spec.PodSpec, corev1.PodSpec{}) {
@@ -76,7 +79,9 @@ func (r *PVCViewer) Default(ctx context.Context, _ *PVCViewer) error {
 			var err error
 			defaultPodSpec, err = loadPodSpecDefaultsFromFile(defaultPodSpecPath)
 			if err != nil {
-				return err
+				// We can't throw an error here, so we return
+				// This lets the validating webhook catch the error
+				return
 			}
 		}
 		// Check if a default podSpec was loaded from file
@@ -139,12 +144,11 @@ func (r *PVCViewer) Default(ctx context.Context, _ *PVCViewer) error {
 			},
 		})
 	}
-	return nil
 }
 
 //+kubebuilder:webhook:path=/validate-kubeflow-org-v1alpha1-pvcviewer,mutating=false,failurePolicy=fail,sideEffects=None,groups=kubeflow.org,resources=pvcviewers,verbs=create;update,versions=v1alpha1,name=vpvcviewer.kb.io,admissionReviewVersions=v1
 
-var _ admission.Validator[*PVCViewer] = &PVCViewer{}
+var _ webhook.Validator = &PVCViewer{}
 
 func (r *PVCViewer) validate() error {
 	if len(r.Spec.PVC) == 0 {
@@ -172,22 +176,22 @@ func (r *PVCViewer) validate() error {
 	return nil
 }
 
-// ValidateCreate implements admission.Validator so a webhook will be registered for the type
-func (r *PVCViewer) ValidateCreate(ctx context.Context, _ *PVCViewer) (admission.Warnings, error) {
+// ValidateCreate implements webhook.Validator so a webhook will be registered for the type
+func (r *PVCViewer) ValidateCreate() (admission.Warnings, error) {
 	pvcviewerlog.Info("validate create", "name", r.Name)
 
 	return nil, r.validate()
 }
 
-// ValidateUpdate implements admission.Validator so a webhook will be registered for the type
-func (r *PVCViewer) ValidateUpdate(ctx context.Context, _, _ *PVCViewer) (admission.Warnings, error) {
+// ValidateUpdate implements webhook.Validator so a webhook will be registered for the type
+func (r *PVCViewer) ValidateUpdate(old runtime.Object) (admission.Warnings, error) {
 	pvcviewerlog.Info("validate update", "name", r.Name)
 
 	return nil, r.validate()
 }
 
-// ValidateDelete implements admission.Validator so a webhook will be registered for the type
-func (r *PVCViewer) ValidateDelete(ctx context.Context, _ *PVCViewer) (admission.Warnings, error) {
+// ValidateDelete implements webhook.Validator so a webhook will be registered for the type
+func (r *PVCViewer) ValidateDelete() (admission.Warnings, error) {
 	pvcviewerlog.Info("validate delete", "name", r.Name)
 
 	// We have not registered our webhook to validate delete operations.

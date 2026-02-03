@@ -43,7 +43,7 @@ COPY --from=frontend-kubeflow-lib /src/dist/kubeflow/ ./node_modules/kubeflow/
 RUN npm run build -- --output-path=./dist/default --configuration=production
 
 # Web App
-FROM python:3.14.2-alpine
+FROM python:3.14.2-alpine3.23
 
 WORKDIR /package
 COPY --from=backend-kubeflow-wheel /src .
