@@ -47,7 +47,7 @@ FROM python:3.14.2-alpine3.23
 
 WORKDIR /package
 COPY --from=backend-kubeflow-wheel /src .
-RUN pip3 install .
+RUN pip install --upgrade pip && pip3 install . 
 
 WORKDIR /src
 COPY ./volumes/backend/requirements.txt .
