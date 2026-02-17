@@ -1,4 +1,4 @@
-gunicorn==23.0.0
-cachetools==6.2.4
+gunicorn==25.1.0
+cachetools==7.0.1
 urllib3==2.6.3
 pyasn1==0.6.2
