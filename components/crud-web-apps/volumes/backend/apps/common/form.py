@@ -31,8 +31,6 @@ def pvc_from_dict(body, namespace):
         spec=client.V1PersistentVolumeClaimSpec(
             access_modes=[body["mode"]],
             storage_class_name=handle_storage_class(body),
-            resources=client.V1ResourceRequirements(
-                requests={"storage": body["size"]}
-            ),
+            resources=client.V1ResourceRequirements(requests={"storage": body["size"]}),
         ),
     )

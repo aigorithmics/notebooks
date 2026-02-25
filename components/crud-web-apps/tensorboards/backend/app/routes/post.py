@@ -14,6 +14,7 @@ log = logging.getLogger(__name__)
 @bp.route("/api/namespaces/<namespace>/tensorboards", methods=["POST"])
 @decorators.request_is_json_type
 @decorators.required_body_params("name", "logspath")
+@decorators.validate_kubernetes_name
 def post_tensorboard(namespace):
 
     body = request.get_json()
@@ -31,8 +32,6 @@ def post_tensorboard(namespace):
         tensorboard,
         namespace,
     )
-    log.info(
-        "Successfully created Tensorboard %s in namespace %s", name, namespace
-    )
+    log.info("Successfully created Tensorboard %s in namespace %s", name, namespace)
 
     return api.success_response("message", "Tensorboard created successfully.")

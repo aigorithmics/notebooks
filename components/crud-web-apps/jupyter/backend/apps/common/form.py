@@ -12,8 +12,7 @@ HEADERS_ANNOTATION = "notebooks.kubeflow.org/http-headers-request-set"
 URI_REWRITE_ANNOTATION = "notebooks.kubeflow.org/http-rewrite-uri"
 
 
-def get_form_value(body, defaults, body_field, defaults_field=None,
-                   optional=False):
+def get_form_value(body, defaults, body_field, defaults_field=None, optional=False):
     """
     Get the value to set by respecting the readOnly configuration for
     the field.
@@ -88,9 +87,7 @@ def set_notebook_image(notebook, body, defaults):
 def set_notebook_image_pull_policy(notebook, body, defaults):
     container = notebook["spec"]["template"]["spec"]["containers"][0]
 
-    container["imagePullPolicy"] = get_form_value(
-        body, defaults, "imagePullPolicy"
-    )
+    container["imagePullPolicy"] = get_form_value(body, defaults, "imagePullPolicy")
 
 
 def set_server_type(notebook, body, defaults):
@@ -104,8 +101,7 @@ def set_server_type(notebook, body, defaults):
 
     nb_name = get_form_value(body, defaults, "name")
     nb_ns = get_form_value(body, defaults, "namespace")
-    rstudio_header = '{"X-RStudio-Root-Path":"/notebook/%s/%s/"}' % (nb_ns,
-                                                                     nb_name)
+    rstudio_header = '{"X-RStudio-Root-Path":"/notebook/%s/%s/"}' % (nb_ns, nb_name)
     notebook_annotations[SERVER_TYPE_ANNOTATION] = server_type
     if server_type == "group-one" or server_type == "group-two":
         notebook_annotations[URI_REWRITE_ANNOTATION] = "/"
@@ -117,11 +113,11 @@ def set_notebook_cpu(notebook, body, defaults):
     container = notebook["spec"]["template"]["spec"]["containers"][0]
 
     cpu = get_form_value(body, defaults, "cpu")
-    if cpu and 'nan' in cpu.lower():
+    if cpu and "nan" in cpu.lower():
         raise BadRequest("Invalid value for cpu: %s" % cpu)
 
     cpu_limit = get_form_value(body, defaults, "cpuLimit")
-    if cpu_limit and 'nan' in cpu_limit.lower():
+    if cpu_limit and "nan" in cpu_limit.lower():
         raise BadRequest("Invalid value for cpu limit: %s" % cpu_limit)
 
     limit_factor = utils.load_spawner_ui_config()["cpu"].get("limitFactor")
@@ -146,19 +142,19 @@ def set_notebook_memory(notebook, body, defaults):
     container = notebook["spec"]["template"]["spec"]["containers"][0]
 
     memory = get_form_value(body, defaults, "memory")
-    if memory and 'nan' in memory.lower():
+    if memory and "nan" in memory.lower():
         raise BadRequest("Invalid value for memory: %s" % memory)
 
     memory_limit = get_form_value(body, defaults, "memoryLimit")
-    if memory_limit and 'nan' in memory_limit.lower():
+    if memory_limit and "nan" in memory_limit.lower():
         raise BadRequest("Invalid value for memory limit: %s" % memory_limit)
 
     limit_factor = utils.load_spawner_ui_config()["memory"].get("limitFactor")
     if not memory_limit and limit_factor != "none":
-        memory_limit = str(
-            round((
-                float(memory.replace('Gi', '')) * float(
-                    limit_factor)), 1)) + "Gi"
+        memory_limit = (
+            str(round((float(memory.replace("Gi", "")) * float(limit_factor)), 1))
+            + "Gi"
+        )
 
     container["resources"]["requests"]["memory"] = memory
 
@@ -166,8 +162,7 @@ def set_notebook_memory(notebook, body, defaults):
         # user explicitly asked for no limits
         return
 
-    if float(memory_limit.replace('Gi', '')) < float(
-            memory.replace('Gi', '')):
+    if float(memory_limit.replace("Gi", "")) < float(memory.replace("Gi", "")):
         raise BadRequest("Memory limit must be greater than the request")
 
     limits = container["resources"].get("limits", {})

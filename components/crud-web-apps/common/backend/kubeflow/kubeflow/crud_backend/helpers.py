@@ -1,6 +1,7 @@
 """
 Common helper functions for handling k8s objects information
 """
+
 import datetime as dt
 import logging
 import os
@@ -24,7 +25,9 @@ def get_prefixed_index_html():
     with open(os.path.join(static_dir, "index.html"), "r") as f:
         index_html = f.read()
         index_prefixed = re.sub(
-            r"\<base href=\".*\".*\>", '<base href="%s">' % prefix, index_html,
+            r"\<base href=\".*\".*\>",
+            '<base href="%s">' % prefix,
+            index_html,
         )
 
         return index_prefixed
@@ -60,14 +63,13 @@ def load_param_yaml(f, **kwargs):
     f: file path
 
     Load a yaml file and convert it to a python dict. The yaml might have some
-    `{var}` values which the user will have to format. For this we first read
-    the yaml file and replace these variables and then convert the generated
-    string to a dict via the yaml module.
+    `{var}` values which the user will have to format. We load the YAML safely,
+    and then traverse the dictionary to replace the `{var}` strings.
     """
     c = None
     try:
         with open(f, "r") as yaml_file:
-            c = yaml_file.read().format(**kwargs)
+            c = yaml_file.read()
     except IOError:
         log.error("Error opening: %s", f)
         return None
@@ -75,13 +77,40 @@ def load_param_yaml(f, **kwargs):
     try:
         contents = yaml.safe_load(c)
         if contents is None:
-            # YAML exists but is empty
             return {}
-        else:
-            # YAML exists and is not empty
-            return contents
+
+        # Safely substitute variables after parsing
+        return _substitute_variables(contents, kwargs)
     except yaml.YAMLError:
         return None
+
+
+class _SafeDict(dict):
+    def __missing__(self, key):
+        return "{" + key + "}"
+
+
+def _substitute_variables(data, kwargs):
+    """
+    Recursively traverse a parsed YAML dict/list and substitute {var} patterns
+    with safely provided kwargs without exposing YAML injection.
+    """
+    if isinstance(data, dict):
+        new_data = {}
+        for key, value in data.items():
+            new_data[key] = _substitute_variables(value, kwargs)
+        return new_data
+    elif isinstance(data, list):
+        return [_substitute_variables(element, kwargs) for element in data]
+    elif isinstance(data, str):
+        # We only want to replace {var} syntax exactly as string.format would
+        # but safely. We can use string.format on the individual values.
+        try:
+            # Use SafeDict so variables not in kwargs are left as {var}
+            return data.format_map(_SafeDict(**kwargs))
+        except Exception:
+            pass
+    return data
 
 
 def get_uptime(then):

@@ -4,13 +4,15 @@ from kubernetes import client
 from .. import authn
 
 
-def success_response(data_field=None, data=None):
+def success_response(data_field=None, data=None, **extra_fields):
     user = authn.get_username()
     resp = {"status": 200, "success": True, "user": user}
     if data_field is None and data is None:
         return jsonify(resp)
 
     resp[data_field] = data
+    if extra_fields:
+        resp.update(extra_fields)
     return jsonify(resp)
 
 
@@ -39,8 +41,7 @@ def deserialize(json_obj, klass):
     try:
         return client.ApiClient()._ApiClient__deserialize(json_obj, klass)
     except ValueError as e:
-        raise ValueError("Failed to deserialize input into '%s': %s"
-                         % (klass, str(e)))
+        raise ValueError("Failed to deserialize input into '%s': %s" % (klass, str(e)))
 
 
 def serialize(obj):

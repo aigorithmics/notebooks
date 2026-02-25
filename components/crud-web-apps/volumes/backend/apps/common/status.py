@@ -6,8 +6,9 @@ def pvc_status(pvc):
     Set the status of the pvc
     """
     if pvc.metadata.deletion_timestamp is not None:
-        return status.create_status(status.STATUS_PHASE.TERMINATING,
-                                    "Deleting Volume...")
+        return status.create_status(
+            status.STATUS_PHASE.TERMINATING, "Deleting Volume..."
+        )
 
     if pvc.status.phase == "Bound":
         return status.create_status(status.STATUS_PHASE.READY, "Bound")
@@ -22,8 +23,9 @@ def pvc_status(pvc):
 
     # If there are no events, then the PVC was just created
     if len(evs) == 0:
-        return status.create_status(status.STATUS_PHASE.WAITING,
-                                    "Provisioning Volume...")
+        return status.create_status(
+            status.STATUS_PHASE.WAITING, "Provisioning Volume..."
+        )
 
     msg = f"Pending: {evs[0].message}"
     state = evs[0].reason

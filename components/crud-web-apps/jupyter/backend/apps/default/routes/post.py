@@ -1,7 +1,6 @@
 from flask import request
 
-from kubeflow.kubeflow.crud_backend import api, decorators, helpers, logging, \
-    authn
+from kubeflow.kubeflow.crud_backend import api, decorators, helpers, logging, authn
 
 from ...common import form, utils, volumes
 from . import bp
@@ -12,6 +11,7 @@ log = logging.getLogger(__name__)
 @bp.route("/api/namespaces/<namespace>/notebooks", methods=["POST"])
 @decorators.request_is_json_type
 @decorators.required_body_params("name")
+@decorators.validate_kubernetes_name
 def post_pvc(namespace):
     body = request.get_json()
     log.info("Got body: %s" % body)
@@ -22,7 +22,7 @@ def post_pvc(namespace):
         name=body["name"],
         namespace=namespace,
         serviceAccount="default-editor",
-        creator=user if user is not None else "anonymous@kubeflow.org"
+        creator=user if user is not None else "anonymous@kubeflow.org",
     )
 
     defaults = utils.load_spawner_ui_config()
@@ -40,10 +40,10 @@ def post_pvc(namespace):
 
     # Notebook volumes
     api_volumes = []
-    api_volumes.extend(form.get_form_value(body, defaults, "datavols",
-                                           "dataVolumes"))
-    workspace = form.get_form_value(body, defaults, "workspace",
-                                    "workspaceVolume", optional=True)
+    api_volumes.extend(form.get_form_value(body, defaults, "datavols", "dataVolumes"))
+    workspace = form.get_form_value(
+        body, defaults, "workspace", "workspaceVolume", optional=True
+    )
     if workspace:
         api_volumes.append(workspace)
 

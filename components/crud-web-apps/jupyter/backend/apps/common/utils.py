@@ -14,9 +14,7 @@ log = logging.getLogger(__name__)
 
 FILE_ABS_PATH = os.path.abspath(os.path.dirname(__file__))
 
-NOTEBOOK_TEMPLATE_YAML = os.path.join(
-    FILE_ABS_PATH, "yaml/notebook_template.yaml"
-)
+NOTEBOOK_TEMPLATE_YAML = os.path.join(FILE_ABS_PATH, "yaml/notebook_template.yaml")
 LAST_ACTIVITY_ANNOTATION = "notebooks.kubeflow.org/last-activity"
 
 # The production configuration is mounted on the app's pod via a configmap
@@ -99,9 +97,7 @@ def pvc_from_dict(vol, namespace):
         spec=client.V1PersistentVolumeClaimSpec(
             access_modes=[vol["mode"]],
             storage_class_name=get_storage_class(vol),
-            resources=client.V1ResourceRequirements(
-                requests={"storage": vol["size"]}
-            ),
+            resources=client.V1ResourceRequirements(requests={"storage": vol["size"]}),
         ),
     )
 
@@ -124,7 +120,7 @@ def get_notebook_last_activity(notebook):
     return annotations.get(LAST_ACTIVITY_ANNOTATION, "")
 
 
-def notebook_dict_from_k8s_obj(notebook):
+def notebook_dict_from_k8s_obj(notebook, notebook_events=None):
     cntr = notebook["spec"]["template"]["spec"]["containers"][0]
     server_type = None
     if notebook["metadata"].get("annotations"):
@@ -143,6 +139,6 @@ def notebook_dict_from_k8s_obj(notebook):
         "gpus": process_gpus(cntr),
         "memory": cntr["resources"]["requests"]["memory"],
         "volumes": [v["name"] for v in cntr["volumeMounts"]],
-        "status": status.process_status(notebook),
+        "status": status.process_status(notebook, notebook_events=notebook_events),
         "metadata": notebook["metadata"],
     }

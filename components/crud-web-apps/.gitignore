@@ -1,1 +1,1 @@
-**/web-apps-dev
+**/web-apps-dev\n__pycache__/\n.pytest_cache/\n__init__.cpython-*.pyc\n*.pyc\n

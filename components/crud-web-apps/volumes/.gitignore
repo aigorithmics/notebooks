@@ -1,3 +1,4 @@
 **/__pycache__/
 **/static/*
 py/
+\n.pytest_cache/\n__init__.cpython-*.pyc\n*.pyc\n

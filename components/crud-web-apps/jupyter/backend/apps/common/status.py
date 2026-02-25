@@ -6,7 +6,7 @@ EVENT_TYPE_WARNING = "Warning"
 STOP_ANNOTATION = "kubeflow-resource-stopped"
 
 
-def process_status(notebook):
+def process_status(notebook, notebook_events=None):
     """
     Return status and reason. Status may be:
     [ready|waiting|warning|terminating|stopped]
@@ -45,7 +45,19 @@ def process_status(notebook):
 
     # Try to extract information about why the notebook is not starting
     # from the notebook's events (see find_error_event)
-    notebook_events = get_notebook_events(notebook)
+    if notebook_events is None:
+        notebook_events = get_notebook_events(notebook)
+    else:
+        # User can delete and then create a nb server with the same name
+        # Make sure previous events are not taken into account
+        nb_creation_time = dt.datetime.strptime(
+            notebook["metadata"]["creationTimestamp"], "%Y-%m-%dT%H:%M:%SZ"
+        )
+        notebook_events = filter(
+            lambda e: event_timestamp(e) >= nb_creation_time,
+            notebook_events,
+        )
+
     status_event, reason_event = get_status_from_events(notebook_events)
     if status_event is not None:
         status_phase, status_message = status_event, reason_event
@@ -65,10 +77,9 @@ def get_empty_status(notebook):
     conditions = notebook_status.get("conditions")
 
     # Convert a date string of a format to datetime object
-    nb_creation_time = dt.datetime.strptime(
-        creation_timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    nb_creation_time = dt.datetime.strptime(creation_timestamp, "%Y-%m-%dT%H:%M:%SZ")
     current_time = dt.datetime.utcnow().replace(microsecond=0)
-    delta = (current_time - nb_creation_time)
+    delta = current_time - nb_creation_time
 
     # If the Notebook has no status, the status will be waiting
     # (instead of warning) and we will show a generic message for the first 10
@@ -133,7 +144,7 @@ def get_status_from_container_state(notebook):
 
     # If the Notebook is initializing, the status will be waiting
     waiting_state = container_state["waiting"]
-    if ["reason"] == 'PodInitializing':
+    if ["reason"] == "PodInitializing":
         status_phase = status.STATUS_PHASE.WAITING
         status_message = waiting_state.get("reason", "Undetermined reason.")
         return status_phase, status_message
@@ -145,10 +156,9 @@ def get_status_from_container_state(notebook):
 
         reason = waiting_state.get("reason", "Undefined")
         message = waiting_state.get(
-            "message",
-            "No available message for container state."
+            "message", "No available message for container state."
         )
-        status_message = '%s: %s' % (reason, message)
+        status_message = "%s: %s" % (reason, message)
         return status_phase, status_message
 
 
@@ -159,7 +169,7 @@ def get_status_from_conditions(notebook):
         # The status will be warning with a "reason: message" showing on hover
         if "reason" in condition:
             status_phase = status.STATUS_PHASE.WARNING
-            status_message = condition["reason"] + ': ' + condition["message"]
+            status_message = condition["reason"] + ": " + condition["message"]
             return status_phase, status_message
 
     return None, None
@@ -177,7 +187,8 @@ def get_notebook_events(notebook):
     # User can delete and then create a nb server with the same name
     # Make sure previous events are not taken into account
     nb_events = filter(
-        lambda e: event_timestamp(e) >= nb_creation_time, nb_events,
+        lambda e: event_timestamp(e) >= nb_creation_time,
+        nb_events,
     )
 
     return nb_events

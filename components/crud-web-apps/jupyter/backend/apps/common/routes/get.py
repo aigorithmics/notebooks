@@ -1,13 +1,19 @@
 """GET request handlers."""
 
+from flask import request
 from kubeflow.kubeflow.crud_backend import api, logging
 from werkzeug.exceptions import NotFound
+from cachetools.func import ttl_cache
 
 from .. import utils
 from .. import status
 from . import bp
 
 log = logging.getLogger(__name__)
+
+_DEFAULT_PAGE_SIZE = 50
+_MAX_PAGE_SIZE = 500
+_MAX_TAIL_LINES = 5000
 
 
 @bp.route("/api/config")
@@ -19,9 +25,14 @@ def get_config():
 @bp.route("/api/namespaces/<namespace>/pvcs")
 def get_pvcs(namespace):
     pvcs = api.list_pvcs(namespace).items
-    data = [{"name": pvc.metadata.name,
-             "size": pvc.spec.resources.requests["storage"],
-             "mode": pvc.spec.access_modes[0]} for pvc in pvcs]
+    data = [
+        {
+            "name": pvc.metadata.name,
+            "size": pvc.spec.resources.requests["storage"],
+            "mode": pvc.spec.access_modes[0],
+        }
+        for pvc in pvcs
+    ]
 
     return api.success_response("pvcs", data)
 
@@ -51,10 +62,44 @@ def get_poddefaults(namespace):
 
 @bp.route("/api/namespaces/<namespace>/notebooks")
 def get_notebooks(namespace):
-    notebooks = api.list_notebooks(namespace)["items"]
-    contents = [utils.notebook_dict_from_k8s_obj(nb) for nb in notebooks]
+    try:
+        limit = max(
+            1, min(int(request.args.get("limit", _DEFAULT_PAGE_SIZE)), _MAX_PAGE_SIZE)
+        )
+    except (TypeError, ValueError):
+        limit = _DEFAULT_PAGE_SIZE
+    # Empty string means no prior token; treat it as None.
+    continue_token = request.args.get("continue") or None
 
-    return api.success_response("notebooks", contents)
+    result = api.list_notebooks(namespace, limit=limit, continue_token=continue_token)
+
+    # Bulk fetch events once to prevent N+1 K8s API lookups
+    all_events = api.list_events(
+        namespace, field_selector="involvedObject.kind=Notebook"
+    ).items
+    events_by_notebook = {}
+    for e in all_events:
+        name = e.involved_object.name
+        events_by_notebook.setdefault(name, []).append(e)
+
+    contents = [
+        utils.notebook_dict_from_k8s_obj(
+            nb, notebook_events=events_by_notebook.get(nb["metadata"]["name"], [])
+        )
+        for nb in result["items"]
+    ]
+
+    # Kubernetes sets metadata.continue to "" on the last page; normalise to
+    # None so callers can do a simple truthiness check.
+    next_continue = result.get("metadata", {}).get("continue") or None
+    remaining = result.get("metadata", {}).get("remainingItemCount")
+
+    return api.success_response(
+        "notebooks",
+        contents,
+        nextContinue=next_continue,
+        remainingItemCount=remaining,
+    )
 
 
 @bp.route("/api/namespaces/<namespace>/notebooks/<name>")
@@ -74,7 +119,8 @@ def get_notebook_pod(notebook_name, namespace):
     if pods.items:
         pod = pods.items[0]
         return api.success_response(
-            "pod", api.serialize(pod),
+            "pod",
+            api.serialize(pod),
         )
     else:
         raise NotFound("No pod detected.")
@@ -83,9 +129,16 @@ def get_notebook_pod(notebook_name, namespace):
 @bp.route("/api/namespaces/<namespace>/notebooks/<notebook_name>/pod/<pod_name>/logs")  # noqa: E501
 def get_pod_logs(namespace, notebook_name, pod_name):
     container = notebook_name
-    logs = api.get_pod_logs(namespace, pod_name, container)
+    try:
+        tail_lines = max(
+            1, min(int(request.args.get("tailLines", 1000)), _MAX_TAIL_LINES)
+        )
+    except (TypeError, ValueError):
+        tail_lines = 1000
+    logs = api.get_pod_logs(namespace, pod_name, container, tail_lines=tail_lines)
     return api.success_response(
-        "logs", logs.split("\n"),
+        "logs",
+        logs.split("\n"),
     )
 
 
@@ -94,7 +147,8 @@ def get_notebook_events(notebook_name, namespace):
     events = api.list_notebook_events(notebook_name, namespace).items
 
     return api.success_response(
-        "events", api.serialize(events),
+        "events",
+        api.serialize(events),
     )
 
 
@@ -104,11 +158,15 @@ def get_gpu_vendors():
     Return a list of GPU vendors for which at least one node has the necessary
     annotation required to schedule pods
     """
+    return api.success_response("vendors", list(_get_available_gpu_vendors()))
+
+
+@ttl_cache(ttl=300)
+def _get_available_gpu_vendors():
+    """Cache only the vendor computation, not the Flask Response."""
     frontend_config = utils.load_spawner_ui_config()
     gpus_value = frontend_config.get("gpus", {}).get("value", {})
-    config_vendor_keys = [
-        v.get("limitsKey", "") for v in gpus_value.get("vendors", [])
-    ]
+    config_vendor_keys = [v.get("limitsKey", "") for v in gpus_value.get("vendors", [])]
 
     # Get all of the different resources installed in all nodes
     installed_resources = set()
@@ -117,11 +175,7 @@ def get_gpu_vendors():
         if node.status.capacity:
             installed_resources.update(node.status.capacity.keys())
         else:
-            log.debug(
-                f"Capacity was not available for node {node.metadata.name}"
-            )
+            log.debug(f"Capacity was not available for node {node.metadata.name}")
 
     # Keep the vendors the key of which exists in at least one node
-    available_vendors = installed_resources.intersection(config_vendor_keys)
-
-    return api.success_response("vendors", list(available_vendors))
+    return installed_resources.intersection(config_vendor_keys)

@@ -57,4 +57,6 @@ COPY ./volumes/backend/entrypoint.py .
 
 COPY --from=frontend /src/dist/default/ /src/apps/default/static/
 
-ENTRYPOINT ["/bin/sh","-c","gunicorn -w 3 --bind 0.0.0.0:5000 --access-logfile - entrypoint:app"]
+ENV GUNICORN_CMD_ARGS="--workers=3 --bind=0.0.0.0:5000 --timeout=30 --limit-request-line=8190 --limit-request-field_size=8190 --access-logfile=-"
+
+ENTRYPOINT ["gunicorn", "entrypoint:app"]

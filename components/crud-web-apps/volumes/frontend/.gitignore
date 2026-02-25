@@ -49,4 +49,4 @@ Thumbs.db
 /src/assets/fonts
 
 # Cypress
-cypress/screenshots
+cypress/screenshots\n__pycache__/\n.pytest_cache/\n__init__.cpython-*.pyc\n*.pyc\n

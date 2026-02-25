@@ -3,7 +3,7 @@ from kubeflow.kubeflow.crud_backend import api
 from . import status
 
 
-def parse_pvc(pvc, notebooks):
+def parse_pvc(pvc, pvc_to_notebooks):
     """
     pvc: client.V1PersistentVolumeClaim
 
@@ -14,7 +14,7 @@ def parse_pvc(pvc, notebooks):
     except Exception:
         capacity = pvc.spec.resources.requests["storage"]
 
-    notebooks = get_notebooks_using_pvc(pvc.metadata.name, notebooks)
+    notebooks = pvc_to_notebooks.get(pvc.metadata.name, [])
     parsed_pvc = {
         "name": pvc.metadata.name,
         "namespace": pvc.metadata.namespace,
@@ -27,18 +27,6 @@ def parse_pvc(pvc, notebooks):
     }
 
     return parsed_pvc
-
-
-def get_notebooks_using_pvc(pvc, notebooks):
-    """Return a list of Notebooks that are using the given PVC."""
-    mounted_notebooks = []
-
-    for nb in notebooks:
-        pvcs = get_notebook_pvcs(nb)
-        if pvc in pvcs:
-            mounted_notebooks.append(nb["metadata"]["name"])
-
-    return mounted_notebooks
 
 
 def get_notebook_pvcs(nb):

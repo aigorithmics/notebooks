@@ -111,6 +111,9 @@ func (r *TensorboardReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 
 	// Reconcile istio virtual service.
 	virtualService, err := generateVirtualService(instance)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
 	if err := ctrl.SetControllerReference(instance, virtualService, r.Scheme()); err != nil {
 		return ctrl.Result{}, err
 	}

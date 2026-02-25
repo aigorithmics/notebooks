@@ -38,3 +38,9 @@ Sessionx.vim
 .AppleDouble
 .LSOverride
 ._*
+.agents
+.claude
+__pycache__
+.pytest_cache
+__init__.cpython-*.pyc
+*.pyc
