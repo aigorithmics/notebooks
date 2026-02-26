@@ -1,5 +1,5 @@
 IMG ?= registry.aigoml.aigodev.com/kubeflow/notebooks/jupyter-web-app
-TAG ?= v1.10.0-1.0.5
+TAG ?= v1.10.0-1.0.7
 DOCKERFILE ?= jupyter/Dockerfile
 ARCH ?= linux/amd64
 
