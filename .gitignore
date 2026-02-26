@@ -38,3 +38,7 @@ Sessionx.vim
 .AppleDouble
 .LSOverride
 ._*
+
+.claude
+.agents
+.ruff_cache

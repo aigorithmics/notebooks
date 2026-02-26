@@ -19,9 +19,14 @@ def get_config():
 @bp.route("/api/namespaces/<namespace>/pvcs")
 def get_pvcs(namespace):
     pvcs = api.list_pvcs(namespace).items
-    data = [{"name": pvc.metadata.name,
-             "size": pvc.spec.resources.requests["storage"],
-             "mode": pvc.spec.access_modes[0]} for pvc in pvcs]
+    data = [
+        {
+            "name": pvc.metadata.name,
+            "size": pvc.spec.resources.requests["storage"],
+            "mode": pvc.spec.access_modes[0],
+        }
+        for pvc in pvcs
+    ]
 
     return api.success_response("pvcs", data)
 
@@ -74,7 +79,8 @@ def get_notebook_pod(notebook_name, namespace):
     if pods.items:
         pod = pods.items[0]
         return api.success_response(
-            "pod", api.serialize(pod),
+            "pod",
+            api.serialize(pod),
         )
     else:
         raise NotFound("No pod detected.")
@@ -85,7 +91,8 @@ def get_pod_logs(namespace, notebook_name, pod_name):
     container = notebook_name
     logs = api.get_pod_logs(namespace, pod_name, container)
     return api.success_response(
-        "logs", logs.split("\n"),
+        "logs",
+        logs.split("\n"),
     )
 
 
@@ -94,7 +101,8 @@ def get_notebook_events(notebook_name, namespace):
     events = api.list_notebook_events(notebook_name, namespace).items
 
     return api.success_response(
-        "events", api.serialize(events),
+        "events",
+        api.serialize(events),
     )
 
 
@@ -106,9 +114,7 @@ def get_gpu_vendors():
     """
     frontend_config = utils.load_spawner_ui_config()
     gpus_value = frontend_config.get("gpus", {}).get("value", {})
-    config_vendor_keys = [
-        v.get("limitsKey", "") for v in gpus_value.get("vendors", [])
-    ]
+    config_vendor_keys = [v.get("limitsKey", "") for v in gpus_value.get("vendors", [])]
 
     # Get all of the different resources installed in all nodes
     installed_resources = set()
@@ -117,9 +123,7 @@ def get_gpu_vendors():
         if node.status.capacity:
             installed_resources.update(node.status.capacity.keys())
         else:
-            log.debug(
-                f"Capacity was not available for node {node.metadata.name}"
-            )
+            log.debug(f"Capacity was not available for node {node.metadata.name}")
 
     # Keep the vendors the key of which exists in at least one node
     available_vendors = installed_resources.intersection(config_vendor_keys)

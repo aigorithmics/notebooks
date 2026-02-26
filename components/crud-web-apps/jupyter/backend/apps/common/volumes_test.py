@@ -78,8 +78,7 @@ class TestGetVolumeName(unittest.TestCase):
 
     def test_get_name_of_pvc(self):
         """Return the name of the PVC, if one is provided."""
-        self.assertEqual(volumes.get_volume_name(self.api_volume_existing),
-                         PVC_NAME)
+        self.assertEqual(volumes.get_volume_name(self.api_volume_existing), PVC_NAME)
 
     def test_non_pvc_source_name(self):
         """Return a generic name in case of non-pvc source."""
@@ -105,9 +104,12 @@ class TestGetPodVolume(unittest.TestCase):
         )
 
         v1_volume = volumes.get_pod_volume(self.api_volume_existing, pvc)
-        self.assertDictEqual(v1_volume, {
-            "name": PVC_NAME,
-            "persistentVolumeClaim": {
-                "claimName": PVC_NAME,
+        self.assertDictEqual(
+            v1_volume,
+            {
+                "name": PVC_NAME,
+                "persistentVolumeClaim": {
+                    "claimName": PVC_NAME,
+                },
             },
-        })
+        )

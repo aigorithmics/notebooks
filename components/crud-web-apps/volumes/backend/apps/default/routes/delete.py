@@ -20,13 +20,16 @@ def delete_pvc(pvc, namespace):
     viewer_pods, non_viewer_pods = [], []
     for p in pods:
         viewer_pods.append(p) if viewer_utils.is_viewer_pod(
-            p) else non_viewer_pods.append(p)
+            p
+        ) else non_viewer_pods.append(p)
 
     # If any non viewer pod is using the PVC, raise an exception
     if non_viewer_pods:
         pod_names = [p.metadata.name for p in non_viewer_pods]
-        raise exceptions.Conflict("Cannot delete PVC '%s' because it is being"
-                                  " used by pods: %s" % (pvc, pod_names))
+        raise exceptions.Conflict(
+            "Cannot delete PVC '%s' because it is being"
+            " used by pods: %s" % (pvc, pod_names)
+        )
 
     # For each associated viewer pod delete its parent
     for viewer_pod in viewer_pods:
@@ -45,8 +48,7 @@ def delete_pvc(pvc, namespace):
     api.delete_pvc(pvc, namespace)
     log.info("Successfully deleted PVC %s/%s", namespace, pvc)
 
-    return api.success_response("message",
-                                "PVC %s successfully deleted." % pvc)
+    return api.success_response("message", "PVC %s successfully deleted." % pvc)
 
 
 @bp.route("/api/namespaces/<namespace>/viewers/<viewer>", methods=["DELETE"])
@@ -58,6 +60,4 @@ def delete_viewer(viewer, namespace):
     api.delete_custom_rsrc(*viewer_utils.VIEWER, viewer, namespace)
     log.info("Successfully deleted viewer %s/%s", namespace, viewer)
 
-    return api.success_response("message",
-                                "Viewer %s successfully deleted."
-                                % viewer)
+    return api.success_response("message", "Viewer %s successfully deleted." % viewer)

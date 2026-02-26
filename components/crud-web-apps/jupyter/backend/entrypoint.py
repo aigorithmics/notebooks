@@ -7,8 +7,7 @@ from kubeflow.kubeflow.crud_backend import config, logging
 log = logging.getLogger(__name__)
 
 APP_NAME = os.environ.get("APP_NAME", "Jupyter Web App")
-BACKEND_MODE = os.environ.get("BACKEND_MODE",
-                              config.BackendMode.PRODUCTION.value)
+BACKEND_MODE = os.environ.get("BACKEND_MODE", config.BackendMode.PRODUCTION.value)
 PREFIX = os.environ.get("APP_PREFIX", "/")
 
 # Check both values for determining what flavor to load

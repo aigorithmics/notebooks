@@ -31,8 +31,6 @@ def post_tensorboard(namespace):
         tensorboard,
         namespace,
     )
-    log.info(
-        "Successfully created Tensorboard %s in namespace %s", name, namespace
-    )
+    log.info("Successfully created Tensorboard %s in namespace %s", name, namespace)
 
     return api.success_response("message", "Tensorboard created successfully.")

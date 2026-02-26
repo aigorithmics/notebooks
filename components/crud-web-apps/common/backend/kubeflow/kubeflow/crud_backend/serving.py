@@ -15,6 +15,32 @@ log = logging.getLogger(__name__)
 # cache them for as long as possible
 
 
+@bp.after_app_request
+def set_security_headers(resp):
+    # Prevent browsers from MIME-sniffing a response away from the declared
+    # Content-Type.  Without this header a browser may treat a JSON or plain-
+    # text response as HTML and execute any embedded script tags.
+    resp.headers["X-Content-Type-Options"] = "nosniff"
+
+    # Control how much referrer information is included in outbound requests.
+    # "strict-origin-when-cross-origin" sends the full URL for same-origin
+    # requests and only the origin for cross-origin ones, omitting the path
+    # and query string that could leak internal routing details.
+    resp.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+
+    # Restrict framing to the same origin.  These apps are intentionally
+    # embedded as iframes inside the Kubeflow central dashboard, which is
+    # always served from the same origin (same scheme + host + port, different
+    # path prefix).  SAMEORIGIN therefore allows the embedding while blocking
+    # third-party sites from framing the app (clickjacking defence).
+    # CSP frame-ancestors is the modern replacement and takes precedence in
+    # current browsers; X-Frame-Options is kept for legacy browser support.
+    resp.headers["X-Frame-Options"] = "SAMEORIGIN"
+    resp.headers["Content-Security-Policy"] = "frame-ancestors 'self'"
+
+    return resp
+
+
 @bp.route("/index.html")
 @bp.route("/")
 @bp.route("/<path:path>")
@@ -23,8 +49,11 @@ def serve_index(path="/"):
     log.info("Serving index.html for path: %s", path)
 
     no_cache = "no-cache, no-store, must-revalidate, max-age=0"
-    resp = Response(helpers.get_prefixed_index_html(), mimetype="text/html",
-                    headers={"Cache-Control": no_cache})
+    resp = Response(
+        helpers.get_prefixed_index_html(),
+        mimetype="text/html",
+        headers={"Cache-Control": no_cache},
+    )
 
     csrf.set_cookie(resp)
 

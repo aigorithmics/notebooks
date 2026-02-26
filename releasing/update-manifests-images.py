@@ -36,8 +36,7 @@ applications = [
     {
         "name": "Jupyter Web App",
         "kustomization": (
-            "components/crud-web-apps/jupyter/"
-            "manifests/base/kustomization.yaml"
+            "components/crud-web-apps/jupyter/manifests/base/kustomization.yaml"
         ),
         "images": [
             {
@@ -49,8 +48,7 @@ applications = [
     {
         "name": "Tensorboards Web App",
         "kustomization": (
-            "components/crud-web-apps/tensorboards/"
-            "manifests/base/kustomization.yaml"
+            "components/crud-web-apps/tensorboards/manifests/base/kustomization.yaml"
         ),
         "images": [
             {
@@ -62,8 +60,7 @@ applications = [
     {
         "name": "Volumes Web App",
         "kustomization": (
-            "components/crud-web-apps/volumes/"
-            "manifests/base/kustomization.yaml"
+            "components/crud-web-apps/volumes/manifests/base/kustomization.yaml"
         ),
         "images": [
             {
@@ -75,8 +72,7 @@ applications = [
     {
         "name": "Notebook Controller",
         "kustomization": (
-            "components/notebook-controller/"
-            "config/base/kustomization.yaml"
+            "components/notebook-controller/config/base/kustomization.yaml"
         ),
         "images": [
             {
@@ -88,8 +84,7 @@ applications = [
     {
         "name": "PVC Viewer Controller",
         "kustomization": (
-            "components/pvcviewer-controller/"
-            "config/base/kustomization.yaml"
+            "components/pvcviewer-controller/config/base/kustomization.yaml"
         ),
         "images": [
             {
@@ -101,8 +96,7 @@ applications = [
     {
         "name": "Tensorboard Controller",
         "kustomization": (
-            "components/tensorboard-controller/"
-            "config/base/kustomization.yaml"
+            "components/tensorboard-controller/config/base/kustomization.yaml"
         ),
         "images": [
             {
@@ -130,10 +124,13 @@ def update_manifests_images(applications, tag):
                     found = True
                     break
             if not found:
-                images.append({
-                    "name": target_image["name"],
-                    "newName": target_image["newName"],
-                    "newTag": tag})
+                images.append(
+                    {
+                        "name": target_image["name"],
+                        "newName": target_image["newName"],
+                        "newTag": tag,
+                    }
+                )
         kustomize["images"] = images
 
         with open(application["kustomization"], "w") as file:

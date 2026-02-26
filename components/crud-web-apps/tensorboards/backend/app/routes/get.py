@@ -13,8 +13,7 @@ def get_tensorboards(namespace):
         "tensorboard.kubeflow.org", "v1alpha1", "tensorboards", namespace
     )
     content = [
-        utils.parse_tensorboard(tensorboard)
-        for tensorboard in tensorboards["items"]
+        utils.parse_tensorboard(tensorboard) for tensorboard in tensorboards["items"]
     ]
 
     return api.success_response("tensorboards", content)

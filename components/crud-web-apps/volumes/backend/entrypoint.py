@@ -8,8 +8,7 @@ log = logging.getLogger(__name__)
 
 
 APP_NAME = os.environ.get("APP_NAME", "Volumes Web App")
-BACKEND_MODE = os.environ.get("BACKEND_MODE",
-                              config.BackendMode.PRODUCTION.value)
+BACKEND_MODE = os.environ.get("BACKEND_MODE", config.BackendMode.PRODUCTION.value)
 UI_FLAVOR = os.environ.get("UI_FLAVOR", "default")
 PREFIX = os.environ.get("APP_PREFIX", "/")
 

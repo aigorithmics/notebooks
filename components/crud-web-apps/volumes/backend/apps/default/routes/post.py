@@ -31,8 +31,7 @@ def post_viewer(namespace):
     body = request.get_json()
     log.info("Received body: %s", body)
 
-    viewer = viewer_utils.create_viewer_template(
-        name=body["name"], namespace=namespace)
+    viewer = viewer_utils.create_viewer_template(name=body["name"], namespace=namespace)
 
     log.info("Creating PVCViewer '%s'...", viewer)
     api.create_custom_rsrc(*viewer_utils.VIEWER, viewer, namespace)

@@ -15,15 +15,15 @@ def get_pvcs(namespace):
 
     # Mix-in the viewer status to the response
     viewers = {
-        v["metadata"]["name"]: v for v in
-        api.list_custom_rsrc(*viewer_utils.VIEWER, namespace)["items"]
+        v["metadata"]["name"]: v
+        for v in api.list_custom_rsrc(*viewer_utils.VIEWER, namespace)["items"]
     }
 
     for pvc in content:
         viewer = viewers.get(pvc["name"], {})
         pvc["viewer"] = {
             "status": status.viewer_status(viewer),
-            "url": viewer.get("status", {}).get("url", None)
+            "url": viewer.get("status", {}).get("url", None),
         }
 
     return api.success_response("pvcs", content)

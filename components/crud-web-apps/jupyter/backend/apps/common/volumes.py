@@ -14,6 +14,7 @@ volume:
 
 These functions will parse such objects and map them to K8s constructs.
 """
+
 from kubernetes import client
 from werkzeug.exceptions import BadRequest
 
@@ -40,12 +41,14 @@ def check_volume_format(api_volume):
         raise BadRequest("Volume should have a mount: %s" % api_volume)
 
     if EXISTING_SOURCE not in api_volume and NEW_PVC not in api_volume:
-        raise BadRequest("Volume has neither %s nor %s: %s"
-                         % (EXISTING_SOURCE, NEW_PVC, api_volume))
+        raise BadRequest(
+            "Volume has neither %s nor %s: %s" % (EXISTING_SOURCE, NEW_PVC, api_volume)
+        )
 
     if EXISTING_SOURCE in api_volume and NEW_PVC in api_volume:
-        raise BadRequest("Volume has both %s and %s: %s"
-                         % (EXISTING_SOURCE, NEW_PVC, api_volume))
+        raise BadRequest(
+            "Volume has both %s and %s: %s" % (EXISTING_SOURCE, NEW_PVC, api_volume)
+        )
 
 
 def get_volume_name(api_volume):
@@ -58,12 +61,10 @@ def get_volume_name(api_volume):
     # if the volume source is an existing PVC then use the requested PVC's name
     # as the V1Volume.name
     if EXISTING_SOURCE not in api_volume:
-        raise BadRequest("Failed to retrieve a volume name from '%s'"
-                         % api_volume)
+        raise BadRequest("Failed to retrieve a volume name from '%s'" % api_volume)
     if PVC_SOURCE in api_volume[EXISTING_SOURCE]:
         if "claimName" not in api_volume[EXISTING_SOURCE][PVC_SOURCE]:
-            raise BadRequest("Failed to retrieve the PVC name from '%s'"
-                             % api_volume)
+            raise BadRequest("Failed to retrieve the PVC name from '%s'" % api_volume)
         return api_volume[EXISTING_SOURCE][PVC_SOURCE]["claimName"]
 
     # A user requested a different source for the V1Volume. In this case we
@@ -84,8 +85,10 @@ def get_pod_volume(api_volume, pvc):
         # Mount a new PVC. We use the created PVC since the api_volume.newPvc
         # spec might have defined a metadata.generateName. In this case, the
         # name is set after the creation of the PVC
-        return {"name": pvc.metadata.name,
-                "persistentVolumeClaim": {"claimName": pvc.metadata.name}}
+        return {
+            "name": pvc.metadata.name,
+            "persistentVolumeClaim": {"claimName": pvc.metadata.name},
+        }
 
     # User has explicitly asked to use an existing volume source
     v1_volume = {"name": get_volume_name(api_volume)}

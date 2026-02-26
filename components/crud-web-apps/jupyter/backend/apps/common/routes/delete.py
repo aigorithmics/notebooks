@@ -5,9 +5,7 @@ from . import bp
 log = logging.getLogger(__name__)
 
 
-@bp.route(
-    "/api/namespaces/<namespace>/notebooks/<notebook>", methods=["DELETE"]
-)
+@bp.route("/api/namespaces/<namespace>/notebooks/<notebook>", methods=["DELETE"])
 def delete_notebook(notebook, namespace):
     log.info("Deleting Notebook '%s/%s'" % (namespace, notebook))
     api.delete_notebook(notebook, namespace)
