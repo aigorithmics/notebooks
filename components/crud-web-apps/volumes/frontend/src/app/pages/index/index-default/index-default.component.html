@@ -6,9 +6,13 @@
 
   <!--scrollable page content-->
   <div class="page-padding lib-flex-grow lib-overflow-auto">
-    <lib-table [config]="config" [data]="processedData" [trackByFn]="pvcTrackByFn"
-      [serverPagination]="isServerPagination" [totalItems]="totalItems" (actionsEmitter)="reactToAction($event)"
+    <lib-table *ngIf="isServerPagination" [config]="config" [data]="processedData" [trackByFn]="pvcTrackByFn"
+      [serverPagination]="true" [totalItems]="totalItems" (actionsEmitter)="reactToAction($event)"
       (pageChange)="onPageChange($event)" (sortChange)="onSortChange($event)"
       (filterChange)="onFilterChange($event)"></lib-table>
+
+    <lib-table *ngIf="!isServerPagination" [config]="config" [data]="processedData" [trackByFn]="pvcTrackByFn"
+      (actionsEmitter)="reactToAction($event)">
+    </lib-table>
   </div>
 </div>
