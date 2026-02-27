@@ -15,7 +15,7 @@ import { JWABackendService } from 'src/app/services/backend.service';
 import { IndexDefaultComponent } from './index-default.component';
 
 const JWABackendServiceStub: Partial<JWABackendService> = {
-  getNotebooks: () => of(),
+  getNotebooks: () => of({ notebooks: [], totalCount: 0 }) as any,
   deleteNotebook: () => of(),
   startNotebook: () => of(),
   stopNotebook: () => of(),

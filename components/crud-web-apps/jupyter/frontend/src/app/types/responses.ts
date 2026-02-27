@@ -9,6 +9,7 @@ import { PvcResponseObject } from './volume';
 export interface JWABackendResponse extends BackendResponse {
   notebook?: NotebookRawObject;
   notebooks?: NotebookResponseObject[];
+  totalCount?: number;
   logs: string[];
   pvcs?: PvcResponseObject[];
   config?: Config;

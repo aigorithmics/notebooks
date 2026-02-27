@@ -9,7 +9,7 @@ import { FormNameComponent } from './form-name.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const JWABackendServiceStub: Partial<JWABackendService> = {
-  getNotebooks: () => of(),
+  getNotebooks: () => of({ notebooks: [], totalCount: 0 }) as any,
 };
 
 const NamespaceServiceStub: Partial<NamespaceService> = {

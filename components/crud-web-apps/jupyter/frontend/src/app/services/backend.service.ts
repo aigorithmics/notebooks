@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BackendService, SnackBarService, SnackType } from 'kubeflow';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
@@ -26,12 +26,23 @@ export class JWABackendService extends BackendService {
   // GET
   private getNotebooksSingleNamespace(
     namespace: string,
-  ): Observable<NotebookResponseObject[]> {
+    limit?: number,
+    page?: number,
+    sortBy?: string,
+    sortDirection?: string,
+    filterBy?: string,
+  ): Observable<{ notebooks: NotebookResponseObject[]; totalCount: number }> {
     const url = `api/namespaces/${namespace}/notebooks`;
+    let params = new HttpParams();
+    if (limit !== undefined) { params = params.append('limit', limit.toString()); }
+    if (page !== undefined) { params = params.append('page', page.toString()); }
+    if (sortBy) { params = params.append('sortBy', sortBy); }
+    if (sortDirection) { params = params.append('sortDirection', sortDirection); }
+    if (filterBy) { params = params.append('filterBy', filterBy); }
 
-    return this.http.get<JWABackendResponse>(url).pipe(
+    return this.http.get<JWABackendResponse>(url, { params }).pipe(
       catchError(error => this.handleError(error)),
-      map((resp: JWABackendResponse) => resp.notebooks),
+      map((resp: JWABackendResponse) => ({ notebooks: resp.notebooks, totalCount: resp.totalCount })),
     );
   }
 
@@ -39,19 +50,28 @@ export class JWABackendService extends BackendService {
     namespaces: string[],
   ): Observable<NotebookResponseObject[]> {
     return this.getObjectsAllNamespaces(
-      this.getNotebooksSingleNamespace.bind(this),
+      (ns) => this.getNotebooksSingleNamespace(ns).pipe(
+        map(res => res.notebooks)
+      ),
       namespaces,
     );
   }
 
   public getNotebooks(
     ns: string | string[],
-  ): Observable<NotebookResponseObject[]> {
+    limit?: number,
+    page?: number,
+    sortBy?: string,
+    sortDirection?: string,
+    filterBy?: string,
+  ): Observable<{ notebooks: NotebookResponseObject[]; totalCount: number }> {
     if (Array.isArray(ns)) {
-      return this.getNotebooksAllNamespaces(ns);
+      return this.getNotebooksAllNamespaces(ns).pipe(
+        map(notebooks => ({ notebooks, totalCount: notebooks.length }))
+      );
     }
 
-    return this.getNotebooksSingleNamespace(ns);
+    return this.getNotebooksSingleNamespace(ns, limit, page, sortBy, sortDirection, filterBy);
   }
 
   public getNotebook(

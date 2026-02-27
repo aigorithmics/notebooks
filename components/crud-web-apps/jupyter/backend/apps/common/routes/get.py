@@ -2,6 +2,9 @@
 
 from kubeflow.kubeflow.crud_backend import api, logging
 from werkzeug.exceptions import NotFound
+from flask import request
+from typing import Any, Dict, List
+import json
 
 from .. import utils
 from .. import status
@@ -56,10 +59,90 @@ def get_poddefaults(namespace):
 
 @bp.route("/api/namespaces/<namespace>/notebooks")
 def get_notebooks(namespace):
+    # Note: This implementation fetches all notebooks from Kubernetes and then
+    # performs filtering, sorting, and pagination in-memory. While this isn't true
+    # "server-side pagination" (which would use Kubernetes API limit/continue), 
+    # it is necessary because the Kubernetes API doesn't support server-side
+    # sorting and arbitrary property filtering out of the box.
     notebooks = api.list_notebooks(namespace)["items"]
-    contents = [utils.notebook_dict_from_k8s_obj(nb) for nb in notebooks]
+    contents: List[Dict[str, Any]] = [utils.notebook_dict_from_k8s_obj(nb) for nb in notebooks]
+    
+    # Apply status processing early so we can sort/filter by it
+    for notebook in contents:
+        notebook["processed_status"] = status.process_status(notebook)
 
-    return api.success_response("notebooks", contents)
+    # 1. Filtering
+    filter_by = request.args.get("filterBy", "")
+    if filter_by:
+        try:
+            filters = json.loads(filter_by)
+            filtered_contents: List[Dict[str, Any]] = []
+            for item in contents:
+                matches_all_tokens = True
+                for f in filters:
+                    if isinstance(f, str):
+                        fq = f.lower()
+                        if (fq not in item.get("name", "").lower() and 
+                            fq not in item.get("namespace", "").lower() and 
+                            fq not in item.get("processed_status", {}).get("phase", "").lower()):
+                            matches_all_tokens = False
+                            break
+                    elif isinstance(f, dict):
+                        for k, v in f.items():
+                            if k == "namespace" and v not in item.get("namespace", "").lower():
+                                matches_all_tokens = False
+                            elif k == "name" and v not in item.get("name", "").lower():
+                                matches_all_tokens = False
+                            elif k == "status" and v not in item.get("processed_status", {}).get("phase", "").lower():
+                                matches_all_tokens = False
+                        if not matches_all_tokens:
+                            break
+                if matches_all_tokens:
+                    filtered_contents.append(item)
+                    
+            contents = filtered_contents
+        except Exception as e:
+            log.warning(f"Failed to parse filterBy: {e}")
+            pass
+
+    # 2. Sorting
+    sort_by = request.args.get("sortBy", "")
+    sort_direction = request.args.get("sortDirection", "asc")
+    if not sort_direction:
+        sort_direction = "asc"
+    
+    if sort_by:
+        def get_sort_key(item):
+            if sort_by == "name": return item.get("name", "")
+            if sort_by == "namespace": return item.get("namespace", "")
+            if sort_by == "age": return item.get("age", "")
+            if sort_by == "image": return item.get("image", "")
+            if sort_by == "status": return item.get("processed_status", {}).get("phase", "")
+            return ""
+            
+        contents.sort(key=get_sort_key, reverse=(sort_direction == "desc"))
+        
+    total_count = len(contents)
+
+    # 3. Pagination
+    limit_str = request.args.get("limit")
+    page_str = request.args.get("page")
+    
+    if limit_str and page_str:
+        try:
+            limit = int(limit_str)
+            page = int(page_str)
+            start = page * limit
+            end = start + limit
+            contents = [contents[i] for i in range(start, min(end, len(contents)))]
+        except ValueError:
+            pass
+
+    # Clean up processed_status
+    for item in contents:
+        item.pop("processed_status", None)
+
+    return api.success_response("notebooks", contents, totalCount=total_count)
 
 
 @bp.route("/api/namespaces/<namespace>/notebooks/<name>")

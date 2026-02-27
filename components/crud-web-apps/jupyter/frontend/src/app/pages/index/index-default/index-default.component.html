@@ -8,7 +8,19 @@
 
   <!--scrollable page content-->
   <div class="page-padding lib-flex-grow lib-overflow-auto">
-    <lib-table
+    <lib-table *ngIf="isServerPagination"
+      [config]="config"
+      [data]="processedData"
+      [trackByFn]="notebookTrackByFn"
+      [serverPagination]="true"
+      [totalItems]="totalItems"
+      (actionsEmitter)="reactToAction($event)"
+      (pageChange)="onPageChange($event)"
+      (sortChange)="onSortChange($event)"
+      (filterChange)="onFilterChange($event)"
+    ></lib-table>
+
+    <lib-table *ngIf="!isServerPagination"
       [config]="config"
       [data]="processedData"
       [trackByFn]="notebookTrackByFn"

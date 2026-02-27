@@ -14,7 +14,10 @@ import {
   SnackBarConfig,
 } from 'kubeflow';
 import { JWABackendService } from 'src/app/services/backend.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
 import { defaultConfig } from './config';
 import { NotebookResponseObject, NotebookProcessedObject } from 'src/app/types';
 import { Router } from '@angular/router';
@@ -35,6 +38,20 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
   config = defaultConfig;
   processedData: NotebookProcessedObject[] = [];
   dashboardDisconnectedState = DashboardState.Disconnected;
+
+  // Server Pagination State
+  totalItems = 0;
+  pageSize = 10;
+  pageIndex = 0;
+  sortActive = 'name';
+  sortDirection = 'asc';
+  filterValue = '';
+  private filterSubject = new Subject<string>();
+  private filterSub = new Subscription();
+
+  get isServerPagination(): boolean {
+    return this.currNamespace !== undefined && !Array.isArray(this.currNamespace);
+  }
 
   private newNotebookButton = new ToolbarButton({
     text: $localize`New Notebook`,
@@ -64,21 +81,36 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
       this.poll(ns);
       this.newNotebookButton.namespaceChanged(ns, $localize`Notebook`);
     });
+
+    this.filterSub = this.filterSubject.pipe(debounceTime(300)).subscribe(val => {
+      this.filterValue = val;
+      this.pageIndex = 0;
+      this.poll(this.currNamespace);
+    });
   }
 
   ngOnDestroy() {
     this.nsSub.unsubscribe();
     this.pollSub.unsubscribe();
+    this.filterSub.unsubscribe();
   }
 
   public poll(ns: string | string[]) {
     this.pollSub.unsubscribe();
     this.processedData = [];
 
-    const request = this.backend.getNotebooks(ns);
+    const request = this.backend.getNotebooks(
+      ns,
+      this.pageSize,
+      this.pageIndex,
+      this.sortActive,
+      this.sortDirection,
+      this.filterValue
+    );
 
-    this.pollSub = this.poller.exponential(request).subscribe(notebooks => {
-      this.processedData = this.processIncomingData(notebooks);
+    this.pollSub = this.poller.exponential(request).subscribe(resp => {
+      this.processedData = this.processIncomingData(resp.notebooks);
+      this.totalItems = resp.totalCount;
     });
   }
 
@@ -110,6 +142,22 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
         }
         break;
     }
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.poll(this.currNamespace);
+  }
+
+  onSortChange(event: Sort) {
+    this.sortActive = event.active;
+    this.sortDirection = event.direction;
+    this.poll(this.currNamespace);
+  }
+
+  onFilterChange(event: string) {
+    this.filterSubject.next(event);
   }
 
   deleteNotebookClicked(notebook: NotebookProcessedObject) {

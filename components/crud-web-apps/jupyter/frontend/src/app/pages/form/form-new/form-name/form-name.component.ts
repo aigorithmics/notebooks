@@ -29,9 +29,9 @@ export class FormNameComponent implements OnInit, OnDestroy {
     // Keep track of the existing Notebooks in the selected Namespace
     // Use these names to check if the input name exists
     const nsSub = this.ns.getSelectedNamespace().subscribe(ns => {
-      this.backend.getNotebooks(ns).subscribe(notebooks => {
+      this.backend.getNotebooks(ns).subscribe(res => {
         this.existingNotebooks.clear();
-        notebooks.map(nb => this.existingNotebooks.add(nb.name));
+        res.notebooks.map(nb => this.existingNotebooks.add(nb.name));
       });
     });
 
