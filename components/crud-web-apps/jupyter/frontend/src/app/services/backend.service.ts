@@ -41,7 +41,7 @@ export class JWABackendService extends BackendService {
     if (filterBy) { params = params.append('filterBy', filterBy); }
 
     return this.http.get<JWABackendResponse>(url, { params }).pipe(
-      catchError(error => this.handleError(error)),
+      catchError(error => { throw this.handleError(error)}),
       map((resp: JWABackendResponse) => ({ notebooks: resp.notebooks, totalCount: resp.totalCount })),
     );
   }
@@ -81,7 +81,7 @@ export class JWABackendService extends BackendService {
     const url = `api/namespaces/${namespace}/notebooks/${notebookName}`;
 
     return this.http.get<JWABackendResponse>(url).pipe(
-      catchError(error => this.handleError(error)),
+      catchError(error => { throw this.handleError(error)}),
       map((resp: JWABackendResponse) => resp.notebook),
     );
   }
@@ -92,7 +92,7 @@ export class JWABackendService extends BackendService {
     const url = `api/namespaces/${namespace}/notebooks/${notebookName}/pod`;
 
     return this.http.get<JWABackendResponse>(url).pipe(
-      catchError(error => this.handleErrorExtended(error, [404])),
+      catchError(error => { throw this.handleErrorExtended(error, [404])}),
       map((resp: JWABackendResponse) => resp.pod),
     );
   }
@@ -103,7 +103,7 @@ export class JWABackendService extends BackendService {
     const podName = pod.metadata.name;
     const url = `api/namespaces/${namespace}/notebooks/${notebookName}/pod/${podName}/logs`;
     return this.http.get<JWABackendResponse>(url).pipe(
-      catchError(error => this.handleErrorExtended(error, [404, 400])),
+      catchError(error => { throw this.handleErrorExtended(error, [404, 400])}),
       map((resp: JWABackendResponse) => resp.logs),
     );
   }
@@ -116,7 +116,7 @@ export class JWABackendService extends BackendService {
     const url = `api/namespaces/${namespace}/notebooks/${notebookName}/events`;
 
     return this.http.get<JWABackendResponse>(url).pipe(
-      catchError(error => this.handleErrorExtended(error, [404])),
+      catchError(error => { throw this.handleErrorExtended(error, [404])}),
       map((resp: JWABackendResponse) => resp.events),
     );
   }
@@ -125,7 +125,7 @@ export class JWABackendService extends BackendService {
     const url = `api/config`;
 
     return this.http.get<JWABackendResponse>(url).pipe(
-      catchError(error => this.handleError(error)),
+      catchError(error => { throw this.handleError(error)}),
       map(data => data.config),
     );
   }
@@ -135,7 +135,7 @@ export class JWABackendService extends BackendService {
     const url = `api/namespaces/${ns}/pvcs`;
 
     return this.http.get<JWABackendResponse>(url).pipe(
-      catchError(error => this.handleError(error)),
+      catchError(error => { throw this.handleError(error)}),
       map(data => data.pvcs),
     );
   }
@@ -145,7 +145,7 @@ export class JWABackendService extends BackendService {
     const url = `api/namespaces/${ns}/poddefaults`;
 
     return this.http.get<JWABackendResponse>(url).pipe(
-      catchError(error => this.handleError(error)),
+      catchError(error => { throw this.handleError(error)}),
       map(data => data.poddefaults),
     );
   }
@@ -155,7 +155,7 @@ export class JWABackendService extends BackendService {
     const url = `api/gpus`;
 
     return this.http.get<JWABackendResponse>(url).pipe(
-      catchError(error => this.handleError(error)),
+      catchError(error => { throw this.handleError(error)}),
       map(data => data.vendors),
     );
   }
@@ -165,7 +165,7 @@ export class JWABackendService extends BackendService {
     const url = `api/namespaces/${notebook.namespace}/notebooks`;
 
     return this.http.post<JWABackendResponse>(url, notebook).pipe(
-      catchError(error => this.handleError(error)),
+      catchError(error => { throw this.handleError(error)}),
       map(_ => 'posted'),
     );
   }
@@ -175,7 +175,7 @@ export class JWABackendService extends BackendService {
     const url = `api/namespaces/${namespace}/notebooks/${name}`;
 
     return this.http.patch<JWABackendResponse>(url, { stopped: false }).pipe(
-      catchError(error => this.handleError(error)),
+      catchError(error => { throw this.handleError(error)}),
       map(_ => 'started'),
     );
   }
@@ -184,7 +184,7 @@ export class JWABackendService extends BackendService {
     const url = `api/namespaces/${namespace}/notebooks/${name}`;
 
     return this.http.patch<JWABackendResponse>(url, { stopped: true }).pipe(
-      catchError(error => this.handleError(error, false)),
+      catchError(error => { throw this.handleError(error, false)}),
       map(_ => 'stopped'),
     );
   }
@@ -195,7 +195,7 @@ export class JWABackendService extends BackendService {
 
     return this.http
       .delete<JWABackendResponse>(url)
-      .pipe(catchError(error => this.handleError(error, false)));
+      .pipe(catchError(error => { throw this.handleError(error, false)}));
   }
 
   // ---------------------------Error Handling---------------------------------
