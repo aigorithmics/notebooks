@@ -1,5 +1,5 @@
 # --- Build the backend kubeflow-wheel ---
-FROM dhi.io/python:3.14.3-debian13-dev AS backend-kubeflow-wheel
+FROM python:3.14.3-slim-bookworm AS backend-kubeflow-wheel
 
 WORKDIR /src
 
@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir setuptools wheel && \
     python3 setup.py bdist_wheel
 
 # --- Build the frontend kubeflow library ---
-FROM dhi.io/node:25.7.0-debian13-dev AS frontend-kubeflow-lib
+FROM node:25.7.0-bookworm AS frontend-kubeflow-lib
 
 WORKDIR /src
 
@@ -23,7 +23,7 @@ COPY ./common/frontend/kubeflow-common-lib/tsconfig.json .
 RUN npm run build
 
 # --- Build the frontend ---
-FROM dhi.io/node:25.7.0-debian13-dev AS frontend
+FROM node:25.7.0-bookworm AS frontend
 
 WORKDIR /src/jupyter/frontend
 
@@ -42,7 +42,7 @@ RUN npm ci
 RUN npm run build -- --output-path=./dist/default --configuration=production
 
 # --- Build the backend environment ---
-FROM dhi.io/python:3.14.3-alpine3.23-dev AS backend-env
+FROM python:3.14.3-slim-bookworm AS backend-env
 
 RUN python3 -m venv /venv
 ENV PATH="/venv/bin:$PATH"
@@ -56,7 +56,7 @@ COPY ./jupyter/backend/requirements.txt .
 RUN pip install -r requirements.txt
 
 # Web App
-FROM dhi.io/python:3.14.3-alpine3.23
+FROM python:3.14.3-alpine3.23
 
 COPY --from=backend-env /venv /venv
 ENV PATH="/venv/bin:$PATH"
