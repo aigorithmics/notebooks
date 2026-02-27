@@ -8,6 +8,12 @@ export interface VWABackendResponse extends BackendResponse {
   pvc?: V1PersistentVolumeClaim;
   events?: EventObject[];
   pods?: V1Pod[];
+  totalCount?: number;
+}
+
+export interface VWAGetPVCsResponse {
+  pvcs: PVCResponseObject[];
+  totalCount: number;
 }
 
 export interface PVCResponseObject {

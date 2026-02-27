@@ -18,7 +18,10 @@ import { defaultConfig } from './config';
 import { environment } from '@app/environment';
 import { VWABackendService } from 'src/app/services/backend.service';
 import { PVCResponseObject, PVCProcessedObject } from 'src/app/types';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
 import { FormDefaultComponent } from '../../form/form-default/form-default.component';
 import { Router } from '@angular/router';
 import { ActionsService } from 'src/app/services/actions.service';
@@ -38,6 +41,20 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
   public processedData: PVCProcessedObject[] = [];
   public pvcsWaitingViewer = new Set<string>();
   public dashboardDisconnectedState = DashboardState.Disconnected;
+
+  // Server Pagination State
+  totalItems = 0;
+  pageSize = 10;
+  pageIndex = 0;
+  sortActive = 'name';
+  sortDirection = 'asc';
+  filterValue = '';
+  private filterSubject = new Subject<string>();
+  private filterSub = new Subscription();
+
+  get isServerPagination(): boolean {
+    return this.currNamespace !== undefined && !Array.isArray(this.currNamespace);
+  }
 
   private newVolumeButton = new ToolbarButton({
     text: $localize`New Volume`,
@@ -59,30 +76,49 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
     public poller: PollerService,
     public router: Router,
     public actions: ActionsService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.nsSub = this.ns.getSelectedNamespace2().subscribe(ns => {
       this.currNamespace = ns;
+      this.pageIndex = 0;
+      this.sortActive = 'name';
+      this.sortDirection = 'asc';
+      this.filterValue = '';
       this.pvcsWaitingViewer = new Set<string>();
       this.poll(ns);
       this.newVolumeButton.namespaceChanged(ns, $localize`Volume`);
+    });
+
+    this.filterSub = this.filterSubject.pipe(debounceTime(300)).subscribe(val => {
+      this.filterValue = val;
+      this.pageIndex = 0;
+      this.poll(this.currNamespace);
     });
   }
 
   ngOnDestroy() {
     this.nsSub.unsubscribe();
     this.pollSub.unsubscribe();
+    this.filterSub.unsubscribe();
   }
 
   public poll(ns: string | string[]) {
     this.pollSub.unsubscribe();
     this.processedData = [];
 
-    const request = this.backend.getPVCs(ns);
+    const request = this.backend.getPVCs(
+      ns,
+      this.pageSize,
+      this.pageIndex,
+      this.sortActive,
+      this.sortDirection,
+      this.filterValue
+    );
 
-    this.pollSub = this.poller.exponential(request).subscribe(pvcs => {
-      this.processedData = this.parseIncomingData(pvcs);
+    this.pollSub = this.poller.exponential(request).subscribe(resp => {
+      this.processedData = this.parseIncomingData(resp.pvcs);
+      this.totalItems = resp.totalCount;
     });
   }
 
@@ -112,6 +148,36 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
         }
         break;
     }
+  }
+
+  onPageChange(event: PageEvent) {
+    if (!this.isServerPagination) {
+      return;
+    }
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.poll(this.currNamespace);
+  }
+
+  onSortChange(event: Sort) {
+    if (!this.isServerPagination) {
+      return;
+    }
+    if (!event.direction) {
+      this.sortActive = '';
+      this.sortDirection = '';
+    } else {
+      this.sortActive = event.active;
+      this.sortDirection = event.direction;
+    }
+    this.poll(this.currNamespace);
+  }
+
+  onFilterChange(event: string) {
+    if (!this.isServerPagination) {
+      return;
+    }
+    this.filterSubject.next(event);
   }
 
   // Functions for handling the action events

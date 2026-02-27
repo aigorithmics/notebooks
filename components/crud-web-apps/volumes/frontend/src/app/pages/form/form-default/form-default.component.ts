@@ -70,9 +70,9 @@ export class FormDefaultComponent implements OnInit, OnDestroy {
         this.currNamespace = ns;
         this.formCtrl.controls.namespace.setValue(ns);
 
-        this.backend.getPVCs(ns).subscribe(pvcs => {
+        this.backend.getPVCs(ns).subscribe(resp => {
           this.pvcNames.clear();
-          pvcs.forEach(pvc => this.pvcNames.add(pvc.name));
+          resp.pvcs.forEach(pvc => this.pvcNames.add(pvc.name));
         });
       }),
     );

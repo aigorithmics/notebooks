@@ -25,7 +25,7 @@ RUN npm run build
 # --- Build the frontend ---
 FROM dhi.io/node:25.7.0-debian13-dev AS frontend
 
-WORKDIR /src
+WORKDIR /src/jupyter/frontend
 
 COPY ./jupyter/frontend/package.json ./
 COPY ./jupyter/frontend/package-lock.json ./
@@ -36,8 +36,8 @@ COPY ./jupyter/frontend/angular.json ./
 COPY ./jupyter/frontend/src ./src
 
 ENV NG_CLI_ANALYTICS="ci"
+COPY --from=frontend-kubeflow-lib /src/dist/kubeflow/ ../../common/frontend/kubeflow-common-lib/dist/kubeflow/
 RUN npm ci
-COPY --from=frontend-kubeflow-lib /src/dist/kubeflow/ ./node_modules/kubeflow/
 
 RUN npm run build -- --output-path=./dist/default --configuration=production
 
@@ -66,6 +66,6 @@ WORKDIR /src
 COPY ./jupyter/backend/apps/ ./apps
 COPY ./jupyter/backend/entrypoint.py .
 
-COPY --from=frontend /src/dist/default/ /src/apps/default/static/
+COPY --from=frontend /src/jupyter/frontend/dist/default/ /src/apps/default/static/
 
 ENTRYPOINT ["gunicorn", "-w", "3", "--bind", "0.0.0.0:5000", "--access-logfile", "-", "entrypoint:app"]
