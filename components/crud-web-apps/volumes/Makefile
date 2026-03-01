@@ -1,5 +1,5 @@
 IMG ?= registry.aigoml.aigodev.com/kubeflow/notebooks/volumes-web-app
-TAG ?= v1.10.0-1.1.3
+TAG ?= v1.10.0-1.1.8
 ARCH ?= linux/amd64
 
 docker-build:

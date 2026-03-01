@@ -1,5 +1,5 @@
 # --- Build the backend kubeflow-wheel ---
-FROM dhi.io/python:3.14.3-debian13-dev AS backend-kubeflow-wheel
+FROM python:3.14.3-slim-bookworm AS backend-kubeflow-wheel
 
 WORKDIR /src
 
@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir setuptools wheel && \
     python3 setup.py bdist_wheel
 
 # --- Build the frontend kubeflow library ---
-FROM dhi.io/node:25.7.0-debian13-dev AS frontend-kubeflow-lib
+FROM node:24.14.0-bookworm AS frontend-kubeflow-lib
 
 WORKDIR /src
 
@@ -23,7 +23,7 @@ COPY ./common/frontend/kubeflow-common-lib/tsconfig.json .
 RUN npm run build
 
 # --- Build the frontend ---
-FROM dhi.io/node:25.7.0-debian13-dev AS frontend
+FROM node:24.14.0-bookworm AS frontend
 
 WORKDIR /src
 
@@ -41,11 +41,8 @@ COPY --from=frontend-kubeflow-lib /src/dist/kubeflow/ ./node_modules/kubeflow/
 
 RUN npm run build -- --output-path=./dist --configuration=production
 
-# --- Build the backend environment ---
-FROM dhi.io/python:3.14.3-alpine3.23-dev AS backend-env
-
-RUN python3 -m venv /venv
-ENV PATH="/venv/bin:$PATH"
+# Web App
+FROM python:3.14.3-alpine3.23
 
 WORKDIR /package
 COPY --from=backend-kubeflow-wheel /src .
@@ -53,13 +50,7 @@ RUN pip install --upgrade pip && pip install .
 
 WORKDIR /src
 COPY ./tensorboards/backend/requirements.txt .
-RUN pip install -r requirements.txt
-
-# Web App
-FROM dhi.io/python:3.14.3-alpine3.23
-
-COPY --from=backend-env /venv /venv
-ENV PATH="/venv/bin:$PATH"
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 WORKDIR /src
 

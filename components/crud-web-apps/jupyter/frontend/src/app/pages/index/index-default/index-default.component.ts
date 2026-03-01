@@ -37,6 +37,7 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
   currNamespace: string | string[];
   config = defaultConfig;
   processedData: NotebookProcessedObject[] = [];
+  dataLoaded = false;
   dashboardDisconnectedState = DashboardState.Disconnected;
 
   // Server Pagination State
@@ -78,6 +79,7 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
     // Reset the poller whenever the selected namespace changes
     this.nsSub = this.ns.getSelectedNamespace2().subscribe(ns => {
       this.currNamespace = ns;
+      this.dataLoaded = false;
       this.poll(ns);
       this.newNotebookButton.namespaceChanged(ns, $localize`Notebook`);
     });
@@ -111,6 +113,7 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
     this.pollSub = this.poller.exponential(request).subscribe(resp => {
       this.processedData = this.processIncomingData(resp.notebooks);
       this.totalItems = resp.totalCount;
+      this.dataLoaded = true;
     });
   }
 

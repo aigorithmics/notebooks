@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir setuptools wheel && \
     python3 setup.py bdist_wheel
 
 # --- Build the frontend kubeflow library ---
-FROM node:25.7.0-bookworm AS frontend-kubeflow-lib
+FROM node:24.14.0-bookworm AS frontend-kubeflow-lib
 
 WORKDIR /src
 
@@ -23,7 +23,7 @@ COPY ./common/frontend/kubeflow-common-lib/tsconfig.json .
 RUN npm run build
 
 # --- Build the frontend ---
-FROM node:25.7.0-bookworm AS frontend
+FROM node:24.14.0-bookworm AS frontend
 
 WORKDIR /src
 
@@ -41,11 +41,8 @@ COPY --from=frontend-kubeflow-lib /src/dist/kubeflow/ ./node_modules/kubeflow/
 
 RUN npm run build -- --output-path=./dist/default --configuration=production
 
-# --- Build the backend environment ---
-FROM python:3.14.3-slim-bookworm AS backend-env
-
-RUN python3 -m venv /venv
-ENV PATH="/venv/bin:$PATH"
+# Web App
+FROM python:3.14.3-alpine3.23
 
 WORKDIR /package
 COPY --from=backend-kubeflow-wheel /src .
@@ -53,15 +50,7 @@ RUN pip install --upgrade pip && pip install .
 
 WORKDIR /src
 COPY ./volumes/backend/requirements.txt .
-RUN pip install -r requirements.txt
-
-# Web App
-FROM python:3.14.3-alpine3.23
-
-COPY --from=backend-env /venv /venv
-ENV PATH="/venv/bin:$PATH"
-
-WORKDIR /src
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY ./volumes/backend/apps/ ./apps
 COPY ./volumes/backend/entrypoint.py .

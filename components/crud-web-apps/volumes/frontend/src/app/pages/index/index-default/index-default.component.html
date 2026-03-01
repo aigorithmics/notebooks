@@ -6,13 +6,17 @@
 
   <!--scrollable page content-->
   <div class="page-padding lib-flex-grow lib-overflow-auto">
-    <lib-table *ngIf="isServerPagination" [config]="config" [data]="processedData" [trackByFn]="pvcTrackByFn"
-      [serverPagination]="true" [totalItems]="totalItems" (actionsEmitter)="reactToAction($event)"
-      (pageChange)="onPageChange($event)" (sortChange)="onSortChange($event)"
-      (filterChange)="onFilterChange($event)"></lib-table>
+    <lib-loading-spinner *ngIf="!dataLoaded"></lib-loading-spinner>
 
-    <lib-table *ngIf="!isServerPagination" [config]="config" [data]="processedData" [trackByFn]="pvcTrackByFn"
-      (actionsEmitter)="reactToAction($event)">
-    </lib-table>
+    <ng-container *ngIf="dataLoaded">
+      <lib-table *ngIf="isServerPagination" [config]="config" [data]="processedData" [trackByFn]="pvcTrackByFn"
+        [serverPagination]="true" [totalItems]="totalItems" (actionsEmitter)="reactToAction($event)"
+        (pageChange)="onPageChange($event)" (sortChange)="onSortChange($event)"
+        (filterChange)="onFilterChange($event)"></lib-table>
+
+      <lib-table *ngIf="!isServerPagination" [config]="config" [data]="processedData" [trackByFn]="pvcTrackByFn"
+        (actionsEmitter)="reactToAction($event)">
+      </lib-table>
+    </ng-container>
   </div>
 </div>

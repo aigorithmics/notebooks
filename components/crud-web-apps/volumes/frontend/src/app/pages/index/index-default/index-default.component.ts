@@ -39,6 +39,7 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
   public config = defaultConfig;
   public currNamespace: string | string[];
   public processedData: PVCProcessedObject[] = [];
+  public dataLoaded = false;
   public pvcsWaitingViewer = new Set<string>();
   public dashboardDisconnectedState = DashboardState.Disconnected;
 
@@ -86,6 +87,7 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
       this.sortDirection = 'asc';
       this.filterValue = '';
       this.pvcsWaitingViewer = new Set<string>();
+      this.dataLoaded = false;
       this.poll(ns);
       this.newVolumeButton.namespaceChanged(ns, $localize`Volume`);
     });
@@ -119,6 +121,7 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
     this.pollSub = this.poller.exponential(request).subscribe(resp => {
       this.processedData = this.parseIncomingData(resp.pvcs);
       this.totalItems = resp.totalCount;
+      this.dataLoaded = true;
     });
   }
 
