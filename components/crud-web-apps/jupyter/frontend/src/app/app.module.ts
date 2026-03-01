@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -7,7 +8,6 @@ import { AppComponent } from './app.component';
 
 import { KubeflowModule } from 'kubeflow';
 
-import { HttpClientModule } from '@angular/common/http';
 import { NotebookPageModule } from './pages/notebook-page/notebook-page.module';
 import { FormNewModule } from './pages/form/form-new/form-new.module';
 import {
@@ -28,8 +28,8 @@ const JwaSnackBarConfig: MatSnackBarConfig = {
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    HttpClientModule,
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     CommonModule,
     KubeflowModule,

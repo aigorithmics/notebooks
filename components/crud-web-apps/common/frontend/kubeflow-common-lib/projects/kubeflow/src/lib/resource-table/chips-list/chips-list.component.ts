@@ -6,6 +6,7 @@ import { ChipDescriptor } from '../../details-list/types';
   selector: 'lib-table-chips-list',
   templateUrl: './chips-list.component.html',
   styleUrls: ['./chips-list.component.scss'],
+  standalone: false,
 })
 export class TableChipsListComponent {
   @Input() element: any;

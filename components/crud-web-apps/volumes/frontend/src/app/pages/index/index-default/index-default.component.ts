@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
   NamespaceService,
@@ -27,6 +27,7 @@ import { Router } from '@angular/router';
 import { ActionsService } from 'src/app/services/actions.service';
 
 @Component({
+  standalone: false,
   selector: 'app-index-default',
   templateUrl: './index-default.component.html',
   styleUrls: ['./index-default.component.scss'],
@@ -77,6 +78,7 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
     public poller: PollerService,
     public router: Router,
     public actions: ActionsService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
@@ -122,6 +124,7 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
       this.processedData = this.parseIncomingData(resp.pvcs);
       this.totalItems = resp.totalCount;
       this.dataLoaded = true;
+      this.cdr.detectChanges();
     });
   }
 
@@ -293,8 +296,6 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
       pvc.deleteAction = this.parseDeletionActionStatus(pvc);
       pvc.closePVCViewerAction = this.parseClosePVCViewerActionStatus(pvc);
       pvc.openPVCViewerAction = this.parseOpenPVCViewerActionStatus(pvc);
-      pvc.ageValue = pvc.age.uptime;
-      pvc.ageTooltip = pvc.age.timestamp;
       pvc.link = {
         text: pvc.name,
         url: `/volume/details/${pvc.namespace}/${pvc.name}`,

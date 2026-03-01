@@ -5,6 +5,7 @@ import { JWABackendService } from 'src/app/services/backend.service';
 import { PvcResponseObject } from 'src/app/types';
 
 @Component({
+  standalone: false,
   selector: 'app-existing-pvc',
   templateUrl: './pvc.component.html',
   styleUrls: ['./pvc.component.scss'],

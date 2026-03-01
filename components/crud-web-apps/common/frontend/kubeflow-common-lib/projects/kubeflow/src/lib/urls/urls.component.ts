@@ -5,6 +5,7 @@ import { UrlItem } from './types';
   selector: 'lib-urls',
   templateUrl: './urls.component.html',
   styleUrls: ['./urls.component.scss'],
+  standalone: false,
 })
 export class UrlsComponent {
   @Input() urlList: UrlItem[];

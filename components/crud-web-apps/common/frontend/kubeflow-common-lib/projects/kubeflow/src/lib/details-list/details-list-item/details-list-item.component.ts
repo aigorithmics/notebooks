@@ -8,6 +8,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
   selector: 'lib-details-list-item',
   templateUrl: './details-list-item.component.html',
   styleUrls: ['./details-list-item.component.scss'],
+  standalone: false,
 })
 export class DetailsListItemComponent {
   @Input() key: string;

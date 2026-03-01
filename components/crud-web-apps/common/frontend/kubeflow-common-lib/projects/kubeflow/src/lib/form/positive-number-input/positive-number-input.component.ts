@@ -5,6 +5,7 @@ import { AbstractControl, Validators } from '@angular/forms';
   selector: 'lib-positive-number-input',
   templateUrl: './positive-number-input.component.html',
   styleUrls: ['./positive-number-input.component.scss'],
+  standalone: false,
 })
 export class PositiveNumberInputComponent implements OnInit {
   @Input() sizeControl: AbstractControl;

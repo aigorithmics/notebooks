@@ -1,6 +1,7 @@
 import logging
 
-from flask import Blueprint, Response
+import os
+from flask import Blueprint, Response, current_app, send_from_directory
 
 from . import csrf, helpers
 
@@ -15,36 +16,17 @@ log = logging.getLogger(__name__)
 # cache them for as long as possible
 
 
-@bp.after_app_request
-def set_security_headers(resp):
-    # Prevent browsers from MIME-sniffing a response away from the declared
-    # Content-Type.  Without this header a browser may treat a JSON or plain-
-    # text response as HTML and execute any embedded script tags.
-    resp.headers["X-Content-Type-Options"] = "nosniff"
-
-    # Control how much referrer information is included in outbound requests.
-    # "strict-origin-when-cross-origin" sends the full URL for same-origin
-    # requests and only the origin for cross-origin ones, omitting the path
-    # and query string that could leak internal routing details.
-    resp.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-
-    # Restrict framing to the same origin.  These apps are intentionally
-    # embedded as iframes inside the Kubeflow central dashboard, which is
-    # always served from the same origin (same scheme + host + port, different
-    # path prefix).  SAMEORIGIN therefore allows the embedding while blocking
-    # third-party sites from framing the app (clickjacking defence).
-    # CSP frame-ancestors is the modern replacement and takes precedence in
-    # current browsers; X-Frame-Options is kept for legacy browser support.
-    resp.headers["X-Frame-Options"] = "SAMEORIGIN"
-    resp.headers["Content-Security-Policy"] = "frame-ancestors 'self'"
-
-    return resp
-
-
 @bp.route("/index.html")
 @bp.route("/")
 @bp.route("/<path:path>")
 def serve_index(path="/"):
+    # Check if the requested path is an existing static file (e.g. main.js that Angular generates)
+    # This replaces the need for --deploy-url static/ in the frontend build.
+    if path != "/":
+        static_dir = current_app.config.get("STATIC_DIR")
+        if static_dir and os.path.isfile(os.path.join(static_dir, path)):
+            return send_from_directory(static_dir, path)
+
     # Serve the index file in all other cases
     log.info("Serving index.html for path: %s", path)
 

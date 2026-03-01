@@ -1,6 +1,6 @@
 <!--Ready Phase-->
+@if (isPhaseReady()) {
 <button
-  *ngIf="isPhaseReady()"
   mat-icon-button
   matTooltip="{{ action.tooltipReady }}"
   matTooltipClass="custom-tooltip"
@@ -9,10 +9,11 @@
 >
   <lib-icon [icon]="action.iconReady"></lib-icon>
 </button>
+}
 
 <!--Init Phase-->
+@if (isPhaseInit()) {
 <button
-  *ngIf="isPhaseInit()"
   mat-icon-button
   matTooltip="{{ action.tooltipInit }}"
   matTooltipClass="custom-tooltip"
@@ -21,9 +22,10 @@
 >
   <lib-icon [icon]="action.iconInit"></lib-icon>
 </button>
-
-<mat-spinner *ngIf="isPhaseWaiting()" diameter="20"></mat-spinner>
-
-<button *ngIf="isPhaseDisabled()" mat-icon-button disabled>
+} @if (isPhaseWaiting()) {
+<mat-spinner diameter="20"></mat-spinner>
+} @if (isPhaseDisabled()) {
+<button mat-icon-button disabled>
   <lib-icon [icon]="action.iconInit"></lib-icon>
 </button>
+}

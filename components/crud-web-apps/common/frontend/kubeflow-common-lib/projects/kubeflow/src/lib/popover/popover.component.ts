@@ -26,6 +26,7 @@ export class PopoverTemplatePortal<C> extends TemplatePortal<C> {
   templateUrl: './popover.component.html',
   styleUrls: ['./popover.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class PopoverComponent {
   private classListPrv: string[] = ['lib-popover'];

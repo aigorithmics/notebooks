@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { never, Observable, of } from 'rxjs';
-import { expand, delay, tap, concatMap, filter } from 'rxjs/operators';
-import { isEqual } from 'lodash-es';
+import { Observable, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,31 +8,47 @@ export class PollerService {
   constructor() {}
 
   public exponential<T>(obs: Observable<T>): Observable<T> {
-    let period = 1;
-    let currData: any;
+    return new Observable<T>(subscriber => {
+      let period = 1;
+      let currData: string | undefined;
+      let timeoutId: ReturnType<typeof setTimeout> | null = null;
+      let innerSub: Subscription | null = null;
 
-    /*
-     * The poller$ observable is pushing values in an exponential manner.
-     * The `expand` operator is emitting values by using the value from the
-     * previous emit. In our case we also use delay with a dynamic period
-     * to achieve resetable exponential delay.
-     */
-    const poller$ = of(1).pipe(expand(x => of(period).pipe(delay(x * 1000))));
+      const poll = () => {
+        innerSub = obs.subscribe({
+          next: data => {
+            const serialized = JSON.stringify(data);
+            if (serialized !== currData) {
+              // new data detected, reset period
+              if (currData !== undefined) {
+                period = 1;
+              }
+              currData = serialized;
+              subscriber.next(data);
+            }
+            period = Math.min(period * 2, 8);
+            timeoutId = setTimeout(poll, period * 1000);
+          },
+          error: () => {
+            // On error, continue polling with backoff
+            period = Math.min(period * 2, 8);
+            timeoutId = setTimeout(poll, period * 1000);
+          },
+        });
+      };
 
-    const request$ = poller$.pipe(
-      concatMap(() => obs),
-      tap(() => (period = Math.min(period * 2, 8))),
-      filter(data => !isEqual(data, currData)),
-      tap(data => {
-        // new data detected
-        if (currData) {
-          period = 1;
+      // Start polling immediately
+      poll();
+
+      // Cleanup on unsubscribe
+      return () => {
+        if (timeoutId !== null) {
+          clearTimeout(timeoutId);
         }
-
-        currData = data;
-      }),
-    );
-
-    return request$;
+        if (innerSub !== null) {
+          innerSub.unsubscribe();
+        }
+      };
+    });
   }
 }

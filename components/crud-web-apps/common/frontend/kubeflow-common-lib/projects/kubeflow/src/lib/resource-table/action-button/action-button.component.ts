@@ -6,6 +6,7 @@ import { ActionButtonValue, ActionEvent } from '../types';
   selector: 'lib-action-button',
   templateUrl: './action-button.component.html',
   styleUrls: ['./action-button.component.scss'],
+  standalone: false,
 })
 export class ActionButtonComponent implements OnInit {
   @Input()

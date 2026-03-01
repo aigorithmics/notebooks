@@ -6,6 +6,7 @@ import { NamespaceService } from 'kubeflow';
 import { TWABackendService } from 'src/app/services/backend.service';
 
 @Component({
+  standalone: false,
   selector: 'app-form-configurations',
   templateUrl: './form-configurations.component.html',
   styleUrls: ['./form-configurations.component.scss'],

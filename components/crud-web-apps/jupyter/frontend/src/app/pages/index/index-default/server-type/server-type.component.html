@@ -1,18 +1,21 @@
-<mat-icon
-  *ngIf="notebookServerType === 'jupyter'"
-  svgIcon="jupyterlab-icon"
-  aria-hidden="false"
-  aria-label="JupyterLab based server"
-></mat-icon>
-<mat-icon
-  *ngIf="notebookServerType === 'group-one'"
-  svgIcon="group-one-icon"
-  aria-hidden="false"
-  aria-label="Group One based server"
-></mat-icon>
-<mat-icon
-  *ngIf="notebookServerType === 'group-two'"
-  svgIcon="group-two-icon"
-  aria-hidden="false"
-  aria-label="Group Two based server"
-></mat-icon>
+@if (notebookServerType === 'jupyter') {
+  <mat-icon
+    svgIcon="jupyterlab-icon"
+    aria-hidden="false"
+    aria-label="JupyterLab based server"
+  ></mat-icon>
+}
+@if (notebookServerType === 'group-one') {
+  <mat-icon
+    svgIcon="group-one-icon"
+    aria-hidden="false"
+    aria-label="Group One based server"
+  ></mat-icon>
+}
+@if (notebookServerType === 'group-two') {
+  <mat-icon
+    svgIcon="group-two-icon"
+    aria-hidden="false"
+    aria-label="Group Two based server"
+  ></mat-icon>
+}

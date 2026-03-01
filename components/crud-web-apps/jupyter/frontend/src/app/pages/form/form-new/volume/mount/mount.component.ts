@@ -3,6 +3,7 @@ import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 @Component({
+  standalone: false,
   selector: 'app-volume-mount',
   templateUrl: './mount.component.html',
   styleUrls: ['./mount.component.scss'],

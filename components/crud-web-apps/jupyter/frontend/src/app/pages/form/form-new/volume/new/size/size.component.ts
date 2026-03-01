@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 @Component({
+  standalone: false,
   selector: 'app-volume-size',
   templateUrl: './size.component.html',
   styleUrls: ['./size.component.scss'],

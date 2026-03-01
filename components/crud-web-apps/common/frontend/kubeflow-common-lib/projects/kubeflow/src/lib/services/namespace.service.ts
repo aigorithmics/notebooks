@@ -10,12 +10,6 @@ import {
 } from 'rxjs';
 import { DashboardState } from '../enums/dashboard';
 
-declare global {
-  interface Window {
-    centraldashboard: any;
-  }
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -35,33 +29,41 @@ export class NamespaceService {
   dashboardConnected$ = this.dashboardConnectedSource.asObservable();
 
   constructor() {
-    fromEvent(window, 'load').subscribe(_ => {
-      if (
-        window.centraldashboard &&
-        window.centraldashboard.CentralDashboardEventHandler
-      ) {
-        // Init method will invoke the callback with the event handler instance
-        // and a boolean indicating whether the page is iframed or not
-        window.centraldashboard.CentralDashboardEventHandler.init(
-          (cdeh, isIframed) => {
-            // Binds a callback that gets invoked anytime the Dashboard's
-            // namespace is changed
-            cdeh.onNamespaceSelected = this.updateSelectedNamespace.bind(this);
-            cdeh.onAllNamespacesSelected =
-              this.updateAllSelectedNamespaces.bind(this);
-          },
-        );
+    // Handle the case where the window has already loaded before this
+    // service is created (common with Angular 17+ esbuild bundler)
+    if (document.readyState === 'complete') {
+      this.onWindowLoad();
+    } else {
+      fromEvent(window, 'load').subscribe(_ => this.onWindowLoad());
+    }
+  }
 
-        this.dashboardConnectedSource.next(DashboardState.Connected);
-        return;
-      }
+  private onWindowLoad() {
+    if (
+      (window as any).centraldashboard &&
+      (window as any).centraldashboard.CentralDashboardEventHandler
+    ) {
+      // Init method will invoke the callback with the event handler instance
+      // and a boolean indicating whether the page is iframed or not
+      (window as any).centraldashboard.CentralDashboardEventHandler.init(
+        (cdeh, isIframed) => {
+          // Binds a callback that gets invoked anytime the Dashboard's
+          // namespace is changed
+          cdeh.onNamespaceSelected = this.updateSelectedNamespace.bind(this);
+          cdeh.onAllNamespacesSelected =
+            this.updateAllSelectedNamespaces.bind(this);
+        },
+      );
 
-      this.dashboardConnectedSource.next(DashboardState.Disconnected);
+      this.dashboardConnectedSource.next(DashboardState.Connected);
+      return;
+    }
 
-      if (this.currNamespace === undefined) {
-        this.updateSelectedNamespace('kubeflow-user');
-      }
-    });
+    this.dashboardConnectedSource.next(DashboardState.Disconnected);
+
+    if (this.currNamespace === undefined) {
+      this.updateSelectedNamespace('kubeflow-user');
+    }
   }
 
   // GETers
@@ -90,7 +92,7 @@ export class NamespaceService {
   dashboardConnected() {
     return (
       window.parent.location.pathname !== window.location.pathname &&
-      window.centraldashboard
+      (window as any).centraldashboard
     );
   }
 }

@@ -1,4 +1,6 @@
-<mat-divider *ngIf="topDivider"></mat-divider>
+@if (topDivider) {
+<mat-divider></mat-divider>
+}
 
 <div class="list-entry-row">
   <!--key-->
@@ -12,30 +14,30 @@
 
   <!--value-->
   <div class="list-entry-value" [matTooltip]="valueTooltip">
-    <ng-container *ngIf="chipsList && chipsList.length > 0">
-      <mat-chip-list class="chip-list-wa">
-        <mat-chip
-          *ngFor="let chip of chipsList"
-          [color]="chip.color"
-          [matTooltip]="chip.tooltip"
-          matTooltipClass="custom-tooltip"
-          class="list-chip"
-        >
-          {{ chip.value }}
-        </mat-chip>
-      </mat-chip-list>
-    </ng-container>
-
-    <div *ngIf="value" class="flex">
-      <div class="icon" *ngIf="icon">
+    @if (chipsList && chipsList.length > 0) {
+    <mat-chip-set class="chip-list-wa">
+      @for (chip of chipsList; track chip) {
+      <mat-chip
+        [matTooltip]="chip.tooltip"
+        matTooltipClass="custom-tooltip"
+        class="list-chip"
+      >
+        {{ chip.value }}
+      </mat-chip>
+      }
+    </mat-chip-set>
+    } @if (value) {
+    <div class="flex">
+      @if (icon) {
+      <div class="icon">
         <mat-icon [inline]="true" [ngClass]="getClasses()">
           {{ icon }}
         </mat-icon>
       </div>
-
+      }
       {{ value }}
-
-      <div class="icon" *ngIf="copyValue">
+      @if (copyValue) {
+      <div class="icon">
         <mat-icon
           class="copy-button key-icon"
           matRipple
@@ -47,18 +49,20 @@
           content_copy
         </mat-icon>
       </div>
+      }
     </div>
-
-    <div *ngIf="!value" class="flex">
-      <div class="icon" *ngIf="icon">
+    } @if (!value) {
+    <div class="flex">
+      @if (icon) {
+      <div class="icon">
         <mat-icon [inline]="true" [ngClass]="getClasses()">
           {{ icon }}
         </mat-icon>
       </div>
-
+      }
       <ng-content class="vertical-align"> </ng-content>
-
-      <div class="icon" *ngIf="copyValue">
+      @if (copyValue) {
+      <div class="icon">
         <mat-icon
           class="copy-button key-icon"
           matRipple
@@ -70,8 +74,12 @@
           content_copy
         </mat-icon>
       </div>
+      }
     </div>
+    }
   </div>
 </div>
 
-<mat-divider *ngIf="bottomDivider"></mat-divider>
+@if (bottomDivider) {
+<mat-divider></mat-divider>
+}

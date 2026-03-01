@@ -1,22 +1,14 @@
-<ng-container [ngSwitch]="phase">
-  <ng-template [ngSwitchCase]="STATUS_TYPE.WAITING">
-    <ng-container *ngTemplateOutlet="spinnerTpl"></ng-container>
-  </ng-template>
-
-  <ng-template [ngSwitchCase]="STATUS_TYPE.TERMINATING">
-    <ng-container *ngTemplateOutlet="spinnerTpl"></ng-container>
-  </ng-template>
-
-  <lib-icon
-    *ngSwitchCase="STATUS_TYPE.STOPPED"
-    icon="custom:stoppedResource"
-    class="align-middle"
-  ></lib-icon>
-
-  <mat-icon *ngSwitchDefault [ngClass]="statusIcon" class="align-middle">
-    {{ statusIcon }}
-  </mat-icon>
-</ng-container>
+@switch (phase) { @case (STATUS_TYPE.WAITING) {
+<ng-container *ngTemplateOutlet="spinnerTpl"></ng-container>
+} @case (STATUS_TYPE.TERMINATING) {
+<ng-container *ngTemplateOutlet="spinnerTpl"></ng-container>
+} @case (STATUS_TYPE.STOPPED) {
+<lib-icon icon="custom:stoppedResource" class="align-middle"></lib-icon>
+} @default {
+<mat-icon [ngClass]="statusIcon" class="align-middle">
+  {{ statusIcon }}
+</mat-icon>
+} }
 
 <ng-template #spinnerTpl>
   <mat-spinner diameter="24" class="align-middle"></mat-spinner>

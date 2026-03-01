@@ -17,9 +17,9 @@
   </mat-select>
 </mat-form-field>
 
-<ng-container [ngSwitch]="volumeType">
+@switch (volumeType) {
   <!-- Custom (YAML editor) -->
-  <ng-container *ngSwitchCase="NEW_VOLUME_TYPE.CUSTOM">
+  @case (NEW_VOLUME_TYPE.CUSTOM) {
     <ng-container i18n>Check the </ng-container>
     <a
       target="_blank"
@@ -36,11 +36,13 @@
       class="editor"
     ></lib-monaco-editor>
 
-    <mat-error *ngIf="errorParsingYaml">{{ errorParsingYaml }}</mat-error>
-  </ng-container>
+    @if (errorParsingYaml) {
+      <mat-error>{{ errorParsingYaml }}</mat-error>
+    }
+  }
 
   <!-- Empty volume -->
-  <ng-container *ngSwitchDefault>
+  @default {
     <app-volume-name
       [metadataGroup]="volGroup.get('newPvc.metadata')"
       [externalName]="externalName"
@@ -50,13 +52,14 @@
       [sizeCtrl]="volGroup.get('newPvc.spec.resources.requests.storage')"
     ></app-volume-size>
 
-    <app-storage-class
-      *ngIf="volumeType === NEW_VOLUME_TYPE.EMPTY"
-      [scControl]="volGroup.get('newPvc.spec.storageClassName')"
-    ></app-storage-class>
+    @if (volumeType === NEW_VOLUME_TYPE.EMPTY) {
+      <app-storage-class
+        [scControl]="volGroup.get('newPvc.spec.storageClassName')"
+      ></app-storage-class>
+    }
 
     <app-volume-access-modes
       [modesCtrl]="volGroup.get('newPvc.spec.accessModes')"
     ></app-volume-access-modes>
-  </ng-container>
-</ng-container>
+  }
+}

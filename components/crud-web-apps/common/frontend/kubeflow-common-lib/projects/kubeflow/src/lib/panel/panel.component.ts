@@ -4,6 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'lib-panel',
   templateUrl: './panel.component.html',
   styleUrls: ['./panel.component.scss'],
+  standalone: false,
 })
 export class PanelComponent {
   @Input() icon = 'info';

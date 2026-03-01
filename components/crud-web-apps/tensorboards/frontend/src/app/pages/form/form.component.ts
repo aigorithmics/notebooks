@@ -12,6 +12,7 @@ import { TensorboardPostObject } from 'src/app/types';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
+  standalone: false,
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],

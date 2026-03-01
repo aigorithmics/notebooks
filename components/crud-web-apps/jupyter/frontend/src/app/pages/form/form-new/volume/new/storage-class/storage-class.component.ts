@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { JWABackendService } from 'src/app/services/backend.service';
 
 @Component({
+  standalone: false,
   selector: 'app-storage-class',
   templateUrl: './storage-class.component.html',
   styleUrls: ['./storage-class.component.scss'],

@@ -11,6 +11,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
   selector: 'lib-logs-viewer',
   templateUrl: './logs-viewer.component.html',
   styleUrls: ['./logs-viewer.component.scss'],
+  standalone: false,
 })
 export class LogsViewerComponent implements AfterViewInit {
   @HostBinding('class.lib-logs-viewer') selfClass = true;

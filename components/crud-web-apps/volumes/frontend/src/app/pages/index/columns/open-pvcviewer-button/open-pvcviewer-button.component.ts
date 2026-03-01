@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionComponent, ActionIconValue, STATUS_TYPE } from 'kubeflow';
-import { TableColumnComponent } from 'kubeflow/lib/resource-table/component-value/component-value.component';
+import { TableColumnComponent } from 'kubeflow';
 @Component({
+  standalone: false,
   selector: 'app-open-pvcviewer-button',
   templateUrl: './open-pvcviewer-button.component.html',
   styleUrls: ['./open-pvcviewer-button.component.scss'],

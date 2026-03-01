@@ -1,7 +1,10 @@
-<div *ngIf="heading" class="heading">
+@if (heading) {
+<div class="heading">
   {{ heading }}
-
-  <div *ngIf="subHeading" class="sub-heading" [matTooltip]="tooltip">
+  @if (subHeading) {
+  <div class="sub-heading" [matTooltip]="tooltip">
     {{ subHeading }}
   </div>
+  }
 </div>
+}

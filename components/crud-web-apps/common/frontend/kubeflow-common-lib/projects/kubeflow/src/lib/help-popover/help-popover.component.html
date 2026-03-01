@@ -16,61 +16,61 @@
     </p>
     <p>
       Example:
-      <mat-chip class="mat-chip-blue">
-        Name: filterValue
-        <button matChipRemove>
-          <mat-icon>cancel</mat-icon>
-        </button>
-      </mat-chip>
+      <mat-chip-set>
+        <mat-chip class="mat-chip-blue">
+          Name: filterValue
+          <mat-icon matChipTrailingIcon>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-set>
     </p>
     <p>
       Filter empty values by entering double quotes:
-      <mat-chip class="mat-chip-blue">
-        Name: ""
-        <button matChipRemove>
-          <mat-icon>cancel</mat-icon>
-        </button>
-      </mat-chip>
+      <mat-chip-set>
+        <mat-chip class="mat-chip-blue">
+          Name: ""
+          <mat-icon matChipTrailingIcon>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-set>
     </p>
     <mat-divider></mat-divider>
-    <ng-template [ngIf]="showStatus">
-      <p><b>Status</b></p>
-      <p>Filter based on the objects' status, by using:</p>
-      <ul>
-        <li>The value shown in the tooltip</li>
-        <li>
-          The status types (i.e.
-          <i
-            >ready, waiting, warning, error, unavailable, uninitialized,
-            terminating, stopped</i
-          >)
-        </li>
-      </ul>
-    </ng-template>
+    @if (showStatus) {
+    <p><b>Status</b></p>
+    <p>Filter based on the objects' status, by using:</p>
+    <ul>
+      <li>The value shown in the tooltip</li>
+      <li>
+        The status types (i.e.
+        <i
+          >ready, waiting, warning, error, unavailable, uninitialized,
+          terminating, stopped</i
+        >)
+      </li>
+    </ul>
+    }
     <mat-divider></mat-divider>
-    <ng-template [ngIf]="showDate">
-      <p><b>Date</b></p>
-      <p>Filter timestamp values based on:</p>
-      <ul>
-        <li>
-          <span
-            >The "-" character for empty date values:
+    @if (showDate) {
+    <p><b>Date</b></p>
+    <p>Filter timestamp values based on:</p>
+    <ul>
+      <li>
+        <span
+          >The "-" character for empty date values:
+          <mat-chip-set>
             <mat-chip class="mat-chip-blue">
               Created at: -
-              <button matChipRemove>
-                <mat-icon>cancel</mat-icon>
-              </button>
+              <mat-icon matChipTrailingIcon>cancel</mat-icon>
             </mat-chip>
-          </span>
-        </li>
-        <li>
-          The relative time text, shown in the column (i.e. <i>X months ago</i>)
-        </li>
-        <li>
-          The substring of the timestamp, that is shown in the UTC part of the
-          tooltip
-        </li>
-      </ul>
-    </ng-template>
+          </mat-chip-set>
+        </span>
+      </li>
+      <li>
+        The relative time text, shown in the column (i.e. <i>X months ago</i>)
+      </li>
+      <li>
+        The substring of the timestamp, that is shown in the UTC part of the
+        tooltip
+      </li>
+    </ul>
+    }
   </div>
 </ng-template>

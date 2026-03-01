@@ -35,42 +35,38 @@
       </mat-radio-button>
     </mat-radio-group>
 
-    <mat-form-field
-      appearance="outline"
-      class="wide"
-      *ngIf="formCtrl.get('storage').value === 'pvc'"
-    >
-      <mat-label data-cy-form-input-pvc i18n>PVC Name</mat-label>
-      <mat-select formControlName="pvcName">
-        <mat-option *ngFor="let pvc of pvcNames" [value]="pvc">
-          {{ pvc }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    @if (formCtrl.get('storage').value === 'pvc') {
+      <mat-form-field appearance="outline" class="wide">
+        <mat-label data-cy-form-input-pvc i18n>PVC Name</mat-label>
+        <mat-select formControlName="pvcName">
+          @for (pvc of pvcNames; track pvc) {
+            <mat-option [value]="pvc">
+              {{ pvc }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
 
-    <mat-form-field
-      appearance="outline"
-      class="wide"
-      *ngIf="formCtrl.get('storage').value === 'pvc'"
-    >
-      <mat-label data-cy-form-input-label i18n>Mount Path</mat-label>
-      <input
-        formControlName="pvcMountPath"
-        matInput
-        placeholder="ex: mount/to/path"
-        i18n-placeholder
-        type="url"
-      />
-    </mat-form-field>
+    @if (formCtrl.get('storage').value === 'pvc') {
+      <mat-form-field appearance="outline" class="wide">
+        <mat-label data-cy-form-input-label i18n>Mount Path</mat-label>
+        <input
+          formControlName="pvcMountPath"
+          matInput
+          placeholder="ex: mount/to/path"
+          i18n-placeholder
+          type="url"
+        />
+      </mat-form-field>
+    }
 
-    <mat-form-field
-      appearance="outline"
-      class="wide"
-      *ngIf="formCtrl.get('storage').value === 'object_store'"
-    >
-      <mat-label data-cy-form-input-label i18n>Object Store Link</mat-label>
-      <input matInput formControlName="objectStoreLink" type="url" />
-    </mat-form-field>
+    @if (formCtrl.get('storage').value === 'object_store') {
+      <mat-form-field appearance="outline" class="wide">
+        <mat-label data-cy-form-input-label i18n>Object Store Link</mat-label>
+        <input matInput formControlName="objectStoreLink" type="url" />
+      </mat-form-field>
+    }
 
     <app-form-configurations [parentForm]="formCtrl"></app-form-configurations>
 

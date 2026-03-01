@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({
+  standalone: false,
   selector: 'app-volume-access-modes',
   templateUrl: './access-modes.component.html',
   styleUrls: ['./access-modes.component.scss'],

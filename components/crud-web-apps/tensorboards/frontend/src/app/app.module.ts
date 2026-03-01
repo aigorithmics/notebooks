@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -21,7 +22,6 @@ import {
 import { IndexComponent } from './pages/index/index.component';
 import { FormComponent } from './pages/form/form.component';
 import { FormConfigurationsModule } from './pages/form/form-configurations/form-configurations.module';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
 import {
   MatSnackBarConfig,
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
@@ -39,6 +39,7 @@ const TwaSnackBarConfig: MatSnackBarConfig = {
   declarations: [AppComponent, IndexComponent, FormComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     CommonModule,
     AppRoutingModule,
     KubeflowModule,
@@ -48,8 +49,6 @@ const TwaSnackBarConfig: MatSnackBarConfig = {
     MatRadioModule,
     MatInputModule,
     FormModule,
-    KubeflowModule,
-    HttpClientModule,
     FormConfigurationsModule,
   ],
   providers: [

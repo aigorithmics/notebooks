@@ -2,9 +2,11 @@
   <mat-form-field class="wide" appearance="outline">
     <mat-label i18n> Configurations </mat-label>
     <mat-select [formControl]="parentForm.get('configurations')" multiple>
-      <mat-option *ngFor="let config of podDefaults" [value]="config.label">
-        {{ config.desc }}
-      </mat-option>
+      @for (config of podDefaults; track config.label) {
+        <mat-option [value]="config.label">
+          {{ config.desc }}
+        </mat-option>
+      }
     </mat-select>
   </mat-form-field>
 </lib-form-section>

@@ -5,6 +5,7 @@ import { GPUVendor } from 'src/app/types';
 import { JWABackendService } from 'src/app/services/backend.service';
 
 @Component({
+  standalone: false,
   selector: 'app-form-gpus',
   templateUrl: './form-gpus.component.html',
   styleUrls: ['./form-gpus.component.scss'],

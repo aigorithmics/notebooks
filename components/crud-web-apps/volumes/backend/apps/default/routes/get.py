@@ -40,7 +40,7 @@ def _get_sort_key(item, sort_by):
     elif sort_by == "namespace":
         return item.get("namespace", "")
     elif sort_by == "age":
-        return item.get("age", {}).get("timestamp", "")
+        return item.get("age", "")
     elif sort_by == "capacity":
         return _parse_capacity(item.get("capacity", ""))
     elif sort_by == "status":

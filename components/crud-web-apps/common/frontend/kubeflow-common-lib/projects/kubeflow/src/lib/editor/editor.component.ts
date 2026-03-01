@@ -27,6 +27,7 @@ interface MonacoOptions {
   selector: 'lib-monaco-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss'],
+  standalone: false,
 })
 export class EditorComponent implements AfterViewInit, OnDestroy, OnChanges {
   private prvEditor: monaco.editor.IStandaloneCodeEditor;

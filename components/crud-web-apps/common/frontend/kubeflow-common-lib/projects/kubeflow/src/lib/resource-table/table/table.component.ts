@@ -14,6 +14,7 @@ import {
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
 import {
   TableConfig,
   ActionEvent,
@@ -34,7 +35,7 @@ import { TemplateValue } from '../types/template';
 import { NamespaceService } from '../../services/namespace.service';
 import { Subscription } from 'rxjs';
 import { addColumn, NAMESPACE_COLUMN, removeColumn } from './utils';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { FormControl } from '@angular/forms';
 import {
@@ -49,13 +50,12 @@ import { MemoryValue } from '../types/memory-value';
   selector: 'lib-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
+  standalone: false,
 })
 export class TableComponent
   implements AfterViewInit, OnInit, OnDestroy, OnChanges
 {
-  private nsSub = new Subscription();
-  private paginatorSub: Subscription;
-  private sortSub: Subscription;
+  private subs = new Subscription();
   private innerData: any[] = [];
   public dataSource = new MatTableDataSource();
   public get displayedColumns(): string[] {
@@ -104,17 +104,17 @@ export class TableComponent
   }
 
   @Input()
-  highlightedRow: unknown = {};
-
-  @Input()
   serverPagination = false;
 
   @Input()
   totalItems = 0;
 
-  @Output() pageChange = new EventEmitter<PageEvent>();
-  @Output() sortChange = new EventEmitter<Sort>();
-  @Output() filterChange = new EventEmitter<string>();
+  @Output() onPageChange = new EventEmitter<PageEvent>();
+  @Output() onSortChange = new EventEmitter<Sort>();
+  @Output() onFilterChange = new EventEmitter<string>();
+
+  @Input()
+  highlightedRow: unknown = {};
 
   // Whenever a button in a row is pressed the component will emit an event
   // with information regarding the button that was pressed as well as the
@@ -128,21 +128,23 @@ export class TableComponent
   }
 
   ngOnInit() {
-    this.nsSub = this.ns.getSelectedNamespace2().subscribe(ns => {
-      if (
-        !this.config ||
-        !this.config.dynamicNamespaceColumn ||
-        this.config.columns.length === 0
-      ) {
-        return;
-      }
+    this.subs.add(
+      this.ns.getSelectedNamespace2().subscribe(ns => {
+        if (
+          !this.config ||
+          !this.config.dynamicNamespaceColumn ||
+          this.config.columns.length === 0
+        ) {
+          return;
+        }
 
-      if (Array.isArray(ns)) {
-        addColumn(this.config, NAMESPACE_COLUMN, 'name');
-      } else {
-        removeColumn(this.config, 'namespace');
-      }
-    });
+        if (Array.isArray(ns)) {
+          addColumn(this.config, NAMESPACE_COLUMN, 'name');
+        } else {
+          removeColumn(this.config, 'namespace');
+        }
+      }),
+    );
 
     const sortByColumn = this.config.sortByColumn || 'name';
     const sortDirection = this.config.sortDirection || 'asc';
@@ -189,64 +191,65 @@ export class TableComponent
   }
 
   ngOnDestroy() {
-    this.nsSub.unsubscribe();
-    if (this.paginatorSub) {
-      this.paginatorSub.unsubscribe();
-    }
-    if (this.sortSub) {
-      this.sortSub.unsubscribe();
-    }
+    this.subs.unsubscribe();
   }
 
   ngAfterViewInit() {
-    if (this.serverPagination) {
-      this.paginatorSub = this.paginator.page.subscribe(event => this.pageChange.emit(event));
-      this.sortSub = this.sort.sortChange.subscribe(event => this.sortChange.emit(event));
-    } else {
+    if (!this.serverPagination) {
       this.dataSource.paginator = this.paginator;
-      this.dataSource.sortingDataAccessor = (element, sortHeaderId) => {
-        let sortingPreprocessorFn;
-        let valueExtractor;
-        this.config.columns.forEach(column => {
-          if (column.matColumnDef === sortHeaderId) {
-            valueExtractor = column.value;
-            sortingPreprocessorFn = column.sortingPreprocessorFn;
-          }
-        });
-        if (this.isPropertyValue(valueExtractor)) {
-          if (sortingPreprocessorFn !== undefined) {
-            return sortingPreprocessorFn(valueExtractor.getValue(element));
-          } else {
-            return valueExtractor.getValue(element);
-          }
+    } else {
+      this.subs.add(
+        this.paginator.page.subscribe(event => this.onPageChange.emit(event)),
+      );
+    }
+    this.dataSource.sortingDataAccessor = (element, sortHeaderId) => {
+      let sortingPreprocessorFn;
+      let valueExtractor;
+      this.config.columns.forEach(column => {
+        if (column.matColumnDef === sortHeaderId) {
+          valueExtractor = column.value;
+          sortingPreprocessorFn = column.sortingPreprocessorFn;
         }
-        if (this.isLinkValue(valueExtractor)) {
-          if (sortingPreprocessorFn !== undefined) {
-            return sortingPreprocessorFn(valueExtractor.getValue(element));
-          } else {
-            return valueExtractor.getValue(element);
-          }
-        }
-        if (this.isMemoryValue(valueExtractor)) {
+      });
+      if (this.isPropertyValue(valueExtractor)) {
+        if (sortingPreprocessorFn !== undefined) {
+          return sortingPreprocessorFn(valueExtractor.getValue(element));
+        } else {
           return valueExtractor.getValue(element);
         }
-        if (this.isDateTimeValue(valueExtractor)) {
-          if (valueExtractor.getValue(element) === '') {
-            return -1;
-          } else {
-            return new Date(valueExtractor.getValue(element));
-          }
+      }
+      if (this.isLinkValue(valueExtractor)) {
+        if (sortingPreprocessorFn !== undefined) {
+          return sortingPreprocessorFn(valueExtractor.getValue(element));
+        } else {
+          return valueExtractor.getValue(element);
         }
-        if (this.isStatusValue(valueExtractor)) {
-          return valueExtractor.getPhase(element);
+      }
+      if (this.isMemoryValue(valueExtractor)) {
+        return valueExtractor.getValue(element);
+      }
+      if (this.isDateTimeValue(valueExtractor)) {
+        if (valueExtractor.getValue(element) === '') {
+          return -1;
+        } else {
+          return new Date(valueExtractor.getValue(element));
         }
-        if (this.isComponentValue(valueExtractor)) {
-          return sortingPreprocessorFn(element);
-        }
-      };
+      }
+      if (this.isStatusValue(valueExtractor)) {
+        return valueExtractor.getPhase(element);
+      }
+      if (this.isComponentValue(valueExtractor)) {
+        return sortingPreprocessorFn(element);
+      }
+    };
+    if (!this.serverPagination) {
       this.dataSource.sort = this.sort;
       this.dataSource.filterPredicate = (row: unknown, filterInput: string) =>
         this.filterPredicate(row, filterInput);
+    } else {
+      this.subs.add(
+        this.sort.sortChange.subscribe(event => this.onSortChange.emit(event)),
+      );
     }
     this.sort.disableClear = true;
   }
@@ -491,11 +494,7 @@ export class TableComponent
         } else {
           this.isClear = true;
         }
-        if (!this.serverPagination) {
-          this.dataSource.filter = '';
-        } else {
-          this.filterChange.emit('');
-        }
+        this.dataSource.filter = '';
       } else {
         this.chips.forEach(chipValue => {
           this.editFilter(chipValue);
@@ -520,7 +519,7 @@ export class TableComponent
     if (!this.serverPagination) {
       this.dataSource.filter = jsonString;
     } else {
-      this.filterChange.emit(jsonString);
+      this.onFilterChange.emit(jsonString);
     }
   }
 
@@ -531,7 +530,7 @@ export class TableComponent
     if (!this.serverPagination) {
       this.dataSource.filter = '';
     } else {
-      this.filterChange.emit('');
+      this.onFilterChange.emit('[]');
     }
     this.clearInputValue();
     this.isClear = false;

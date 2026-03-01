@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionComponent, ActionIconValue, STATUS_TYPE } from 'kubeflow';
-import { TableColumnComponent } from 'kubeflow/lib/resource-table/component-value/component-value.component';
+import { TableColumnComponent } from 'kubeflow';
 @Component({
+  standalone: false,
   selector: 'app-delete-button',
   templateUrl: './delete-button.component.html',
   styleUrls: ['./delete-button.component.scss'],

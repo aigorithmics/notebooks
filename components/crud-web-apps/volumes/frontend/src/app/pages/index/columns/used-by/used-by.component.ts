@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { TableColumnComponent } from 'kubeflow/lib/resource-table/component-value/component-value.component';
+import { TableColumnComponent } from 'kubeflow';
 
 @Component({
+  standalone: false,
   selector: 'app-used-by',
   templateUrl: './used-by.component.html',
   styleUrls: ['./used-by.component.scss'],

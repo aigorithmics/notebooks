@@ -1,22 +1,30 @@
 <div class="lib-content-wrapper">
   <lib-title-actions-toolbar title="Volumes" [buttons]="buttons" i18n-title>
-    <lib-namespace-select *ngIf="(ns.dashboardConnected$ | async) === dashboardDisconnectedState"
-      namespacesUrl="/api/namespaces"></lib-namespace-select>
+    @if ((ns.dashboardConnected$ | async) === dashboardDisconnectedState) {
+      <lib-namespace-select
+        namespacesUrl="/api/namespaces"></lib-namespace-select>
+    }
   </lib-title-actions-toolbar>
 
   <!--scrollable page content-->
   <div class="page-padding lib-flex-grow lib-overflow-auto">
-    <lib-loading-spinner *ngIf="!dataLoaded"></lib-loading-spinner>
+    @if (!dataLoaded) {
+      <lib-loading-spinner></lib-loading-spinner>
+    }
 
-    <ng-container *ngIf="dataLoaded">
-      <lib-table *ngIf="isServerPagination" [config]="config" [data]="processedData" [trackByFn]="pvcTrackByFn"
-        [serverPagination]="true" [totalItems]="totalItems" (actionsEmitter)="reactToAction($event)"
-        (pageChange)="onPageChange($event)" (sortChange)="onSortChange($event)"
-        (filterChange)="onFilterChange($event)"></lib-table>
+    @if (dataLoaded) {
+      @if (isServerPagination) {
+        <lib-table [config]="config" [data]="processedData" [trackByFn]="pvcTrackByFn"
+          [serverPagination]="true" [totalItems]="totalItems" (actionsEmitter)="reactToAction($event)"
+          (onPageChange)="onPageChange($event)" (onSortChange)="onSortChange($event)"
+          (onFilterChange)="onFilterChange($event)"></lib-table>
+      }
 
-      <lib-table *ngIf="!isServerPagination" [config]="config" [data]="processedData" [trackByFn]="pvcTrackByFn"
-        (actionsEmitter)="reactToAction($event)">
-      </lib-table>
-    </ng-container>
+      @if (!isServerPagination) {
+        <lib-table [config]="config" [data]="processedData" [trackByFn]="pvcTrackByFn"
+          (actionsEmitter)="reactToAction($event)">
+        </lib-table>
+      }
+    }
   </div>
 </div>

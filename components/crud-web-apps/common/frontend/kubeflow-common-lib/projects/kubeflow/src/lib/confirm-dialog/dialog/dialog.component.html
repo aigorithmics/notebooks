@@ -9,19 +9,16 @@
     {{ data.cancel.toUpperCase() }}
   </button>
 
-  <button
-    *ngIf="!isApplying"
-    mat-button
-    (click)="onAcceptClicked()"
-    [color]="data.confirmColor"
-  >
+  @if (!isApplying) {
+  <button mat-button (click)="onAcceptClicked()" [color]="data.confirmColor">
     {{ data.accept.toUpperCase() }}
   </button>
-
-  <button *ngIf="isApplying" mat-button disabled>
+  } @if (isApplying) {
+  <button mat-button disabled>
     <div class="waiting-button-wrapper">
       <mat-spinner diameter="16"></mat-spinner>
       <p>{{ data.applying }}</p>
     </div>
   </button>
+  }
 </div>

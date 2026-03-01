@@ -8,9 +8,11 @@
   </lib-title-actions-toolbar>
 
   <div class="details-page-outer">
-    <lib-loading-spinner *ngIf="!pvcInfoLoaded"></lib-loading-spinner>
+    @if (!pvcInfoLoaded) {
+      <lib-loading-spinner></lib-loading-spinner>
+    }
 
-    <ng-container *ngIf="pvcInfoLoaded">
+    @if (pvcInfoLoaded) {
       <div class="details-page-inner">
         <div class="details-page-inner-2">
           <lib-status-icon
@@ -43,6 +45,6 @@
           </ng-template>
         </mat-tab>
       </mat-tab-group>
-    </ng-container>
+    }
   </div>
 </div>

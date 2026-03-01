@@ -10,6 +10,7 @@ import {
 } from 'src/app/shared/utils/volumes';
 
 @Component({
+  standalone: false,
   selector: 'app-form-data-volumes',
   templateUrl: './form-data-volumes.component.html',
   styleUrls: ['./form-data-volumes.component.scss'],

@@ -19,6 +19,7 @@ import { PVCPostObject } from 'src/app/types';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
+  standalone: false,
   selector: 'app-form-default',
   templateUrl: './form-default.component.html',
   styleUrls: ['./form-default.component.scss'],

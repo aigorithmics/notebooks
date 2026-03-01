@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-declare global {
-  interface Window {
-    require: any;
-  }
-}
 let monacoHasInitiated = false;
 let monacoInitializing = false;
 const monacoInitState = new BehaviorSubject<boolean>(false);
@@ -31,10 +26,10 @@ export class EditorLoaderService {
   loadMonaco() {
     const onGotAmdLoader = () => {
       const vsPath = this.monacoPath;
-      window.require.config({ paths: { vs: vsPath } });
+      (window as any).require.config({ paths: { vs: vsPath } });
 
       // Load monaco
-      window.require(
+      (window as any).require(
         ['vs/editor/editor.main'],
         () => {
           monacoHasInitiated = true;

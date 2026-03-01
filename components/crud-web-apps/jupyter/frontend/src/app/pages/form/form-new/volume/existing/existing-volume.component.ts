@@ -10,6 +10,7 @@ import { V1Volume } from '@kubernetes/client-node';
 import { parseYAML } from 'src/app/shared/utils/yaml';
 
 @Component({
+  standalone: false,
   selector: 'app-existing-volume',
   templateUrl: './existing-volume.component.html',
   styleUrls: ['./existing-volume.component.scss'],

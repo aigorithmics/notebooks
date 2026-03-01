@@ -12,6 +12,7 @@ import { DateTimeService } from '../services/date-time.service';
   templateUrl: './date-time.component.html',
   styleUrls: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class DateTimeComponent implements OnDestroy {
   private timer: number;

@@ -5,6 +5,7 @@ import { VariablesGroup } from './types';
   selector: 'lib-variables-group-table',
   templateUrl: './variables-groups-table.component.html',
   styleUrls: ['./variables-groups-table.component.scss'],
+  standalone: false,
 })
 export class VariablesGroupsTableComponent implements OnInit {
   private prvEnvGroups: VariablesGroup[];

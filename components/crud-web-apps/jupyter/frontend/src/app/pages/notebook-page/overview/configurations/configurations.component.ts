@@ -4,6 +4,7 @@ import { Configuration } from 'src/app/types/configuration';
 import { ConfigurationInfoDialogComponent } from './configuration-info-dialog/configuration-info-dialog.component';
 
 @Component({
+  standalone: false,
   selector: 'app-configurations',
   templateUrl: './configurations.component.html',
   styleUrls: ['./configurations.component.scss'],

@@ -14,7 +14,7 @@ import {
 import { MatChipInputEvent } from '@angular/material/chips';
 import { TableColumnComponent } from '../component-value/component-value.component';
 import { Component, SimpleChange } from '@angular/core';
-import subMonths from 'date-fns/sub_months';
+import { subMonths } from 'date-fns';
 import { cloneDeep } from 'lodash-es';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatDividerModule } from '@angular/material/divider';
@@ -25,6 +25,7 @@ import { STATUS_TYPE } from '../status/types';
 @Component({
   selector: 'lib-server-type',
   template: ``,
+  standalone: false,
 })
 export class ServerTypeComponent implements TableColumnComponent {
   constructor() {}

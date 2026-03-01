@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 const NB_NAME_SUBST = '{notebook-name}';
 
 @Component({
+  standalone: false,
   selector: 'app-volume-name',
   templateUrl: './name.component.html',
   styleUrls: ['./name.component.scss'],

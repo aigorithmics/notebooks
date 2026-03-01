@@ -16,6 +16,7 @@ import {
 import { EXISTING_SOURCE, Volume } from 'src/app/types';
 
 @Component({
+  standalone: false,
   selector: 'app-form-workspace-volume',
   templateUrl: './form-workspace-volume.component.html',
   styleUrls: ['./form-workspace-volume.component.scss'],

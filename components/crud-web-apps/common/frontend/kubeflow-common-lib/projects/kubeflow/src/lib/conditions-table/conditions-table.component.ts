@@ -9,6 +9,7 @@ import { TableConfig } from '../resource-table/types';
   templateUrl: './conditions-table.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: [],
+  standalone: false,
 })
 export class ConditionsTableComponent {
   private conditionsPrv: ConditionIR[] = [];

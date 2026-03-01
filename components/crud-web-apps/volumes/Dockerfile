@@ -25,7 +25,7 @@ RUN npm run build
 # --- Build the frontend ---
 FROM node:24.14.0-bookworm AS frontend
 
-WORKDIR /src
+WORKDIR /src/volumes/frontend
 
 COPY ./volumes/frontend/package.json ./
 COPY ./volumes/frontend/package-lock.json ./
@@ -36,8 +36,8 @@ COPY ./volumes/frontend/angular.json ./
 COPY ./volumes/frontend/src ./src
 
 ENV NG_CLI_ANALYTICS="ci"
+COPY --from=frontend-kubeflow-lib /src/dist/kubeflow/ ../../common/frontend/kubeflow-common-lib/dist/kubeflow/
 RUN npm ci
-COPY --from=frontend-kubeflow-lib /src/dist/kubeflow/ ./node_modules/kubeflow/
 
 RUN npm run build -- --output-path=./dist/default --configuration=production
 
@@ -55,6 +55,6 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY ./volumes/backend/apps/ ./apps
 COPY ./volumes/backend/entrypoint.py .
 
-COPY --from=frontend /src/dist/default/ /src/apps/default/static/
+COPY --from=frontend /src/volumes/frontend/dist/default/browser/ /src/apps/default/static/
 
 ENTRYPOINT ["gunicorn", "-w", "3", "--bind", "0.0.0.0:5000", "--access-logfile", "-", "entrypoint:app"]

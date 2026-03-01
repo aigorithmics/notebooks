@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { TolerationGroup, AffinityConfig } from 'src/app/types';
 
 @Component({
+  standalone: false,
   selector: 'app-form-affinity-tolerations',
   templateUrl: './form-affinity-tolerations.component.html',
   styleUrls: ['./form-affinity-tolerations.component.scss'],

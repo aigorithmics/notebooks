@@ -8,9 +8,11 @@
   </lib-title-actions-toolbar>
 
   <div class="details-page-outer">
-    <lib-loading-spinner *ngIf="!notebookInfoLoaded"></lib-loading-spinner>
+    @if (!notebookInfoLoaded) {
+      <lib-loading-spinner></lib-loading-spinner>
+    }
 
-    <ng-container *ngIf="notebookInfoLoaded">
+    @if (notebookInfoLoaded) {
       <div class="details-page-inner">
         <div class="details-page-inner-2">
           <lib-status-icon
@@ -31,13 +33,14 @@
       >
         <mat-tab label="OVERVIEW">
           <ng-template matTabContent>
-            <app-overview
-              *ngIf="notebookInfoLoaded"
-              [notebook]="notebook"
-              [pod]="notebookPod"
-              [podRequestCompleted]="podRequestCompleted"
-              [notebookStatus]="status"
-            ></app-overview>
+            @if (notebookInfoLoaded) {
+              <app-overview
+                [notebook]="notebook"
+                [pod]="notebookPod"
+                [podRequestCompleted]="podRequestCompleted"
+                [notebookStatus]="status"
+              ></app-overview>
+            }
           </ng-template>
         </mat-tab>
 
@@ -66,6 +69,6 @@
           </ng-template>
         </mat-tab>
       </mat-tab-group>
-    </ng-container>
+    }
   </div>
 </div>

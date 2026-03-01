@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { V1PersistentVolumeClaim } from '@kubernetes/client-node';
@@ -14,6 +14,7 @@ import { ActionsService } from 'src/app/services/actions.service';
 import { VWABackendService } from 'src/app/services/backend.service';
 
 @Component({
+  standalone: false,
   selector: 'app-volume-details-page',
   templateUrl: './volume-details-page.component.html',
   styleUrls: ['./volume-details-page.component.scss'],
@@ -47,6 +48,7 @@ export class VolumeDetailsPageComponent implements OnInit, OnDestroy {
     public router: Router,
     public actions: ActionsService,
     private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -76,6 +78,7 @@ export class VolumeDetailsPageComponent implements OnInit, OnDestroy {
     this.pollSub = this.poller.exponential(request).subscribe(pvc => {
       this.pvc = pvc;
       this.pvcInfoLoaded = true;
+      this.cdr.detectChanges();
     });
   }
 

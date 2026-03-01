@@ -4,6 +4,7 @@ import { Component, OnInit, Input } from '@angular/core';
   selector: 'lib-help-popover',
   templateUrl: './help-popover.component.html',
   styleUrls: ['./help-popover.component.scss'],
+  standalone: false,
 })
 export class HelpPopoverComponent implements OnInit {
   @Input() popoverPosition = 'below';

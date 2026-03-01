@@ -4,6 +4,7 @@ import { VolumesGroup } from './types';
 import { PVCS } from '../volumes.constants';
 
 @Component({
+  standalone: false,
   selector: 'app-volumes',
   templateUrl: './volumes.component.html',
   styleUrls: ['./volumes.component.scss'],
@@ -26,6 +27,10 @@ export class VolumesComponent implements OnInit {
 
   isPVCs(group: VolumesGroup): boolean {
     return group.name === PVCS;
+  }
+
+  getChips(group: VolumesGroup): ChipDescriptor[] {
+    return (group.array as ChipDescriptor[]) || [];
   }
 
   groupTrackByFn: TrackByFunction<VolumesGroup> = (

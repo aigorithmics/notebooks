@@ -11,6 +11,7 @@ import { ToolbarButton } from './types';
   selector: 'lib-title-actions-toolbar',
   templateUrl: './title-actions-toolbar.component.html',
   styleUrls: ['./title-actions-toolbar.component.scss'],
+  standalone: false,
 })
 export class TitleActionsToolbarComponent {
   @Input() buttons: ToolbarButton[] = [];

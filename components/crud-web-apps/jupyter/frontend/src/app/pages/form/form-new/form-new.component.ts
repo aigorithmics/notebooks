@@ -13,6 +13,7 @@ import { getFormDefaults, initFormControls } from './utils';
 import { JWABackendService } from 'src/app/services/backend.service';
 
 @Component({
+  standalone: false,
   selector: 'app-form-new',
   templateUrl: './form-new.component.html',
   styleUrls: ['./form-new.component.scss'],

@@ -4,6 +4,7 @@ import { Component, Input, HostBinding } from '@angular/core';
   selector: 'lib-heading-row',
   templateUrl: './heading-subheading-row.component.html',
   styleUrls: ['./heading-subheading-row.component.scss'],
+  standalone: false,
 })
 export class HeadingSubheadingRowComponent {
   @Input() heading: string;

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { environment } from '@app/environment';
 import {
   NamespaceService,
@@ -24,6 +24,7 @@ import { Router } from '@angular/router';
 import { ActionsService } from 'src/app/services/actions.service';
 
 @Component({
+  standalone: false,
   selector: 'app-index-default',
   templateUrl: './index-default.component.html',
   styleUrls: ['./index-default.component.scss'],
@@ -73,6 +74,7 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
     public router: Router,
     public poller: PollerService,
     public actions: ActionsService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -114,6 +116,7 @@ export class IndexDefaultComponent implements OnInit, OnDestroy {
       this.processedData = this.processIncomingData(resp.notebooks);
       this.totalItems = resp.totalCount;
       this.dataLoaded = true;
+      this.cdr.detectChanges();
     });
   }
 

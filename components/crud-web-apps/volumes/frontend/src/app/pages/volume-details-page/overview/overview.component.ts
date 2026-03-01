@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { environment } from '@app/environment';
 import { V1PersistentVolumeClaim, V1Pod } from '@kubernetes/client-node';
 import { ChipDescriptor, PollerService, UrlItem } from 'kubeflow';
@@ -7,6 +7,7 @@ import { VWABackendService } from 'src/app/services/backend.service';
 import { LinkGroup } from './link-groups-table/types';
 
 @Component({
+  standalone: false,
   selector: 'app-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss'],
@@ -48,10 +49,12 @@ export class OverviewComponent implements OnInit, OnDestroy {
       pods => {
         this.podGroupsLoaded = true;
         this.podGroups = this.generatePodGroups(pods, this.env.viewerUrl);
+        this.cdr.detectChanges();
       },
       error => {
         this.podGroupsLoaded = true;
         this.podsMountedError = error;
+        this.cdr.detectChanges();
       },
     );
   }
@@ -221,6 +224,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   constructor(
     public backend: VWABackendService,
     public poller: PollerService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {}

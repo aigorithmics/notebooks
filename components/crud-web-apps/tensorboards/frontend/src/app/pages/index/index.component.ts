@@ -27,6 +27,7 @@ import { Subscription } from 'rxjs';
 import { FormComponent } from '../form/form.component';
 
 @Component({
+  standalone: false,
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.scss'],

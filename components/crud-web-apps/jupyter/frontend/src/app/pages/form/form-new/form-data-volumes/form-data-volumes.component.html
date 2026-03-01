@@ -5,89 +5,91 @@
   i18n-text
 >
   <mat-accordion>
-    <mat-expansion-panel
-      hideToggle
-      *ngFor="
-        let volGroup of volsArray.controls;
-        let i = index;
-        let last = last
-      "
-      (opened)="openPanel.add(i)"
-      (closed)="openPanel.clear()"
-      [class.last]="last"
-      data-cy="data volumes"
-    >
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ getVolumeTitle(volGroup.value) }}
-        </mat-panel-title>
+    @for (volGroup of volsArray.controls; track $index; let i = $index; let last = $last) {
+      <mat-expansion-panel
+        hideToggle
+        (opened)="openPanel.add(i)"
+        (closed)="openPanel.clear()"
+        [class.last]="last"
+        data-cy="data volumes"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ getVolumeTitle(volGroup.value) }}
+          </mat-panel-title>
 
-        <mat-panel-description>
-          <ng-container *ngIf="volGroup.get('newPvc')">
-            <div
-              class="pvc-name truncate"
-              [matTooltip]="getVolumeName(volGroup.value)"
-            >
-              {{ getVolumeName(volGroup.value) }},
+          <mat-panel-description>
+            @if (volGroup.get('newPvc')) {
+              <div
+                class="pvc-name truncate"
+                [matTooltip]="getVolumeName(volGroup.value)"
+              >
+                {{ getVolumeName(volGroup.value) }},
+              </div>
+              <div class="pvc-type">{{ getNewVolumeType(volGroup.value) }},</div>
+              <div>{{ getNewVolumeSize(volGroup.value) }}</div>
+            }
+
+            @if (volGroup.get('existingSource')) {
+              <div
+                class="vol-name truncate"
+                [matTooltip]="getVolumeName(volGroup.value)"
+              >
+                {{ getVolumeName(volGroup.value) }}
+              </div>
+            }
+
+            <div class="icons">
+              @if (!readonly) {
+                <mat-icon
+                  (click)="onDelete(i, $event)"
+                  matTooltip="Delete volume"
+                  i18n-matTooltip
+                  class="delete-icon"
+                >
+                  delete
+                </mat-icon>
+              }
+
+              @if (!openPanel.has(i)) {
+                <mat-icon
+                  matTooltip="Show volume details"
+                  i18n-matTooltip
+                >
+                  expand_more
+                </mat-icon>
+              }
+
+              @if (openPanel.has(i)) {
+                <mat-icon
+                  matTooltip="Hide volume details"
+                  i18n-matTooltip
+                >
+                  expand_less
+                </mat-icon>
+              }
             </div>
-            <div class="pvc-type">{{ getNewVolumeType(volGroup.value) }},</div>
-            <div>{{ getNewVolumeSize(volGroup.value) }}</div>
-          </ng-container>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
 
-          <ng-container *ngIf="volGroup.get('existingSource')">
-            <div
-              class="vol-name truncate"
-              [matTooltip]="getVolumeName(volGroup.value)"
-            >
-              {{ getVolumeName(volGroup.value) }}
-            </div>
-          </ng-container>
+        <div [class.readonly]="readonly">
+          @if (volGroup.get('existingSource')) {
+            <app-existing-volume
+              [volGroup]="volGroup"
+            ></app-existing-volume>
+          }
 
-          <div class="icons">
-            <mat-icon
-              *ngIf="!readonly"
-              (click)="onDelete(i, $event)"
-              matTooltip="Delete volume"
-              i18n-matTooltip
-              class="delete-icon"
-            >
-              delete
-            </mat-icon>
+          @if (volGroup.get('newPvc')) {
+            <app-new-volume
+              [volGroup]="volGroup"
+              [externalName]="externalName"
+            ></app-new-volume>
+          }
 
-            <mat-icon
-              *ngIf="!openPanel.has(i)"
-              matTooltip="Show volume details"
-              i18n-matTooltip
-            >
-              expand_more
-            </mat-icon>
-
-            <mat-icon
-              *ngIf="openPanel.has(i)"
-              matTooltip="Hide volume details"
-              i18n-matTooltip
-            >
-              expand_less
-            </mat-icon>
-          </div>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-
-      <div [class.readonly]="readonly">
-        <app-existing-volume
-          *ngIf="volGroup.get('existingSource')"
-          [volGroup]="volGroup"
-        ></app-existing-volume>
-
-        <app-new-volume
-          *ngIf="volGroup.get('newPvc')"
-          [volGroup]="volGroup"
-          [externalName]="externalName"
-        ></app-new-volume>
-
-        <app-volume-mount [volGroup]="volGroup"></app-volume-mount>
-      </div>
-    </mat-expansion-panel>
+          <app-volume-mount [volGroup]="volGroup"></app-volume-mount>
+        </div>
+      </mat-expansion-panel>
+    }
   </mat-accordion>
 
   <div class="volume-buttons">

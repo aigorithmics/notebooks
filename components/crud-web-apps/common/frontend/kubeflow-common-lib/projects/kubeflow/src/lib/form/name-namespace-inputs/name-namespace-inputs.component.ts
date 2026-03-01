@@ -6,6 +6,7 @@ import { getNameError, MAX_NAME_LENGTH } from '../validators';
   selector: 'lib-form-name-namespace-inputs',
   templateUrl: './name-namespace-inputs.component.html',
   styleUrls: ['./name-namespace-inputs.component.scss'],
+  standalone: false,
 })
 export class NameNamespaceInputsComponent implements OnInit {
   private existingNamesPrv: Set<string>;

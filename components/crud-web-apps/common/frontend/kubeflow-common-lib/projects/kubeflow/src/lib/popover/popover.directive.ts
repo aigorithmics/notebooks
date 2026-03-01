@@ -23,6 +23,7 @@ import {
 } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { PopoverComponent, PopoverTemplatePortal } from './popover.component';
 
@@ -40,7 +41,10 @@ type Position = 'above' | 'below' | 'before' | 'after';
 
 type PopoverValue = TemplateRef<any> | string;
 
-@Directive({ selector: '[libPopover]' })
+@Directive({
+  selector: '[libPopover]',
+  standalone: false,
+})
 export class PopoverDirective implements OnDestroy {
   private libPopoverPrv: PopoverValue;
   @Input('libPopover')
@@ -160,9 +164,11 @@ export class PopoverDirective implements OnDestroy {
   updatePosition() {
     if (this.popoverInstance) {
       this.popoverInstance.markForCheck();
-      this.ngZone.onMicrotaskEmpty.pipe(take(1)).subscribe(() => {
-        this.overlayRef.updatePosition();
-      });
+      (this.ngZone.onMicrotaskEmpty as unknown as Observable<any>)
+        .pipe(take(1))
+        .subscribe(() => {
+          this.overlayRef.updatePosition();
+        });
     }
   }
 

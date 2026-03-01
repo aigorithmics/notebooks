@@ -1,4 +1,3 @@
-import '@angular/localize/init';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -7,9 +6,8 @@ import { ResourceTableModule } from './resource-table/resource-table.module';
 import { SnackBarModule } from './snack-bar/snack-bar.module';
 import { FormModule } from './form/form.module';
 import {
-  HttpClientModule,
-  HTTP_INTERCEPTORS,
-  HttpClientXsrfModule,
+  provideHttpClient,
+  withInterceptorsFromDi,
 } from '@angular/common/http';
 import { PopoverModule } from './popover/popover.module';
 import { TitleActionsToolbarModule } from './title-actions-toolbar/title-actions-toolbar.module';
@@ -33,8 +31,6 @@ import { StatusInfoModule } from './status-info/status-info.module';
     FormModule,
     PopoverModule,
     ConfirmDialogModule,
-    HttpClientModule,
-    HttpClientXsrfModule,
     TitleActionsToolbarModule,
     ConditionsTableModule,
     DetailsListModule,
@@ -46,6 +42,7 @@ import { StatusInfoModule } from './status-info/status-info.module';
     StatusIconModule,
     StatusInfoModule,
   ],
-  imports: [CommonModule, HttpClientModule, HttpClientXsrfModule],
+  imports: [CommonModule],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class KubeflowModule {}

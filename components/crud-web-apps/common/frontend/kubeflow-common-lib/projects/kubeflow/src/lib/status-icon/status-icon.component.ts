@@ -5,6 +5,7 @@ import { STATUS_TYPE } from '../resource-table/status/types';
   selector: 'lib-status-icon',
   templateUrl: './status-icon.component.html',
   styleUrls: ['./status-icon.component.scss'],
+  standalone: false,
 })
 export class StatusIconComponent {
   @Input() phase: STATUS_TYPE;

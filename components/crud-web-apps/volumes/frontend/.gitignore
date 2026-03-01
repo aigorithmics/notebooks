@@ -45,8 +45,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# Fonts Files
-/src/assets/fonts
-
+.angular
 # Cypress
 cypress/screenshots

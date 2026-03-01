@@ -5,6 +5,7 @@ import { ListEntry } from './types';
   selector: 'lib-details-list',
   templateUrl: './details-list.component.html',
   styleUrls: ['./details-list.component.scss'],
+  standalone: false,
 })
 export class DetailsListComponent {
   @Input() entries: ListEntry[] = [];

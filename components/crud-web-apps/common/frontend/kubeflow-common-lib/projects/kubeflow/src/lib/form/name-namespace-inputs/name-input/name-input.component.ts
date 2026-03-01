@@ -11,6 +11,7 @@ import {
   selector: 'lib-name-input',
   templateUrl: './name-input.component.html',
   styleUrls: ['./name-input.component.scss'],
+  standalone: false,
 })
 export class NameInputComponent implements OnInit {
   private existingNamesPrv = new Set<string>();

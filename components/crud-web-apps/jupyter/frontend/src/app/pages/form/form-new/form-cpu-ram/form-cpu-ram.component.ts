@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { calculateLimits } from '../utils';
 
 @Component({
+  standalone: false,
   selector: 'app-form-cpu-ram',
   templateUrl: './form-cpu-ram.component.html',
   styleUrls: ['./form-cpu-ram.component.scss'],

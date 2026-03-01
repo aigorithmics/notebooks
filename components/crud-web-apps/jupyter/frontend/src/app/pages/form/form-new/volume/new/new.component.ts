@@ -7,6 +7,7 @@ import { createNewPvcFormGroup } from 'src/app/shared/utils/volumes';
 import { environment } from '@app/environment';
 
 @Component({
+  standalone: false,
   selector: 'app-new-volume',
   templateUrl: './new.component.html',
   styleUrls: ['./new.component.scss'],

@@ -1,4 +1,4 @@
-@import '../../../styles/variables.scss';
+@use '../../../styles/variables.scss' as *;
 
 $row-padding: 8px;
 
@@ -33,6 +33,7 @@ tr th.right-align {
 }
 
 th.mat-header-cell {
+  text-align: left;
   padding-right: $row-padding;
   padding-left: $row-padding;
 }

@@ -7,6 +7,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
+  standalone: false,
   selector: 'app-form-image',
   templateUrl: './form-image.component.html',
   styleUrls: ['./form-image.component.scss'],

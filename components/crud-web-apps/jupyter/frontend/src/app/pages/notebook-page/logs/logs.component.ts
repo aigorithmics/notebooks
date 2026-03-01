@@ -5,6 +5,7 @@ import { PollerService } from 'kubeflow';
 import { V1Pod } from '@kubernetes/client-node';
 
 @Component({
+  standalone: false,
   selector: 'app-logs',
   templateUrl: './logs.component.html',
   styleUrls: ['./logs.component.scss'],

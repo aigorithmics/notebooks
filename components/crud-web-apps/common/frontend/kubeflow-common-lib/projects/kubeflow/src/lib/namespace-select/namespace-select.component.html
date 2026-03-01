@@ -12,13 +12,11 @@
         All namespaces
       </mat-option>
 
-      <mat-option
-        *ngFor="let namespace of namespaces"
-        [value]="namespace"
-        attr.data-cy-namespace="{{ namespace }}"
-      >
+      @for (namespace of namespaces; track namespace) {
+      <mat-option [value]="namespace" attr.data-cy-namespace="{{ namespace }}">
         {{ namespace }}
       </mat-option>
+      }
     </mat-select>
   </mat-form-field>
   <div class="spacer"></div>

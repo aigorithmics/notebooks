@@ -4,6 +4,7 @@ import { Component, OnInit, Input, HostBinding } from '@angular/core';
   selector: 'lib-icon',
   templateUrl: './icon.component.html',
   styleUrls: ['./icon.component.scss'],
+  standalone: false,
 })
 export class IconComponent implements OnInit {
   @Input() icon = '';

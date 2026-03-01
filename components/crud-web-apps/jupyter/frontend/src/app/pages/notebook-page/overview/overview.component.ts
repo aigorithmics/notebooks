@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { V1EnvVar, V1Pod, V1Volume } from '@kubernetes/client-node';
 import { ChipDescriptor, PollerService, STATUS_TYPE, UrlItem } from 'kubeflow';
 import { Subscription } from 'rxjs';
@@ -18,6 +18,7 @@ import {
 } from './volumes.constants';
 
 @Component({
+  standalone: false,
   selector: 'app-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss'],
@@ -237,6 +238,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   constructor(
     public backend: JWABackendService,
     public poller: PollerService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {}
@@ -265,6 +267,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       this.configurations = configurations;
       this.podDefaults = podDefaults;
       this.generatePodEnv(this.pod);
+      this.cdr.detectChanges();
     });
   }
 

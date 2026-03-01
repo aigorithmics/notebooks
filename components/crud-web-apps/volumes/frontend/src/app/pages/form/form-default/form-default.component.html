@@ -20,14 +20,15 @@
     </lib-form-name-namespace-inputs>
 
     <!--Snapshot Chooser-->
-    <mat-form-field
-      *ngIf="formCtrl.get('type').value === 'snapshot'"
-      appearance="outline"
-      class="wide"
-    >
-      <mat-label i18n>Snapshot</mat-label>
-      <mat-select formControlName="snapshot"> </mat-select>
-    </mat-form-field>
+    @if (formCtrl.get('type').value === 'snapshot') {
+      <mat-form-field
+        appearance="outline"
+        class="wide"
+      >
+        <mat-label i18n>Snapshot</mat-label>
+        <mat-select formControlName="snapshot"> </mat-select>
+      </mat-form-field>
+    }
 
     <!--Size-->
     <lib-positive-number-input
@@ -42,9 +43,11 @@
       <mat-label i18n>Storage Class</mat-label>
       <mat-select formControlName="class" data-cy-form-control-name-class>
         <mat-option value="{none}" i18n>None</mat-option>
-        <mat-option *ngFor="let sc of storageClasses" [value]="sc">
-          {{ sc }}
-        </mat-option>
+        @for (sc of storageClasses; track sc) {
+          <mat-option [value]="sc">
+            {{ sc }}
+          </mat-option>
+        }
       </mat-select>
     </mat-form-field>
 

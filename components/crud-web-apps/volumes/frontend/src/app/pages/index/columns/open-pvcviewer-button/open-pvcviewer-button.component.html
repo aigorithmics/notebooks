@@ -1,38 +1,41 @@
 <div>
   <!--Uninitialized Phase-->
-  <button
-    *ngIf="isPhaseUninitialized()"
-    mat-icon-button
-    matTooltip="{{ action.tooltip }}"
-    matTooltipClass="custom-tooltip"
-    [color]="action.color"
-    (click)="emitClickedEvent()"
-  >
-    <lib-icon [icon]="action.iconInit"></lib-icon>
-  </button>
+  @if (isPhaseUninitialized()) {
+    <button
+      mat-icon-button
+      matTooltip="{{ action.tooltip }}"
+      matTooltipClass="custom-tooltip"
+      [color]="action.color"
+      (click)="emitClickedEvent()"
+    >
+      <lib-icon [icon]="action.iconInit"></lib-icon>
+    </button>
+  }
 
   <!--Ready Phase-->
-  <button
-    *ngIf="isPhaseReady()"
-    mat-icon-button
-    matTooltip="{{ action.tooltip }}"
-    matTooltipClass="custom-tooltip"
-    [color]="action.color"
-    (click)="emitClickedEvent()"
-  >
-    <lib-icon [icon]="action.iconReady"></lib-icon>
-  </button>
+  @if (isPhaseReady()) {
+    <button
+      mat-icon-button
+      matTooltip="{{ action.tooltip }}"
+      matTooltipClass="custom-tooltip"
+      [color]="action.color"
+      (click)="emitClickedEvent()"
+    >
+      <lib-icon [icon]="action.iconReady"></lib-icon>
+    </button>
+  }
 
   <div
     matTooltipClass="custom-tooltip"
     [matTooltip]="'The PVCViewer is currently starting.'"
     matTooltipClass="custom-tooltip"
   >
-    <mat-spinner
-      *ngIf="isPhaseWaiting()"
-      [diameter]="24"
-      style="margin: 0 auto"
-    ></mat-spinner>
+    @if (isPhaseWaiting()) {
+      <mat-spinner
+        [diameter]="24"
+        style="margin: 0 auto"
+      ></mat-spinner>
+    }
   </div>
 
   <div
@@ -40,8 +43,10 @@
     [matTooltip]="'The PVCViewer is currently terminating.'"
     matTooltipClass="custom-tooltip"
   >
-    <button *ngIf="isPhaseTerminating()" mat-icon-button disabled>
-      <lib-icon [icon]="action.iconInit"></lib-icon>
-    </button>
+    @if (isPhaseTerminating()) {
+      <button mat-icon-button disabled>
+        <lib-icon [icon]="action.iconInit"></lib-icon>
+      </button>
+    }
   </div>
 </div>

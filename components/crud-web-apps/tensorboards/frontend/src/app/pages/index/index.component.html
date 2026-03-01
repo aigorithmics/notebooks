@@ -4,10 +4,11 @@
     [buttons]="buttons"
     i18n-title
   >
-    <lib-namespace-select
-      *ngIf="(ns.dashboardConnected$ | async) === dashboardDisconnectedState"
-      namespacesUrl="/api/namespaces"
-    ></lib-namespace-select>
+    @if ((ns.dashboardConnected$ | async) === dashboardDisconnectedState) {
+      <lib-namespace-select
+        namespacesUrl="/api/namespaces"
+      ></lib-namespace-select>
+    }
   </lib-title-actions-toolbar>
 
   <!--scrollable page content-->

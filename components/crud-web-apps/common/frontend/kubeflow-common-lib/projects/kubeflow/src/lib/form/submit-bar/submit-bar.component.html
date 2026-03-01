@@ -1,8 +1,8 @@
 <mat-divider></mat-divider>
 
 <div class="flex bar">
+  @if (!isApplying) {
   <button
-    *ngIf="!isApplying"
     mat-raised-button
     color="primary"
     (click)="create.emit(true)"
@@ -11,18 +11,14 @@
   >
     CREATE
   </button>
-
-  <button
-    *ngIf="isApplying"
-    mat-raised-button
-    disabled
-    data-cy-submit-bar-creating
-  >
+  } @if (isApplying) {
+  <button mat-raised-button disabled data-cy-submit-bar-creating>
     <div class="waiting-button-wrapper">
       <mat-spinner diameter="16"></mat-spinner>
       <div>CREATING</div>
     </div>
   </button>
+  }
 
   <button
     mat-raised-button
@@ -32,10 +28,12 @@
     CANCEL
   </button>
 
-  <div class="flex text-area" *ngIf="allowYAMLEditing">
+  @if (allowYAMLEditing) {
+  <div class="flex text-area">
     <button class="btn-link" (click)="yaml.emit(true)" data-cy-submit-bar-edit>
       Edit
     </button>
     <span> and submit YAML</span>
   </div>
+  }
 </div>

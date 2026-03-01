@@ -3,6 +3,7 @@ import { UrlItem } from 'kubeflow';
 import { LinkGroup } from './types';
 
 @Component({
+  standalone: false,
   selector: 'app-link-groups-table',
   templateUrl: './link-groups-table.component.html',
   styleUrls: ['./link-groups-table.component.scss'],

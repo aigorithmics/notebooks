@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import {
   NamespaceService,
   STATUS_TYPE,
@@ -15,6 +15,7 @@ import { ActionsService } from 'src/app/services/actions.service';
 import { isEqual } from 'lodash-es';
 
 @Component({
+  standalone: false,
   selector: 'app-notebook-page',
   templateUrl: './notebook-page.component.html',
   styleUrls: ['./notebook-page.component.scss'],
@@ -41,6 +42,7 @@ export class NotebookPageComponent implements OnInit, OnDestroy {
     public actions: ActionsService,
 
     private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -75,6 +77,7 @@ export class NotebookPageComponent implements OnInit, OnDestroy {
       this.getNotebookPod(nb);
       this.updateButtons();
       this.notebookInfoLoaded = true;
+      this.cdr.detectChanges();
     });
   }
 
@@ -117,11 +120,13 @@ export class NotebookPageComponent implements OnInit, OnDestroy {
       pod => {
         this.notebookPod = pod;
         this.podRequestCompleted = true;
+        this.cdr.detectChanges();
       },
       error => {
         this.podRequestError = error;
         this.notebookPod = null;
         this.podRequestCompleted = true;
+        this.cdr.detectChanges();
       },
     );
   }

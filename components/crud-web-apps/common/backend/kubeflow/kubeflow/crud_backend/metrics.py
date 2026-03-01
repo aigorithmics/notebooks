@@ -4,8 +4,6 @@ import sys
 from flask import Flask
 from prometheus_flask_exporter import PrometheusMetrics
 
-from .authn import no_authentication
-
 log = logging.getLogger(__name__)
 
 
@@ -38,10 +36,7 @@ def enable_metrics(app: Flask) -> None:
     backend_version = _get_backend_version()
     log.debug("Backend version is %s", backend_version)
     metrics = PrometheusMetrics(
-        app,
-        group_by="url_rule",
-        default_labels={"app": app.name},
-        metrics_decorator=no_authentication,
+        app, group_by="url_rule", default_labels={"app": app.name}
     )
     # add default metrics with info about app
     metrics.info("app_info", "Application info", version=backend_version, app=app.name)

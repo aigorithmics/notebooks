@@ -17,10 +17,7 @@ export interface VWAGetPVCsResponse {
 }
 
 export interface PVCResponseObject {
-  age: {
-    uptime: string;
-    timestamp: string;
-  };
+  age: string;
   capacity: string;
   class: string;
   modes: string[];
@@ -39,8 +36,6 @@ export interface PVCProcessedObject extends PVCResponseObject {
   editAction?: string;
   closePVCViewerAction?: string;
   openPVCViewerAction?: string;
-  ageValue?: string;
-  ageTooltip?: string;
   link: {
     text: string;
     url: string;

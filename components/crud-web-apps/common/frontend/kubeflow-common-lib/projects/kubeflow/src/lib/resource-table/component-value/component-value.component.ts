@@ -17,6 +17,7 @@ export interface TableColumnComponent {
   selector: 'lib-component-value',
   templateUrl: './component-value.component.html',
   styleUrls: ['./component-value.component.scss'],
+  standalone: false,
 })
 export class ComponentValueComponent implements OnInit {
   public portal: Portal<any>;

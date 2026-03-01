@@ -8,6 +8,7 @@ import { defaultConfig } from './config';
 import { isEqual } from 'lodash-es';
 
 @Component({
+  standalone: false,
   selector: 'app-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss'],

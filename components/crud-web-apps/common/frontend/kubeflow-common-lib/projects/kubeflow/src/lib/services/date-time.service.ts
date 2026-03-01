@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-import pkg from 'date-fns';
-import memoize from 'lodash/memoize.js';
-
-const {
-  parse,
+import {
+  parseISO,
   isEqual,
   setHours,
   setMinutes,
   setSeconds,
-  distanceInWords,
+  formatDistance,
   differenceInSeconds,
-} = pkg;
+} from 'date-fns';
+import memoize from 'lodash/memoize.js';
 export const defaultDateOptions: Intl.DateTimeFormatOptions = {
   weekday: 'short',
   year: 'numeric',
@@ -40,8 +38,14 @@ export class DateTimeService {
   constructor() {}
 
   public parse(date: string | number | Date): Date {
-    // https://date-fns.org/v1.29.0/docs/parse
-    return parse(date);
+    if (typeof date === 'string') {
+      const parsed = parseISO(date);
+      if (isNaN(parsed.getTime())) {
+        return new Date(date);
+      }
+      return parsed;
+    }
+    return new Date(date as number | Date);
   }
 
   public isEqual(date1: Date, date2: Date): boolean {
@@ -75,7 +79,7 @@ export class DateTimeService {
   public merge(date: string | Date, time: string): Date {
     // FIXME: Return an invalid date object or raise an error if the input
     // is invalid.
-    let dateTime: Date = parse(date);
+    let dateTime: Date = this.parse(date);
     const timeArr = time.split(':');
     let hours = parseInt(timeArr[0], 10);
     let minutes = parseInt(timeArr[1], 10);
@@ -99,7 +103,12 @@ export class DateTimeService {
     dateToCompare: string | Date,
     date: string | Date = new Date(),
   ): string {
-    return distanceInWords(date, dateToCompare, {
+    const d1 =
+      typeof dateToCompare === 'string'
+        ? this.parse(dateToCompare)
+        : dateToCompare;
+    const d2 = typeof date === 'string' ? this.parse(date) : date;
+    return formatDistance(d1, d2, {
       includeSeconds: false,
       addSuffix: true,
     })

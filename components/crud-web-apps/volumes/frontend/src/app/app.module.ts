@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -19,7 +20,6 @@ import {
 import { FormDefaultComponent } from './pages/form/form-default/form-default.component';
 import { IndexDefaultComponent } from './pages/index/index-default/index-default.component';
 
-import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { VolumeDetailsPageModule } from './pages/volume-details-page/volume-details-page.module';
 import { ColumnsModule } from './pages/index/columns/columns.module';
 import {
@@ -40,6 +40,7 @@ const VwaSnackBarConfig: MatSnackBarConfig = {
   declarations: [AppComponent, FormDefaultComponent, IndexDefaultComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     CommonModule,
     AppRoutingModule,
     ResourceTableModule,
@@ -47,7 +48,6 @@ const VwaSnackBarConfig: MatSnackBarConfig = {
     ConfirmDialogModule,
     FormModule,
     KubeflowModule,
-    HttpClientModule,
     VolumeDetailsPageModule,
     ColumnsModule,
   ],

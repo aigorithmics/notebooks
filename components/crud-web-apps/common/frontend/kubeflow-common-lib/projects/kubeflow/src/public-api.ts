@@ -1,3 +1,4 @@
+/// <reference types="@angular/localize" />
 /*
  * Public API Surface of kubeflow
  */
@@ -48,6 +49,7 @@ export * from './lib/form/section/section.component';
 export * from './lib/resource-table/types';
 export * from './lib/resource-table/status/types';
 export * from './lib/resource-table/table/utils';
+export * from './lib/resource-table/component-value/component-value.component';
 export * from './lib/snack-bar/types';
 export * from './lib/services/backend/types';
 export * from './lib/confirm-dialog/types';

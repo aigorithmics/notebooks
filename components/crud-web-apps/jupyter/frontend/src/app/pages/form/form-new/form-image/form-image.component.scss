@@ -1,9 +1,10 @@
-@import '../../../../../../node_modules/kubeflow/styles/variables.scss';
+@use 'kubeflow/src/styles/variables.scss' as vars;
 
 .server-type-wrapper {
   margin-bottom: 2rem;
   border: none;
-  justify-content: space-between;
+  display: flex;
+  justify-content: center;
 
   .mat-button-toggle {
     width: 188px;
@@ -12,8 +13,24 @@
   }
 
   .mat-button-toggle-checked {
-    border: 2px solid $kubeflow-blue-primary-hue;
+    border: 2px solid vars.$kubeflow-blue-primary-hue;
     background-color: white;
+  }
+
+  ::ng-deep .mat-pseudo-checkbox {
+    display: none !important;
+  }
+
+  ::ng-deep .mat-button-toggle-button {
+    padding: 0 !important;
+  }
+
+  ::ng-deep .mat-button-toggle-label-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 8px !important;
   }
 
   .server-type-icon {

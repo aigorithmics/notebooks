@@ -5,6 +5,7 @@ import { STATUS_TYPE, Status } from '../resource-table/status/types';
   selector: 'lib-status-info',
   templateUrl: './status-info.component.html',
   styleUrls: ['./status-info.component.scss'],
+  standalone: false,
 })
 export class StatusInfoComponent {
   @Input() status: Status;

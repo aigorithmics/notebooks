@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
   selector: 'lib-confirm-dialog',
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss'],
+  standalone: false,
 })
 export class ConfirmDialogComponent implements OnInit {
   public DIALOG_RESP = DIALOG_RESP;

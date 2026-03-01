@@ -4,6 +4,7 @@ import { Component, OnInit, Input } from '@angular/core';
   selector: 'lib-form-section',
   templateUrl: './section.component.html',
   styleUrls: ['./section.component.scss'],
+  standalone: false,
 })
 export class FormSectionComponent implements OnInit {
   @Input()

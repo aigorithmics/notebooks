@@ -1,7 +1,5 @@
-<a
-  [href]="url.url"
-  *ngFor="let url of urlList; trackBy: urlTrackByFn"
-  class="lib-link"
->
+@for (url of urlList; track urlTrackByFn($index, url)) {
+<a [href]="url.url" class="lib-link">
   {{ url.name }}
 </a>
+}

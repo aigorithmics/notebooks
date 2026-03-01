@@ -45,7 +45,7 @@ In order to build a Docker image and use this code you coud build a wheel and th
 
 ```dockerfile
 ### Docker
-FROM python:3.12 AS backend-kubeflow-wheel
+FROM python:3.7 AS backend-kubeflow-wheel
 
 WORKDIR /src
 COPY ./components/crud-web-apps/common/backend .
@@ -54,7 +54,7 @@ RUN python3 setup.py bdist_wheel
 
 ...
 # Web App
-FROM python:3.12
+FROM python:3.7
 
 WORKDIR /package
 COPY --from=backend-kubeflow-wheel /src .
@@ -116,7 +116,7 @@ You also need to add `"preserveSymlinks": true` to the app's frontend `angular.j
 
 ```dockerfile
 # --- Build the frontend kubeflow library ---
-FROM node:24 as frontend-kubeflow-lib
+FROM node:16 as frontend-kubeflow-lib
 
 WORKDIR /src
 
@@ -128,7 +128,7 @@ RUN npm run build
 
 ...
 # --- Build the frontend ---
-FROM node:24 as frontend
+FROM node:16 as frontend
 RUN npm install -g @angular/cli
 
 WORKDIR /src

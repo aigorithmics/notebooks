@@ -5,6 +5,7 @@ import { StatusValue } from '../types';
   selector: 'lib-status',
   templateUrl: './status.component.html',
   styleUrls: ['./status.component.scss'],
+  standalone: false,
 })
 export class StatusComponent {
   @Input() row: any;

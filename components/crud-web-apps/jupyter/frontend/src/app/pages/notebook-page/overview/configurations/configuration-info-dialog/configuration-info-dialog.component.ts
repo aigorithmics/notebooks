@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Configuration } from 'src/app/types/configuration';
 import { dump } from 'js-yaml';
@@ -7,12 +7,13 @@ export interface DialogData {
 }
 
 @Component({
+  standalone: false,
   selector: 'app-configuration-info-dialog',
   templateUrl: './configuration-info-dialog.component.html',
   styleUrls: ['./configuration-info-dialog.component.scss'],
 })
 export class ConfigurationInfoDialogComponent implements OnInit {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+  public data: DialogData = inject(MAT_DIALOG_DATA);
 
   ngOnInit(): void {}
 

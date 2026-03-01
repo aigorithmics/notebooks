@@ -7,6 +7,7 @@ import { EventObject } from 'src/app/types/event';
 import { defaultConfig } from './config';
 
 @Component({
+  standalone: false,
   selector: 'app-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss'],

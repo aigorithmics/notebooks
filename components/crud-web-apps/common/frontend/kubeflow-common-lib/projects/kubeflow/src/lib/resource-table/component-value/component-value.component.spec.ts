@@ -16,6 +16,7 @@ interface MockData {
 @Component({
   selector: 'lib-dummy-component',
   template: '{{ element }}',
+  standalone: false,
 })
 class MockComponent implements TableColumnComponent {
   public element: string;
@@ -24,6 +25,7 @@ class MockComponent implements TableColumnComponent {
 @Component({
   selector: 'lib-dummy-dict-component',
   template: '{{ element.message }}',
+  standalone: false,
 })
 class MockDictComponent implements TableColumnComponent {
   public element: MockData;

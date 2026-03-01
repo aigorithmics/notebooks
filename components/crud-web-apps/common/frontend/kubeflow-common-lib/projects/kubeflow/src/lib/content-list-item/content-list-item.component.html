@@ -1,4 +1,6 @@
-<mat-divider *ngIf="topDivider"></mat-divider>
+@if (topDivider) {
+<mat-divider></mat-divider>
+}
 
 <div class="list-entry-row">
   <!--Key-Title Row-->
@@ -16,4 +18,6 @@
   </div>
 </div>
 
-<mat-divider *ngIf="bottomDivider"></mat-divider>
+@if (bottomDivider) {
+<mat-divider></mat-divider>
+}

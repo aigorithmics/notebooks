@@ -16,13 +16,11 @@
   </mat-select>
 </mat-form-field>
 
-<!-- PVC -->
-<ng-container *ngIf="type === EXISTING_VOLUME_TYPE.PVC; else customSrc">
+@if (type === EXISTING_VOLUME_TYPE.PVC) {
+  <!-- PVC -->
   <app-existing-pvc [pvcGroup]="getPvcFormGroup()"> </app-existing-pvc>
-</ng-container>
-
-<!--YAML editor-->
-<ng-template #customSrc>
+} @else {
+  <!--YAML editor-->
   <ng-container i18n>Check the </ng-container>
   <a
     href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.19/#volume-v1-core"
@@ -40,5 +38,7 @@
     class="editor"
   ></lib-monaco-editor>
 
-  <mat-error *ngIf="errorParsingYaml">{{ errorParsingYaml }}</mat-error>
-</ng-template>
+  @if (errorParsingYaml) {
+    <mat-error>{{ errorParsingYaml }}</mat-error>
+  }
+}

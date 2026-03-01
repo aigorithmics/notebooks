@@ -1,5 +1,5 @@
 IMG ?= registry.aigoml.aigodev.com/kubeflow/tensorboards-web-app
-TAG ?= v1.10.0-1.0.0
+TAG ?= v1.10.0-1.0.11
 DOCKERFILE ?= tensorboards/Dockerfile
 ARCH ?= linux/amd64
 

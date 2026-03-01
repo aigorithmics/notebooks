@@ -1,10 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
-@import '../node_modules/kubeflow/styles/styles.scss';
-@import '../node_modules/kubeflow/styles/fonts.scss';
+@use 'kubeflow/src/styles/styles.scss';
+@use 'kubeflow/src/styles/fonts.scss';
+
+body {
+  background-color: white;
+  margin: 0;
+}
 
 // Give some space after each input
 mat-form-field {
   margin-bottom: 0.25rem;
+}
+
+// Fix for MDC breaking 100% width on lib-table text filter boxes
+mat-form-field.example-chip-list {
+  width: 100%;
 }
 
 .yaml-tab-container {

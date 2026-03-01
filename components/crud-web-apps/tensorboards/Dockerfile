@@ -25,7 +25,7 @@ RUN npm run build
 # --- Build the frontend ---
 FROM node:24.14.0-bookworm AS frontend
 
-WORKDIR /src
+WORKDIR /src/tensorboards/frontend
 
 COPY ./tensorboards/frontend/package.json ./
 COPY ./tensorboards/frontend/package-lock.json ./
@@ -36,8 +36,8 @@ COPY ./tensorboards/frontend/angular.json ./
 COPY ./tensorboards/frontend/src ./src
 
 ENV NG_CLI_ANALYTICS="ci"
+COPY --from=frontend-kubeflow-lib /src/dist/kubeflow/ ../../common/frontend/kubeflow-common-lib/dist/kubeflow/
 RUN npm ci
-COPY --from=frontend-kubeflow-lib /src/dist/kubeflow/ ./node_modules/kubeflow/
 
 RUN npm run build -- --output-path=./dist --configuration=production
 
@@ -58,6 +58,6 @@ COPY ./tensorboards/backend/app/ ./app
 COPY ./tensorboards/backend/entrypoint.py .
 COPY ./tensorboards/backend/Makefile .
 
-COPY --from=frontend /src/dist/ /src/app/static/
+COPY --from=frontend /src/tensorboards/frontend/dist/browser/ /src/app/static/
 
 ENTRYPOINT ["gunicorn", "-w", "3", "--bind", "0.0.0.0:5000", "--access-logfile", "-", "entrypoint:app"]

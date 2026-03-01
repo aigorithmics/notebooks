@@ -3,6 +3,7 @@ import { V1PersistentVolumeClaim } from '@kubernetes/client-node';
 import { dump } from 'js-yaml';
 
 @Component({
+  standalone: false,
   selector: 'app-yaml',
   templateUrl: './yaml.component.html',
   styleUrls: ['./yaml.component.scss'],
