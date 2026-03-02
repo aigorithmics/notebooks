@@ -15,12 +15,13 @@ import {
 } from '../types';
 import { V1Pod } from '@kubernetes/client-node';
 import { EventObject } from '../types/event';
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
 export class JWABackendService extends BackendService {
-  constructor(public http: HttpClient, public snackBar: SnackBarService) {
-    super(http, snackBar);
+  constructor(public http: HttpClient, public snackBar: SnackBarService, public router: Router) {
+    super(http, snackBar, router);
   }
 
   // GET
