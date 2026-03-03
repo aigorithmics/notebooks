@@ -19,19 +19,3 @@ docker-build-push-multi-arch: ## Build multi-arch docker images with docker buil
 	cd ../ && docker buildx build --platform ${ARCH} --tag ${IMG}:${TAG} --push -f ${DOCKERFILE} .
 
 image: docker-build docker-push
-
-COMMON_LIB_COMMIT ?= $(shell head -n 1 frontend/COMMON_LIB_COMMIT)
-COMMON_LIB_TARGET_DIR = kubeflow-common-lib
-COMMON_LIB_TMP_TGZ := /tmp/kubeflow-$(COMMON_LIB_COMMIT).tar.gz
-
-.PHONY:fetch-common-lib
-fetch-common-lib:
-	curl -L -f -o $(COMMON_LIB_TMP_TGZ) https://github.com/kubeflow/kubeflow/archive/$(COMMON_LIB_COMMIT).tar.gz
-
-	rm -rf $(COMMON_LIB_TARGET_DIR)
-	mkdir -p $(COMMON_LIB_TARGET_DIR)
-	tar -C /tmp -xzf $(COMMON_LIB_TMP_TGZ) kubeflow-$(COMMON_LIB_COMMIT)/components/crud-web-apps/common/frontend/kubeflow-common-lib/
-	mv /tmp/kubeflow-$(COMMON_LIB_COMMIT)/components/crud-web-apps/common/frontend/kubeflow-common-lib/* $(COMMON_LIB_TARGET_DIR)/
-
-	rm -f $(COMMON_LIB_TMP_TGZ)
-	rm -rf /tmp/kubeflow-$(COMMON_LIB_COMMIT)
