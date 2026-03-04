@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BackendService, SnackBarService, SnackType } from 'kubeflow';
+import { BackendService, SnackBarService } from 'kubeflow';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   NotebookResponseObject,
@@ -15,6 +15,7 @@ import {
 } from '../types';
 import { V1Pod } from '@kubernetes/client-node';
 import { EventObject } from '../types/event';
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
