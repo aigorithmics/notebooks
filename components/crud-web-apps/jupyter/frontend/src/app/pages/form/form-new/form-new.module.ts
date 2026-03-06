@@ -10,7 +10,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import {
   FormModule as KfFormModule,
   TitleActionsToolbarModule,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { VolumeModule } from './volume/volume.module';
 import { FormAdvancedOptionsModule } from './form-advanced-options/form-advanced-options.module';
 import { FormAffinityTolerationsModule } from './form-affinity-tolerations/form-affinity-tolerations.module';

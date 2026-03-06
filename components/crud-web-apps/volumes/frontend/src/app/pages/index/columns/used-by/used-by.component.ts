@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TableColumnComponent } from 'kubeflow';
+import { TableColumnComponent } from 'kubeflow-aigo';
 
 @Component({
   standalone: false,

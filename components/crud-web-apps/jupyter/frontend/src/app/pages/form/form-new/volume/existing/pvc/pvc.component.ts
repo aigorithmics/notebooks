@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { NamespaceService } from 'kubeflow';
+import { NamespaceService } from 'kubeflow-aigo';
 import { JWABackendService } from 'src/app/services/backend.service';
 import { PvcResponseObject } from 'src/app/types';
 

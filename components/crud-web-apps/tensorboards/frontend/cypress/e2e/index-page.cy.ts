@@ -1,4 +1,4 @@
-import { STATUS_TYPE } from 'kubeflow';
+import { STATUS_TYPE } from 'kubeflow-aigo';
 
 describe('+New Tensorboard form dialog', () => {
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { SnackBarService } from 'kubeflow';
+import { SnackBarService } from 'kubeflow-aigo';
 import { JWABackendService } from './backend.service';
 
 const SnackBarServiceStub: Partial<SnackBarService> = {

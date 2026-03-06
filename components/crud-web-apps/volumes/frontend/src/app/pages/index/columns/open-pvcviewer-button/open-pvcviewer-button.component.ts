@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionComponent, ActionIconValue, STATUS_TYPE } from 'kubeflow';
-import { TableColumnComponent } from 'kubeflow';
+import { ActionComponent, ActionIconValue, STATUS_TYPE } from 'kubeflow-aigo';
+import { TableColumnComponent } from 'kubeflow-aigo';
 @Component({
   standalone: false,
   selector: 'app-open-pvcviewer-button',

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ConfirmDialogService, SnackBarService } from 'kubeflow';
+import { ConfirmDialogService, SnackBarService } from 'kubeflow-aigo';
 import { of } from 'rxjs';
 import { ActionsService } from './actions.service';
 import { VWABackendService } from './backend.service';

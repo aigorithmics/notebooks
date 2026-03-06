@@ -7,7 +7,7 @@ import {
   LinkType,
   ComponentValue,
   quantityToScalar,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { UsedByComponent } from './columns/used-by/used-by.component';
 
 export const tableConfig: TableConfig = {

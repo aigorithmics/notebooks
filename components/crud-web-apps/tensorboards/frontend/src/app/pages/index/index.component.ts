@@ -15,7 +15,7 @@ import {
   ToolbarButtonConfig,
   DashboardState,
   SnackBarConfig,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { defaultConfig } from './config';
 import { environment } from '@app/environment';
 import { TWABackendService } from 'src/app/services/backend.service';

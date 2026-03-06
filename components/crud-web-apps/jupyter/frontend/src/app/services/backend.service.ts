@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BackendService, SnackBarService } from 'kubeflow';
+import { BackendService, SnackBarService } from 'kubeflow-aigo';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';

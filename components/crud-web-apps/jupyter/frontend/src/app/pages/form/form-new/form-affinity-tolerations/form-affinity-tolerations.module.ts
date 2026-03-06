@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormModule as KfFormModule } from 'kubeflow';
+import { FormModule as KfFormModule } from 'kubeflow-aigo';
 import { FormAffinityTolerationsComponent } from './form-affinity-tolerations.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';

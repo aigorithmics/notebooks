@@ -10,7 +10,7 @@ import {
   ContentListItemModule,
   VariablesGroupsTableModule,
   UrlsModule,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { ConfigurationsModule } from './configurations/configurations.module';
 import { VolumesComponent } from './volumes/volumes.component';
 

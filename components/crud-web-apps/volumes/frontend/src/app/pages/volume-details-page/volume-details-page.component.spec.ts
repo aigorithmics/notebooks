@@ -15,7 +15,7 @@ import {
   LoadingSpinnerModule,
   NamespaceService,
   TitleActionsToolbarModule,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { of, Subject } from 'rxjs';
 import { ActionsService } from 'src/app/services/actions.service';
 import { VWABackendService } from 'src/app/services/backend.service';

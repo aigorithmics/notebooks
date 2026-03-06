@@ -6,7 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { of } from 'rxjs';
 import { JWABackendService } from 'src/app/services/backend.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FormModule as KfFormModule, SnackBarService } from 'kubeflow';
+import { FormModule as KfFormModule, SnackBarService } from 'kubeflow-aigo';
 import { FormGpusComponent } from './form-gpus.component';
 import { CommonModule } from '@angular/common';
 

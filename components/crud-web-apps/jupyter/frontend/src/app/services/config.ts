@@ -1,4 +1,4 @@
-import { DialogConfig } from 'kubeflow';
+import { DialogConfig } from 'kubeflow-aigo';
 
 // --- Configs for the Confirm Dialogs ---
 export function getDeleteDialogConfig(name: string): DialogConfig {

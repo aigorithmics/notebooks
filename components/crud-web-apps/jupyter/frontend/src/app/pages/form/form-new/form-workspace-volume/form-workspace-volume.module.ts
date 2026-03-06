@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormModule as KfFormModule } from 'kubeflow';
+import { FormModule as KfFormModule } from 'kubeflow-aigo';
 import { FormWorkspaceVolumeComponent } from './form-workspace-volume.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';

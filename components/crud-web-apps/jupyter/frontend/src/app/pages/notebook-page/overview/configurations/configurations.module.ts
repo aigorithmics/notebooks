@@ -7,7 +7,7 @@ import {
   DetailsListModule,
   HeadingSubheadingRowModule,
   EditorModule,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { ConfigurationInfoDialogComponent } from './configuration-info-dialog/configuration-info-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
 

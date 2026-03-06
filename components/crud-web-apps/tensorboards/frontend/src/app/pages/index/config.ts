@@ -7,7 +7,7 @@ import {
   TableColumn,
   TableConfig,
   DateTimeValue,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 
 const tableConfig: TableConfig = {
   columns: [

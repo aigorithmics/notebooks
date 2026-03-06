@@ -1,4 +1,4 @@
-import { Status, BackendResponse } from 'kubeflow';
+import { Status, BackendResponse } from 'kubeflow-aigo';
 
 import {
   V1EnvFromSource,

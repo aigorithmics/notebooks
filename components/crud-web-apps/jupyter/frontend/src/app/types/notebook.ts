@@ -1,4 +1,4 @@
-import { Status } from 'kubeflow';
+import { Status } from 'kubeflow-aigo';
 import { PodDefault } from './poddefault';
 import { GPU } from './gpu';
 import {

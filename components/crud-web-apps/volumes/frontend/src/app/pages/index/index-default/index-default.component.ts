@@ -13,7 +13,7 @@ import {
   DashboardState,
   SnackBarConfig,
   DialogConfig,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { defaultConfig } from './config';
 import { environment } from '@app/environment';
 import { VWABackendService } from 'src/app/services/backend.service';

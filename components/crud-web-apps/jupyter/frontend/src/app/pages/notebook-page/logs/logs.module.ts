@@ -5,7 +5,7 @@ import {
   HeadingSubheadingRowModule,
   KubeflowModule,
   LogsViewerModule,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 
 @NgModule({
   declarations: [LogsComponent],

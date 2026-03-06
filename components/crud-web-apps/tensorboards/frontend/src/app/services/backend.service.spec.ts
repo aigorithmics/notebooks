@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { TWABackendService } from './backend.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { KubeflowModule } from 'kubeflow';
+import { KubeflowModule } from 'kubeflow-aigo';
 import { MatRadioModule } from '@angular/material/radio';
 
 describe('TWABackendService', () => {

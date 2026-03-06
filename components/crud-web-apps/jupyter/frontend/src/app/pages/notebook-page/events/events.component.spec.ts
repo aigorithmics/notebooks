@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { KubeflowModule, PollerService } from 'kubeflow';
+import { KubeflowModule, PollerService } from 'kubeflow-aigo';
 import { JWABackendService } from 'src/app/services/backend.service';
 import { of } from 'rxjs';
 

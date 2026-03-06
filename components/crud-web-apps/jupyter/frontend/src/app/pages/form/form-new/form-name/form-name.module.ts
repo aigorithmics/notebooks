@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormModule as KfFormModule } from 'kubeflow';
+import { FormModule as KfFormModule } from 'kubeflow-aigo';
 import { FormNameComponent } from './form-name.component';
 
 @NgModule({

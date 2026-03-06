@@ -1,4 +1,4 @@
-import { UrlItem, ChipDescriptor } from 'kubeflow';
+import { UrlItem, ChipDescriptor } from 'kubeflow-aigo';
 
 export interface VolumesGroup {
   name: string;

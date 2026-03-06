@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { V1PersistentVolumeClaim } from '@kubernetes/client-node';
-import { PollerService } from 'kubeflow';
+import { PollerService } from 'kubeflow-aigo';
 import { Subscription } from 'rxjs';
 import { VWABackendService } from 'src/app/services/backend.service';
 import { EventObject } from 'src/app/types/event';

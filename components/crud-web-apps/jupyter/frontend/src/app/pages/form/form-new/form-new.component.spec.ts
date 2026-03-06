@@ -8,7 +8,7 @@ import {
   NamespaceService,
   SnackBarService,
   TitleActionsToolbarModule,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { of } from 'rxjs';
 import { JWABackendService } from 'src/app/services/backend.service';
 import { FormAdvancedOptionsModule } from './form-advanced-options/form-advanced-options.module';

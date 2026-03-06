@@ -6,7 +6,7 @@ import {
   FormControl,
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { NamespaceService, DIALOG_RESP } from 'kubeflow';
+import { NamespaceService, DIALOG_RESP } from 'kubeflow-aigo';
 import { TWABackendService } from 'src/app/services/backend.service';
 import { TensorboardPostObject } from 'src/app/types';
 import { MatDialogRef } from '@angular/material/dialog';

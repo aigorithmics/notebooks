@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { EditorModule } from 'kubeflow';
+import { EditorModule } from 'kubeflow-aigo';
 
 @NgModule({
   declarations: [NewVolumeComponent],

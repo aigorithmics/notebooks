@@ -11,7 +11,7 @@ import { of, Subject } from 'rxjs';
 import { NotebookPageComponent } from './notebook-page.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActionsService } from 'src/app/services/actions.service';
-import { KubeflowModule, NamespaceService, STATUS_TYPE } from 'kubeflow';
+import { KubeflowModule, NamespaceService, STATUS_TYPE } from 'kubeflow-aigo';
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { MatTabsModule } from '@angular/material/tabs';

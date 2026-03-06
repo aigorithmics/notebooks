@@ -3,7 +3,7 @@ import {
   V1ObjectMeta,
   V1PodSpec,
 } from '@kubernetes/client-node';
-import { STATUS_TYPE } from 'kubeflow';
+import { STATUS_TYPE } from 'kubeflow-aigo';
 import { Condition } from 'src/app/types/condition';
 import { NotebookRawObject } from 'src/app/types/notebook';
 

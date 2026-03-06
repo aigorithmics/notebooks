@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { EditorModule, HeadingSubheadingRowModule } from 'kubeflow';
+import { EditorModule, HeadingSubheadingRowModule } from 'kubeflow-aigo';
 
 import {
   ConfigurationInfoDialogComponent,

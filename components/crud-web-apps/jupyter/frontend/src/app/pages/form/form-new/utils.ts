@@ -1,6 +1,6 @@
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { GPU, Config } from 'src/app/types';
-import { getNameSyncValidators, getNameAsyncValidators } from 'kubeflow';
+import { getNameSyncValidators, getNameAsyncValidators } from 'kubeflow-aigo';
 import { createFormGroupFromVolume } from 'src/app/shared/utils/volumes';
 
 export function getFormDefaults(): FormGroup {

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { VWABackendService } from './backend.service';
 import { HttpClientModule } from '@angular/common/http';
-import { SnackBarService } from 'kubeflow';
+import { SnackBarService } from 'kubeflow-aigo';
 
 const SnackBarServiceStub: Partial<SnackBarService> = {
   open: () => {},

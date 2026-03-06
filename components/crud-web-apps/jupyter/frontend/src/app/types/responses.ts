@@ -1,5 +1,5 @@
 import { V1Pod } from '@kubernetes/client-node';
-import { BackendResponse } from 'kubeflow';
+import { BackendResponse } from 'kubeflow-aigo';
 import { Config } from './config';
 import { EventObject } from './event';
 import { NotebookRawObject, NotebookResponseObject } from './notebook';

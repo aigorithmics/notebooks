@@ -4,7 +4,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { DeleteButtonComponent } from './delete-button/delete-button.component';
 import { OpenPVCViewerButtonComponent } from './open-pvcviewer-button/open-pvcviewer-button.component';
 import { ClosePVCViewerButtonComponent } from './close-pvcviewer-button/close-pvcviewer-button.component';
-import { IconModule, KubeflowModule, UrlsModule } from 'kubeflow';
+import { IconModule, KubeflowModule, UrlsModule } from 'kubeflow-aigo';
 import { UsedByComponent } from './used-by/used-by.component';
 
 @NgModule({

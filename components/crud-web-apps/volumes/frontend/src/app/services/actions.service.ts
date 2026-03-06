@@ -6,7 +6,7 @@ import {
   SnackBarConfig,
   SnackBarService,
   SnackType,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { Observable } from 'rxjs';
 import { VWABackendService } from './backend.service';
 

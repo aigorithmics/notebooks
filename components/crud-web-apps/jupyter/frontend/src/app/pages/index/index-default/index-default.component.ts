@@ -12,7 +12,7 @@ import {
   PollerService,
   DashboardState,
   SnackBarConfig,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { JWABackendService } from 'src/app/services/backend.service';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, TrackByFunction } from '@angular/core';
-import { UrlItem } from 'kubeflow';
+import { UrlItem } from 'kubeflow-aigo';
 import { LinkGroup } from './types';
 
 @Component({

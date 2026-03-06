@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { PodDefault } from 'src/app/types';
 import { Subscription } from 'rxjs';
-import { NamespaceService } from 'kubeflow';
+import { NamespaceService } from 'kubeflow-aigo';
 import { JWABackendService } from 'src/app/services/backend.service';
 
 @Component({

@@ -8,7 +8,7 @@ import {
   NamespaceService,
   PollerService,
   SnackBarService,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { Observable, of } from 'rxjs';
 import { JWABackendService } from 'src/app/services/backend.service';
 

@@ -5,7 +5,7 @@ import {
   SnackBarConfig,
   SnackBarService,
   SnackType,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { getDeleteDialogConfig, getStopDialogConfig } from './config';
 import { JWABackendService } from './backend.service';
 import { Observable } from 'rxjs';

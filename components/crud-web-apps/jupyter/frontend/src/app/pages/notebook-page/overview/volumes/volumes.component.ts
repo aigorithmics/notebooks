@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, TrackByFunction } from '@angular/core';
-import { ChipDescriptor, UrlItem } from 'kubeflow';
+import { ChipDescriptor, UrlItem } from 'kubeflow-aigo';
 import { VolumesGroup } from './types';
 import { PVCS } from '../volumes.constants';
 

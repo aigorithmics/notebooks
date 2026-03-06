@@ -11,7 +11,7 @@ import {
   LinkType,
   MemoryValue,
   quantityToScalar,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { ServerTypeComponent } from './server-type/server-type.component';
 
 // --- Config for the Resource Table ---

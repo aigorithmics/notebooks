@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import { NamespaceService } from 'kubeflow';
+import { NamespaceService } from 'kubeflow-aigo';
 import { of } from 'rxjs';
 import { JWABackendService } from 'src/app/services/backend.service';
-import { FormModule as KfFormModule } from 'kubeflow';
+import { FormModule as KfFormModule } from 'kubeflow-aigo';
 import { FormNameComponent } from './form-name.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
