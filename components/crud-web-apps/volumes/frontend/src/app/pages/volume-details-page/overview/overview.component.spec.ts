@@ -5,7 +5,7 @@ import {
   LoadingSpinnerModule,
   PollerService,
   SnackBarModule,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { VWABackendService } from 'src/app/services/backend.service';
 import { of } from 'rxjs';
 

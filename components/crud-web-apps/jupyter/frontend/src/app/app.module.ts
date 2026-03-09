@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { KubeflowModule } from 'kubeflow';
+import { KubeflowModule } from 'kubeflow-aigo';
 
 import { NotebookPageModule } from './pages/notebook-page/notebook-page.module';
 import { FormNewModule } from './pages/form/form-new/form-new.module';

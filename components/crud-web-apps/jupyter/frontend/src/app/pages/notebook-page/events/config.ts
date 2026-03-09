@@ -1,4 +1,4 @@
-import { PropertyValue, TableConfig, DateTimeValue } from 'kubeflow';
+import { PropertyValue, TableConfig, DateTimeValue } from 'kubeflow-aigo';
 
 // --- Config for the Resource Table ---
 export const defaultConfig: TableConfig = {

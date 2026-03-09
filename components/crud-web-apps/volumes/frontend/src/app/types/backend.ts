@@ -1,6 +1,6 @@
 import { Params } from '@angular/router';
 import { V1PersistentVolumeClaim, V1Pod } from '@kubernetes/client-node';
-import { Status, BackendResponse, STATUS_TYPE } from 'kubeflow';
+import { Status, BackendResponse, STATUS_TYPE } from 'kubeflow-aigo';
 import { EventObject } from './event';
 
 export interface VWABackendResponse extends BackendResponse {

@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { JWABackendService } from 'src/app/services/backend.service';
 import { Subscription } from 'rxjs';
-import { PollerService } from 'kubeflow';
+import { PollerService } from 'kubeflow-aigo';
 import { V1Pod } from '@kubernetes/client-node';
 
 @Component({

@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
 import { ExistingPvcModule } from './pvc/pvc.module';
-import { EditorModule } from 'kubeflow';
+import { EditorModule } from 'kubeflow-aigo';
 
 @NgModule({
   declarations: [ExistingVolumeComponent],

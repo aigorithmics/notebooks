@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { JWABackendService } from './backend.service';
 import { of } from 'rxjs';
 import { ActionsService } from './actions.service';
-import { ConfirmDialogService, SnackBarService } from 'kubeflow';
+import { ConfirmDialogService, SnackBarService } from 'kubeflow-aigo';
 
 const JWABackendServiceStub: Partial<JWABackendService> = {
   deleteNotebook: () => of(),

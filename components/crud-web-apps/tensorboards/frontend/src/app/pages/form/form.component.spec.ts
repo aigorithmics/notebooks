@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { KubeflowModule, NamespaceService } from 'kubeflow';
+import { KubeflowModule, NamespaceService } from 'kubeflow-aigo';
 import { of } from 'rxjs';
 import { TWABackendService } from 'src/app/services/backend.service';
 import { MatRadioModule } from '@angular/material/radio';

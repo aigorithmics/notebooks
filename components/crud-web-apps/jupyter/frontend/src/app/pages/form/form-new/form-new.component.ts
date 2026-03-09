@@ -7,7 +7,7 @@ import {
   SnackBarConfig,
   SnackBarService,
   SnackType,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { Router } from '@angular/router';
 import { getFormDefaults, initFormControls } from './utils';
 import { JWABackendService } from 'src/app/services/backend.service';

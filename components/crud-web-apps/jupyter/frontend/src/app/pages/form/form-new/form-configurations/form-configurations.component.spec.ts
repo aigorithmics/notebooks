@@ -4,10 +4,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { NamespaceService } from 'kubeflow';
+import { NamespaceService } from 'kubeflow-aigo';
 import { of } from 'rxjs';
 import { JWABackendService } from 'src/app/services/backend.service';
-import { FormModule as KfFormModule } from 'kubeflow';
+import { FormModule as KfFormModule } from 'kubeflow-aigo';
 import { FormConfigurationsComponent } from './form-configurations.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 

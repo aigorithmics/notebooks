@@ -5,7 +5,7 @@ import {
   AbstractControl,
   Validators,
 } from '@angular/forms';
-import { NamespaceService } from 'kubeflow';
+import { NamespaceService } from 'kubeflow-aigo';
 import { Subscription } from 'rxjs';
 import { JWABackendService } from 'src/app/services/backend.service';
 

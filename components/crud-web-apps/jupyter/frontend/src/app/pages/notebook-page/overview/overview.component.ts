@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { V1EnvVar, V1Pod, V1Volume } from '@kubernetes/client-node';
-import { ChipDescriptor, PollerService, STATUS_TYPE, UrlItem } from 'kubeflow';
+import { ChipDescriptor, PollerService, STATUS_TYPE, UrlItem } from 'kubeflow-aigo';
 import { Subscription } from 'rxjs';
 import { JWABackendService } from 'src/app/services/backend.service';
 import { NotebookRawObject, PodDefault } from 'src/app/types';

@@ -5,7 +5,7 @@ import {
   ToolbarButton,
   PollerService,
   Status,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { JWABackendService } from 'src/app/services/backend.service';
 import { Subscription } from 'rxjs';
 import { NotebookRawObject } from 'src/app/types';

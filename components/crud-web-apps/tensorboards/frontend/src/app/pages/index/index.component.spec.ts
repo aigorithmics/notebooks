@@ -7,7 +7,7 @@ import {
   NamespaceService,
   PollerService,
   SnackBarService,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { Observable, of } from 'rxjs';
 import { TWABackendService } from 'src/app/services/backend.service';
 import { MatRadioModule } from '@angular/material/radio';

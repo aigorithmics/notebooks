@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FormModule as KfFormModule, SnackBarService } from 'kubeflow';
+import { FormModule as KfFormModule, SnackBarService } from 'kubeflow-aigo';
 import { FormCpuRamComponent } from './form-cpu-ram.component';
 
 const SnackBarServiceStub: Partial<SnackBarService> = {

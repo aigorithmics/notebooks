@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { PollerService } from 'kubeflow';
+import { PollerService } from 'kubeflow-aigo';
 import { Subscription } from 'rxjs';
 import { JWABackendService } from 'src/app/services/backend.service';
 import { NotebookRawObject } from 'src/app/types';

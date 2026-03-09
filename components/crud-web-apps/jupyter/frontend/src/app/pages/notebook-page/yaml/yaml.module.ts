@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { YamlComponent } from './yaml.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { EditorModule, KubeflowModule } from 'kubeflow';
+import { EditorModule, KubeflowModule } from 'kubeflow-aigo';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 

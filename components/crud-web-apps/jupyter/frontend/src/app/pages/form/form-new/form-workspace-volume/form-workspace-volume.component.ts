@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { SnackBarService, SnackType } from 'kubeflow';
+import { SnackBarService, SnackType } from 'kubeflow-aigo';
 
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import {

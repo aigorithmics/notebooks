@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LinkGroupsTableComponent } from './link-groups-table.component';
-import { UrlsModule } from 'kubeflow';
+import { UrlsModule } from 'kubeflow-aigo';
 
 @NgModule({
   declarations: [LinkGroupsTableComponent],

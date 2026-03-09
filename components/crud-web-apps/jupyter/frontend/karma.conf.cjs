@@ -20,7 +20,7 @@ module.exports = function (config) {
         served: true,
       },
       {
-        pattern: 'jupyter/frontend/node_modules/kubeflow/**',
+        pattern: 'jupyter/frontend/node_modules/kubeflow-aigo/**',
         watched: false,
         included: false,
         served: true,
@@ -34,7 +34,7 @@ module.exports = function (config) {
     ],
     proxies: {
       '/static/assets/monaco-editor/': '/base/jupyter/frontend/node_modules/monaco-editor/',
-      '/static/assets/': '/base/jupyter/frontend/node_modules/kubeflow/assets/',
+      '/static/assets/': '/base/jupyter/frontend/node_modules/kubeflow-aigo/assets/',
       '/static/assets/': '/base/jupyter/frontend/src/assets/',
     },
     client: {

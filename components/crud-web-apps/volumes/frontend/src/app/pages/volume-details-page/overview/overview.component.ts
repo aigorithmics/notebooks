@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { environment } from '@app/environment';
 import { V1PersistentVolumeClaim, V1Pod } from '@kubernetes/client-node';
-import { ChipDescriptor, PollerService, UrlItem } from 'kubeflow';
+import { ChipDescriptor, PollerService, UrlItem } from 'kubeflow-aigo';
 import { Subscription } from 'rxjs';
 import { VWABackendService } from 'src/app/services/backend.service';
 import { LinkGroup } from './link-groups-table/types';

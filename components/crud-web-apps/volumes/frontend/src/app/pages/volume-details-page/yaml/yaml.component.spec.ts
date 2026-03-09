@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EditorModule } from 'kubeflow';
+import { EditorModule } from 'kubeflow-aigo';
 
 import { YamlComponent } from './yaml.component';
 

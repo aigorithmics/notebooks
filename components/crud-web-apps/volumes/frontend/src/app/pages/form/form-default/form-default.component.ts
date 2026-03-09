@@ -13,7 +13,7 @@ import {
   dns1035Validator,
   getNameError,
   DIALOG_RESP,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { VWABackendService } from 'src/app/services/backend.service';
 import { PVCPostObject } from 'src/app/types';
 import { MatDialogRef } from '@angular/material/dialog';

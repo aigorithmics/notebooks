@@ -8,7 +8,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormImageComponent } from './form-image.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { FormModule as KfFormModule } from 'kubeflow';
+import { FormModule as KfFormModule } from 'kubeflow-aigo';
 import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxChange } from '@angular/material/checkbox';

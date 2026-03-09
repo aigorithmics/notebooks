@@ -8,7 +8,7 @@ import {
   PollerService,
   STATUS_TYPE,
   ToolbarButton,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { Subscription } from 'rxjs';
 import { ActionsService } from 'src/app/services/actions.service';
 import { VWABackendService } from 'src/app/services/backend.service';

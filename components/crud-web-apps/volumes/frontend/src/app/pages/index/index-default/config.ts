@@ -1,4 +1,4 @@
-import { TableColumn, TableConfig, ComponentValue } from 'kubeflow';
+import { TableColumn, TableConfig, ComponentValue } from 'kubeflow-aigo';
 import { tableConfig } from '../config';
 import { DeleteButtonComponent } from '../columns/delete-button/delete-button.component';
 import { OpenPVCViewerButtonComponent } from '../columns/open-pvcviewer-button/open-pvcviewer-button.component';

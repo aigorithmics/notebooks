@@ -4,7 +4,7 @@ import notebooksRequest from '../fixtures/notebooks.json' with { type: 'json' };
 import { setupCustomPage, type CustomPage } from '../support/e2e';
 
 
-import { STATUS_TYPE } from 'kubeflow';
+import { STATUS_TYPE } from 'kubeflow-aigo';
 
 test.describe('Main table', () => {
   let customPage: CustomPage;

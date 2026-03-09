@@ -6,7 +6,7 @@
         <source>Hide</source>
         <target>Cacher</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">projects/kubeflow/src/lib/form/advanced-options/advanced-options.component.html</context>
+          <context context-type="sourcefile">projects/kubeflow-aigo/src/lib/form/advanced-options/advanced-options.component.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
@@ -14,7 +14,7 @@
         <source>Advanced Options</source>
         <target>Options avancées</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">projects/kubeflow/src/lib/form/advanced-options/advanced-options.component.ts</context>
+          <context context-type="sourcefile">projects/kubeflow-aigo/src/lib/form/advanced-options/advanced-options.component.ts</context>
           <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
@@ -22,7 +22,7 @@
         <source>Name</source>
         <target>Nom</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">projects/kubeflow/src/lib/form/name-namespace-inputs/name-input/name-input.component.html</context>
+          <context context-type="sourcefile">projects/kubeflow-aigo/src/lib/form/name-namespace-inputs/name-input/name-input.component.html</context>
           <context context-type="linenumber">2</context>
         </context-group>
         <context-group purpose="location">
@@ -34,11 +34,11 @@
         <source>Namespace</source>
         <target>Espace de noms</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">projects/kubeflow/src/lib/form/name-namespace-inputs/name-namespace-inputs.component.html</context>
+          <context context-type="sourcefile">projects/kubeflow-aigo/src/lib/form/name-namespace-inputs/name-namespace-inputs.component.html</context>
           <context context-type="linenumber">11</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">projects/kubeflow/src/lib/form/name-namespace-inputs/name-namespace-inputs.component.html</context>
+          <context context-type="sourcefile">projects/kubeflow-aigo/src/lib/form/name-namespace-inputs/name-namespace-inputs.component.html</context>
           <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
@@ -46,7 +46,7 @@
         <source> Cannot be negative. </source>
         <target> Ne peut pas être négative. </target>
         <context-group purpose="location">
-          <context context-type="sourcefile">projects/kubeflow/src/lib/form/positive-number-input/positive-number-input.component.html</context>
+          <context context-type="sourcefile">projects/kubeflow-aigo/src/lib/form/positive-number-input/positive-number-input.component.html</context>
           <context context-type="linenumber">11,12</context>
         </context-group>
       </trans-unit>
@@ -55,7 +55,7 @@
     start with an alphabetic character, and end with an alphanumeric character.</source>
         <target>Le nom doit être des caractères minuscules alphanumériques ou '-' et doit commencer et terminer par des caractères alphanumériques.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">projects/kubeflow/src/lib/form/validators.ts</context>
+          <context context-type="sourcefile">projects/kubeflow-aigo/src/lib/form/validators.ts</context>
           <context context-type="linenumber">32,33</context>
         </context-group>
       </trans-unit>
@@ -63,7 +63,7 @@
         <source>Name is too long</source>
         <target>Le nom est trop long</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">projects/kubeflow/src/lib/form/validators.ts</context>
+          <context context-type="sourcefile">projects/kubeflow-aigo/src/lib/form/validators.ts</context>
           <context context-type="linenumber">105</context>
         </context-group>
       </trans-unit>
@@ -71,7 +71,7 @@
         <source>Name cannot be empty</source>
         <target>Nom ne peut pas être vide</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">projects/kubeflow/src/lib/form/validators.ts</context>
+          <context context-type="sourcefile">projects/kubeflow-aigo/src/lib/form/validators.ts</context>
           <context context-type="linenumber">107</context>
         </context-group>
       </trans-unit>
@@ -79,7 +79,7 @@
         <source>Select Namespace</source>
         <target>Sélectionner l'espace de noms</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">projects/kubeflow/src/lib/namespace-select/namespace-select.component.html</context>
+          <context context-type="sourcefile">projects/kubeflow-aigo/src/lib/namespace-select/namespace-select.component.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
@@ -87,7 +87,7 @@
         <source>An error occurred: <x id="PH" equiv-text="error"/></source>
         <target>Une erreur est survenue: <x id="PH" equiv-text="error"/></target>
         <context-group purpose="location">
-          <context context-type="sourcefile">projects/kubeflow/src/lib/services/backend/backend.service.ts</context>
+          <context context-type="sourcefile">projects/kubeflow-aigo/src/lib/services/backend/backend.service.ts</context>
           <context context-type="linenumber">108</context>
         </context-group>
       </trans-unit>
@@ -95,7 +95,7 @@
         <source>Client error: <x id="PH" equiv-text="error.error.message"/></source>
         <target>Erreur client : <x id="PH" equiv-text="error.error.message"/></target>
         <context-group purpose="location">
-          <context context-type="sourcefile">projects/kubeflow/src/lib/services/backend/backend.service.ts</context>
+          <context context-type="sourcefile">projects/kubeflow-aigo/src/lib/services/backend/backend.service.ts</context>
           <context context-type="linenumber">112</context>
         </context-group>
       </trans-unit>
@@ -103,7 +103,7 @@
         <source>Could not connect to the backend.</source>
         <target>Impossible de se connecter à l'infrastructure d'arrière plan.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">projects/kubeflow/src/lib/services/backend/backend.service.ts</context>
+          <context context-type="sourcefile">projects/kubeflow-aigo/src/lib/services/backend/backend.service.ts</context>
           <context context-type="linenumber">119</context>
         </context-group>
       </trans-unit>
@@ -111,7 +111,7 @@
         <source>Unexpected error encountered</source>
         <target>Erreur inattendue rencontrée</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">projects/kubeflow/src/lib/services/backend/backend.service.ts</context>
+          <context context-type="sourcefile">projects/kubeflow-aigo/src/lib/services/backend/backend.service.ts</context>
           <context context-type="linenumber">131</context>
         </context-group>
       </trans-unit>
@@ -119,7 +119,7 @@
         <source>DISMISS</source>
         <target>REJETER</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">projects/kubeflow/src/lib/snack-bar/component/snack-bar.component.html</context>
+          <context context-type="sourcefile">projects/kubeflow-aigo/src/lib/snack-bar/component/snack-bar.component.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>

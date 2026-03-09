@@ -15,7 +15,7 @@ import {
   FormModule,
   ImmediateErrorStateMatcher,
   KubeflowModule,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 
 import { FormDefaultComponent } from './pages/form/form-default/form-default.component';
 import { IndexDefaultComponent } from './pages/index/index-default/index-default.component';

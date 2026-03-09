@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { KubeflowModule } from 'kubeflow';
+import { KubeflowModule } from 'kubeflow-aigo';
 import { of } from 'rxjs';
 import { VWABackendService } from 'src/app/services/backend.service';
 

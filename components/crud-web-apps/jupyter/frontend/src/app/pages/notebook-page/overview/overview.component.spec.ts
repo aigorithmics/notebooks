@@ -8,7 +8,7 @@ import {
   SnackBarModule,
   STATUS_TYPE,
   VariablesGroupsTableModule,
-} from 'kubeflow';
+} from 'kubeflow-aigo';
 import { JWABackendService } from 'src/app/services/backend.service';
 import { ConfigurationsModule } from './configurations/configurations.module';
 import { OverviewComponent } from './overview.component';
