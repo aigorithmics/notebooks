@@ -36,7 +36,7 @@ COPY ./tensorboards/frontend/angular.json ./
 COPY ./tensorboards/frontend/src ./src
 
 ENV NG_CLI_ANALYTICS="ci"
-COPY --from=frontend-kubeflow-lib /src/dist/kubeflow/ ../../common/frontend/kubeflow-common-lib/dist/kubeflow/
+COPY --from=frontend-kubeflow-lib /src/dist/kubeflow-aigo/ ../../common/frontend/kubeflow-common-lib/dist/kubeflow-aigo/
 RUN npm ci
 
 RUN npm run build -- --output-path=./dist --configuration=production
@@ -59,5 +59,7 @@ COPY ./tensorboards/backend/entrypoint.py .
 COPY ./tensorboards/backend/Makefile .
 
 COPY --from=frontend /src/tensorboards/frontend/dist/browser/ /src/app/static/
+
+RUN apk update && apk upgrade --no-cache && rm -rf /var/cache/apk/*
 
 ENTRYPOINT ["gunicorn", "-w", "3", "--bind", "0.0.0.0:5000", "--access-logfile", "-", "entrypoint:app"]

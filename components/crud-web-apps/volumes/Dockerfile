@@ -36,7 +36,7 @@ COPY ./volumes/frontend/angular.json ./
 COPY ./volumes/frontend/src ./src
 
 ENV NG_CLI_ANALYTICS="ci"
-COPY --from=frontend-kubeflow-lib /src/dist/kubeflow/ ../../common/frontend/kubeflow-common-lib/dist/kubeflow/
+COPY --from=frontend-kubeflow-lib /src/dist/kubeflow-aigo/ ../../common/frontend/kubeflow-common-lib/dist/kubeflow-aigo/
 RUN npm ci
 
 RUN npm run build -- --output-path=./dist/default --configuration=production
@@ -56,5 +56,7 @@ COPY ./volumes/backend/apps/ ./apps
 COPY ./volumes/backend/entrypoint.py .
 
 COPY --from=frontend /src/volumes/frontend/dist/default/browser/ /src/apps/default/static/
+
+RUN apk update && apk upgrade --no-cache && rm -rf /var/cache/apk/*
 
 ENTRYPOINT ["gunicorn", "-w", "3", "--bind", "0.0.0.0:5000", "--access-logfile", "-", "entrypoint:app"]

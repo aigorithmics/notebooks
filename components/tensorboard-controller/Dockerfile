@@ -3,7 +3,7 @@
 #
 # ${PATH_TO_KUBEFLOW/KUBEFLOW repo}/components
 #
-FROM golang:1.25.5 AS builder
+FROM golang:1.26.1 AS builder
 
 WORKDIR /workspace
 # Copy the Go Modules manifests
